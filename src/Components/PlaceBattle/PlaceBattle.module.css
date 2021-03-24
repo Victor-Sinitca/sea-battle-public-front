@@ -1,0 +1,30 @@
+.displayMapBattle{
+  display: grid;
+  grid-template-columns: 300px 300px;
+  grid-template-rows: 300px 300px;
+  grid-gap: 20px;
+
+}
+.displayMap{
+  display: grid;
+  grid-template-columns: repeat(10,20px);
+  grid-template-rows: repeat(10,20px);
+}
+
+.empty{
+  background-color: cyan;
+}
+
+.ship{
+  background-color: #21e81a;
+}
+.miss{
+  background-color: #e1ddf3;
+}
+
+.hit{
+  background-color: #2807e7;
+}
+.kill{
+  background-color: #ff0000;
+}

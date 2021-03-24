@@ -1,3 +1,45 @@
+.displayApp{
+  width: 1200px;
+  height: 2400px;
+  display: grid;
+  grid-template-areas:
+  "h h"
+  "n p";
+  grid-template-rows: 100px 1fr;
+  grid-template-columns: 100px 1fr;
+  grid-gap: 15px;
+  border:  2px #21e81a;
+  background-color: #aaeeaa;
+  align-content: center;
+  margin: 0 auto;
+}
+
+.displayHeader{
+  grid-area: h;
+  background-color: #0f5a0f;
+}
+.displayNavBar{
+  background-color: #9af89a;
+}
+.displayPlace{
+  background-color: #d6ead6;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .App {
   text-align: center;
 }
