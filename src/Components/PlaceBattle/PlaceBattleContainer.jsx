@@ -2,7 +2,7 @@ import React from 'react';
 import {compose} from "redux";
 import {connect} from "react-redux";
 import PlaceBattle from "./PlaceBattle";
-import {setFirstUserMap, setSecondUserMap} from "../../redux/battleMap-reduсer";
+import {setFirstUserMap, setSecondUserMap, userShot} from "../../redux/battleMap-reduсer";
 
 /*
 
@@ -48,4 +48,4 @@ let mapStateToProps =(state)=>({
 
 
 
-export default compose(connect(mapStateToProps,{setFirstUserMap,setSecondUserMap}))(PlaceBattleContainer)
+export default compose(connect(mapStateToProps,{setFirstUserMap,setSecondUserMap,userShot}))(PlaceBattleContainer)
