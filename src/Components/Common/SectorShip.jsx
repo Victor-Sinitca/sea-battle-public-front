@@ -9,7 +9,7 @@ const ReturnSector = (props) => {
             props.returnToClick(props.sector)
     }
     return (
-        props.firstDask ?
+        props.firstDesk ?
             <button onClick={clickSector} className={props.sector.shot
                 ? props.sector.ship
                     ? s.shotToShip

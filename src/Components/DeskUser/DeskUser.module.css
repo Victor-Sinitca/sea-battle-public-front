@@ -1,0 +1,19 @@
+.displayDesk{
+  display: grid;
+  grid-template-columns: 400px 300px
+}
+.displayUser{
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: 220px 1fr;
+}
+.displaySetShip{
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr 1fr;
+}
+.active{
+  background-color: #06f53a;
+}
+.deActive{
+  background-color: #282c34;
+}

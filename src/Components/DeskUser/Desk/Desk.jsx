@@ -3,7 +3,6 @@ import ReturnSector from "../../Common/SectorShip";
 import s from "./Desk.module.css"
 
 
-
 const Desk = (props) => {
     return (
         <div className={s.displayMap}>
@@ -13,6 +12,5 @@ const Desk = (props) => {
                               toClick={props.toClick}/>
             ))}
         </div>
-    )
-}
+    )}
 export default Desk

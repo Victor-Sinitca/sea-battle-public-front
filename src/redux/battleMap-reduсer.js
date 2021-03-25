@@ -10,72 +10,111 @@ const SET_SHOT_SECOND_USER = "SET_SHOT_SECOND_USER"
 const TOGGLE_SETTING_SHIP = "TOGGLE_SETTING_SHIP"
 
 let initialState = {
-    firstUserMap: null,
-    secondUserMap: null,
+    FUMap: null,
+    SUMap: null,
 
-    firstUserTurn: true,
+    FUTurn: true,
 
     settingShipFU: true,
     settingShipSU: true,
 
-    firstUserShips: {
-        numberShips1: 1,
-        numberShips2: 1,
-        numberShips3: 1,
-        numberShips4: 1,
+    FUShips: {
+        ship: [
+            {id: 11, set: false, parts: [], fieldsAround: []},
+            {id: 12, set: true, parts: [], fieldsAround: []},
+            {id: 13, set: true, parts: [], fieldsAround: []},
+            {id: 14, set: true, parts: [], fieldsAround: []},
+            {id: 21, set: true, parts: [], fieldsAround: []},
+            {id: 22, set: true, parts: [], fieldsAround: []},
+            {id: 23, set: true, parts: [], fieldsAround: []},
+            {id: 31, set: true, parts: [], fieldsAround: []},
+            {id: 32, set: true, parts: [], fieldsAround: []},
+            {id: 41, set: true, parts: [], fieldsAround: []},
+        ],
+        numberShips1: {
+            count: 4,
+        },
+        numberShips2: {
+            count: 3,
+        },
+        numberShips3: {
+            count: 2,
+        },
+        numberShips4: {
+            count: 1,
+        },
     },
-    secondUserShips: {
-        numberShips1: 2,
-        numberShips2: 2,
-        numberShips3: 2,
-        numberShips4: 2,
-    }
-
+    SUShips: {
+        ship: [
+            {id: 11, set: true, parts: [], fieldsAround: []},
+            {id: 12, set: true, parts: [], fieldsAround: []},
+            {id: 13, set: true, parts: [], fieldsAround: []},
+            {id: 14, set: true, parts: [], fieldsAround: []},
+            {id: 21, set: true, parts: [], fieldsAround: []},
+            {id: 22, set: true, parts: [], fieldsAround: []},
+            {id: 23, set: true, parts: [], fieldsAround: []},
+            {id: 31, set: true, parts: [], fieldsAround: []},
+            {id: 32, set: true, parts: [], fieldsAround: []},
+            {id: 41, set: false, parts: [], fieldsAround: []},
+        ],
+        numberShips1: {
+            count: 4,
+        },
+        numberShips2: {
+            count: 3,
+        },
+        numberShips3: {
+            count: 2,
+        },
+        numberShips4: {
+            count: 1,
+        },
+    },
 }
 
 const battleMapReducer = (state = initialState, action) => {
     let stateCopy = null
     switch (action.type) {
         case SET_FIRST_USER_MAP:
-            return {...state, firstUserMap: action.firstUserMap}
+            return {...state, FUMap: action.FUMap}
         case SET_SECOND_USER_MAP:
-            return {...state, secondUserMap: action.secondUserMap}
+            return {...state, SUMap: action.SUMap}
         case TOGGLE_FIRST_USER_TURN:
-            return {...state, firstUserTurn: action.firstUserTurn}
+            return {...state, FUMap: action.firstUserTurn}
         case TO_BEGIN_SETTING_SHIP:
             return {...state, settingShip: true}
         case FINISH_SETTING_SHIP :
             return {...state, settingShip: false}
         case SET_SHIP_FIRST_USER:
             stateCopy = {...state};
-            stateCopy.firstUserMap = [...state.firstUserMap];
-            stateCopy.firstUserMap[action.sector.y][action.sector.x].sector.ship ?
-                stateCopy.firstUserMap[action.sector.y][action.sector.x].sector.ship = false
+            stateCopy.FUMap = [...state.FUMap];
+            stateCopy.FUMap[action.sector.y][action.sector.x].sector.ship ?
+                stateCopy.FUMap[action.sector.y][action.sector.x].sector.ship = false
                 :
-                stateCopy.firstUserMap[action.sector.y][action.sector.x].sector.ship = true
+                stateCopy.FUMap[action.sector.y][action.sector.x].sector.ship = true
             return stateCopy
         case(SET_SHIP_SECOND_USER):
             stateCopy = {...state};
-            stateCopy.secondUserMap = [...state.secondUserMap];
-            stateCopy.secondUserMap[action.sector.y][action.sector.x].sector.ship ?
-                stateCopy.secondUserMap[action.sector.y][action.sector.x].sector.ship = false
+            stateCopy.SUMap = [...state.SUMap];
+            stateCopy.SUMap[action.sector.y][action.sector.x].sector.ship ?
+                stateCopy.SUMap[action.sector.y][action.sector.x].sector.ship = false
                 :
-                stateCopy.secondUserMap[action.sector.y][action.sector.x].sector.ship = true
+                stateCopy.SUMap[action.sector.y][action.sector.x].sector.ship = true
             return stateCopy
         case SET_SHOT_FIRST_USER:
             stateCopy = {...state}
-            stateCopy.secondUserMap = [...state.secondUserMap];
-            stateCopy.secondUserMap[action.sector.y][action.sector.x].sector.shot = true
+            stateCopy.SUMap = [...state.SUMap];
+            stateCopy.SUMap[action.sector.y][action.sector.x].sector.shot = true
             return stateCopy
         case SET_SHOT_SECOND_USER:
             stateCopy = {...state}
-            stateCopy.firstUserMap = [...state.firstUserMap];
-            stateCopy.firstUserMap[action.sector.y][action.sector.x].sector.shot = true
+            stateCopy.FUMap = [...state.FUMap];
+            stateCopy.FUMap[action.sector.y][action.sector.x].sector.shot = true
             return stateCopy
-        case TOGGLE_SETTING_SHIP :{
-            if(action.firstUser){
+        case TOGGLE_SETTING_SHIP : {
+            if (action.firstUser) {
                 return {...state, settingShipFU: action.value}
-            }else {
+            } else {
                 return {...state, settingShipSU: action.value}
             }
         }
@@ -84,11 +123,11 @@ const battleMapReducer = (state = initialState, action) => {
     }
 }
 
-export const setFirstUserMap = (firstUserMap) => {
-    return ({type: "SET_FIRST_USER_MAP", firstUserMap})
+export const setFirstUserMap = (FUMap) => {
+    return ({type: "SET_FIRST_USER_MAP", FUMap})
 };
-export const setSecondUserMap = (secondUserMap) => {
-    return ({type: "SET_SECOND_USER_MAP", secondUserMap})
+export const setSecondUserMap = (SUMap) => {
+    return ({type: "SET_SECOND_USER_MAP", SUMap})
 };
 export const toBeginSettingShip = () => {
     return ({type: "TO_BEGIN_SETTING_SHIP"})

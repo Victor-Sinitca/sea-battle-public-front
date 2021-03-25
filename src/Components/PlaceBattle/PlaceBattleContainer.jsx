@@ -47,13 +47,13 @@ class PlaceBattleContainer  extends React.Component{
 }
 
 let mapStateToProps =(state)=>({
-    firstUserMap: state.battleMap.firstUserMap,
-    secondUserMap: state.battleMap.secondUserMap,
+    firstUserMap: state.battleMap.FUMap,
+    secondUserMap: state.battleMap.SUMap,
     firstUserTurn: state.battleMap.firstUserTurn,
     settingShipFU: state.battleMap.settingShipFU,
     settingShipSU: state.battleMap.settingShipSU,
-    firstUserShips: state.battleMap.firstUserShips,
-    secondUserShips: state.battleMap.secondUserShips,
+    FUShips: state.battleMap.FUShips,
+    SUShips: state.battleMap.SUShips,
 })
 
 

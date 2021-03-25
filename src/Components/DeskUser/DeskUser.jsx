@@ -1,65 +1,74 @@
 import React from "react";
-import s from "../PlaceBattle/PlaceBattle.module.css";
+import s from "./DeskUser.module.css";
 import Desk from "./Desk/Desk";
+import RightBar from "./RightBar/RightBar";
+import DownBar from "./DownBar/DownBar";
 
 
 const DeskUser = (props) => {
-    const settingShip = () => {
+    const onSettingShip = () => {
         props.toggleSettingShip(true, props.firstUser)
     }
-    const noSettingShip = () => {
+    const ofSettingShip = () => {
         props.toggleSettingShip(false, props.firstUser)
     }
-
+debugger
     return (
-        <div className={s.displayDeskUser}>
+        <div className={s.displayDesk}>
             <div>
-                <div>11111</div>
-                <div className={s.displayUserFire}>
+                <div>Field one</div>
+                <div className={s.displayUser}>
                     <Desk userMap={props.firstUserMap} firstDesk={true}
-                          returnToClick={props.setShipUser} toClick={true}/>
-                    <div>
-                        <button className={(props.settingShip ? s.buttonActive : null)} onClick={settingShip}>Set ship
-                        </button>
-                        <button className={(!props.settingShip ? s.buttonActive : null)} onClick={noSettingShip}>Set fire
-                        </button>
-                    </div>
-                    <div className={s.displayDownBar}>
+                          returnToClick={props.setShipUser} toClick={props.settingShip}/>
+                    <div className={s.displaySetShip}>
                         <div>
-                            <div>Ships with one cage</div>
-                            <div>Ships with two cage</div>
-                            <div>Ships with three cage</div>
-                            <div>Ships with four cage</div>
+                            <div> <button className={props.SUShips.ship[0].set? s.active:s.deActive}>1</button> </div>
+                            <div> <button className={props.SUShips.ship[1].set? s.active:s.deActive}>1</button> </div>
+                            <div> <button className={props.SUShips.ship[2].set? s.active:s.deActive}>1</button> </div>
+                            <div> <button className={props.SUShips.ship[3].set? s.active:s.deActive}>1</button> </div>
+                            <div> <button className={props.SUShips.ship[4].set? s.active:s.deActive}>2</button> </div>
+                            <div> <button className={props.SUShips.ship[5].set? s.active:s.deActive}>2</button> </div>
+                            <div> <button className={props.SUShips.ship[6].set? s.active:s.deActive}>2</button> </div>
+                            <div> <button className={props.SUShips.ship[7].set? s.active:s.deActive}>3</button> </div>
+                            <div> <button className={props.SUShips.ship[8].set? s.active:s.deActive}>3</button> </div>
+                            <div> <button className={props.SUShips.ship[9].set? s.active:s.deActive}>4</button> </div>
+
                         </div>
                         <div>
-                            <div>{props.firstUserShips.numberShips1}</div>
-                            <div>{props.firstUserShips.numberShips2}</div>
-                            <div>{props.firstUserShips.numberShips3}</div>
-                            <div>{props.firstUserShips.numberShips4}</div>
+                            <button>set</button>
+                            <button>set</button>
+                            <button>set</button>
+                            <button>set</button>
+                            <button>set</button>
+                            <button>set</button>
+                            <button>set</button>
+                            <button>set</button>
+                            <button>set</button>
+                            <button>set</button>
+                        </div>
+                        <div>
+                            <button>reset</button>
+                            <button>reset</button>
+                            <button>reset</button>
+                            <button>reset</button>
+                            <button>reset</button>
+                            <button>reset</button>
+                            <button>reset</button>
+                            <button>reset</button>
+                            <button>reset</button>
+                            <button>reset</button>
                         </div>
                     </div>
+                    <DownBar userShips={props.FUShips}/>
                 </div>
             </div>
             <div>
-                <div>22222222</div>
-                <div className={s.displayUserShip}>
+                <div>Field two</div>
+                <div className={s.displayUser}>
                     <Desk userMap={props.secondUserMap} firstDesk={false}
                           returnToClick={props.setShotUser} toClick={true}/>
-                    <div></div>
-                    <div className={s.displayDownBar}>
-                        <div>
-                            <div>Ships with one cage</div>
-                            <div>Ships with two cage</div>
-                            <div>Ships with three cage</div>
-                            <div>Ships with four cage</div>
-                        </div>
-                        <div>
-                            <div>{props.secondUserShips.numberShips1}</div>
-                            <div>{props.secondUserShips.numberShips2}</div>
-                            <div>{props.secondUserShips.numberShips3}</div>
-                            <div>{props.secondUserShips.numberShips4}</div>
-                        </div>
-                    </div>
+                    <RightBar settingShip={props.settingShip} onSettingShip={onSettingShip} ofSettingShip={ofSettingShip} />
+                    <DownBar userShips={props.SUShips}/>
                 </div>
             </div>
 
