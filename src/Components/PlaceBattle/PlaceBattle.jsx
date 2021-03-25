@@ -42,15 +42,23 @@ let PlaceBattle = (props) => {
 
     if (!props.secondUserMap || !props.secondUserMap) return <Preloader/>
 
+    const settingShipFU=(props)=>{
+        props.settingShipFU(props)
+    }
+
+    const settingShipSU=(props)=>{
+        props.settingShipSU(props)
+    }
+
 
     return <div className={s.displayMapBattle}>
         <DeskUser toggleSettingShip={props.toggleSettingShip}  firstUser={true} firstUserMap={props.firstUserMap}
                   secondUserMap={props.secondUserMap} setShipUser={props.setShipFirstUser}
-                  setShotUser={props.setShotFirstUser} settingShip={props.settingShipFU}
+                  setShotUser={props.setShotFirstUser} settingShip={settingShipFU}
                   SUShips={props.SUShips} FUShips={props.FUShips}/>
         <DeskUser toggleSettingShip={props.toggleSettingShip}  firstUser={false} firstUserMap={props.secondUserMap}
                   secondUserMap={props.firstUserMap} setShipUser={props.setShipSecondUser}
-                  setShotUser={props.setShotSecondUser} settingShip={props.settingShipSU}
+                  setShotUser={props.setShotSecondUser} settingShip={settingShipSU}
                   SUShips={props.FUShips} FUShips={props.SUShips}/>
     </div>
 }
