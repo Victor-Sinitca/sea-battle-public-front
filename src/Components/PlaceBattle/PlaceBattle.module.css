@@ -1,7 +1,7 @@
 .displayMapBattle{
   display: grid;
-  grid-template-columns: 300px 300px;
-  grid-template-rows: 300px 300px;
+  /*grid-template-columns: 300px 300px;*/
+  grid-template-rows: 320px 320px;
   grid-gap: 20px;
 
 }
@@ -10,21 +10,47 @@
   grid-template-columns: repeat(10,20px);
   grid-template-rows: repeat(10,20px);
 }
+.displayUserFire{
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: 220px 1fr;
 
-.empty{
-  background-color: cyan;
+}
+.displayUserShip{
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: 220px 1fr;
+
+}
+.displayDownBar{
+  display: grid;
+  grid-template-columns: 200px 1fr;
 }
 
-.ship{
-  background-color: #21e81a;
-}
-.miss{
-  background-color: #e1ddf3;
+.displayDeskUser{
+  display: grid;
+  grid-template-columns: 300px 300px
 }
 
-.hit{
-  background-color: #2807e7;
+
+
+
+
+.buttonActive{
+  background-color: #06f53a;
 }
-.kill{
-  background-color: #ff0000;
+.displayShip1{
+  grid-template-columns: repeat(1,20px) 1fr;
+}
+.displayShip2{
+  grid-template-columns: repeat(4,20px) 1fr;
+}
+.displayShip3{
+  grid-template-columns: repeat(4,20px) 1fr;
+}
+.displayShip4{
+  grid-template-columns: repeat(4,20px) 1fr;
+}
+.shipPart{
+
 }

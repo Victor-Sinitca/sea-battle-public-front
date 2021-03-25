@@ -2,7 +2,14 @@ import React from 'react';
 import {compose} from "redux";
 import {connect} from "react-redux";
 import PlaceBattle from "./PlaceBattle";
-import {setFirstUserMap, setSecondUserMap, userShot} from "../../redux/battleMap-reduсer";
+import {
+    finishSettingShip,
+    setFirstUserMap,
+    setSecondUserMap,
+    setShip, setShipFirstUser, setShipSecondUser, setShotFirstUser, setShotSecondUser,
+    toBeginSettingShip, toggleSettingShip,
+    userShot
+} from "../../redux/battleMap-reduсer";
 
 /*
 
@@ -43,9 +50,15 @@ let mapStateToProps =(state)=>({
     firstUserMap: state.battleMap.firstUserMap,
     secondUserMap: state.battleMap.secondUserMap,
     firstUserTurn: state.battleMap.firstUserTurn,
+    settingShipFU: state.battleMap.settingShipFU,
+    settingShipSU: state.battleMap.settingShipSU,
+    firstUserShips: state.battleMap.firstUserShips,
+    secondUserShips: state.battleMap.secondUserShips,
 })
 
 
 
 
-export default compose(connect(mapStateToProps,{setFirstUserMap,setSecondUserMap,userShot}))(PlaceBattleContainer)
+export default compose(connect(mapStateToProps,
+    {setFirstUserMap,setSecondUserMap,toBeginSettingShip,finishSettingShip,
+        setShipFirstUser,setShipSecondUser,setShotFirstUser,setShotSecondUser,toggleSettingShip}))(PlaceBattleContainer)
