@@ -1,3 +1,8 @@
+import {
+    checkForDoubleShipInput,
+    checkForSingleShipInput, checkForThreeShipInput, lockMap
+} from "../Components/Common/CheckForShipInput/CheckForSingleShipInput";
+
 const SET_FIRST_USER_MAP = "SET_FIRST_USER_MAP"
 const SET_SECOND_USER_MAP = "SET_SECOND_USER_MAP"
 const TOGGLE_FIRST_USER_TURN = "TOGGLE_FIRST_USER_TURN"
@@ -9,6 +14,7 @@ const SET_SHOT_FIRST_USER = "SET_SHOT_FIRST_USER"
 const SET_SHOT_SECOND_USER = "SET_SHOT_SECOND_USER"
 const TOGGLE_SETTING_SHIP = "TOGGLE_SETTING_SHIP"
 const UNLOCK_FOR_SET_SHIP = "UNLOCK_FOR_SET_SHIP"
+const LOCK_ALL_MAP = "LOCK_ALL_MAP"
 
 let initialState = {
     FUMap: null,
@@ -128,157 +134,11 @@ const battleMapReducer = (state = initialState, action) => {
                     stateCopy = {...state}
                     if (action.firstUser) {
                         stateCopy.FUMap = [...state.FUMap];
-                        for (let i = 0; i < 10; i++) {
-                            for (let j = 0; j < 10; j++) {
-                                if (i === 0) {
-                                    if (j === 0) {
-                                        if (!stateCopy.FUMap[i][j].sector.ship &&
-                                            !stateCopy.FUMap[i + 1][j].sector.ship &&
-                                            !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
-                                            !stateCopy.FUMap[i][j + 1].sector.ship) {
-                                            stateCopy.FUMap[i][j] = {
-                                                sector: {
-                                                    ship: false,
-                                                    shot: false,
-                                                    x: j,
-                                                    y: i,
-                                                    unlock: true,
-                                                }
-                                            }
-                                        }
-                                    } else if (j === 9) {
-                                        if (!stateCopy.FUMap[i][j].sector.ship &&
-                                            !stateCopy.FUMap[i + 1][j].sector.ship &&
-                                            !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
-                                            !stateCopy.FUMap[i][j - 1].sector.ship) {
-                                            stateCopy.FUMap[i][j] = {
-                                                sector: {
-                                                    ship: false,
-                                                    shot: false,
-                                                    x: j,
-                                                    y: i,
-                                                    unlock: true,
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        if (!stateCopy.FUMap[i][j].sector.ship &&
-                                            !stateCopy.FUMap[i + 1][j].sector.ship &&
-                                            !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
-                                            !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
-                                            !stateCopy.FUMap[i][j + 1].sector.ship &&
-                                            !stateCopy.FUMap[i][j - 1].sector.ship) {
-                                            stateCopy.FUMap[i][j] = {
-                                                sector: {
-                                                    ship: false,
-                                                    shot: false,
-                                                    x: j,
-                                                    y: i,
-                                                    unlock: true,
-                                                }
-                                            }
-                                        }
-
-                                    }
-
-                                }
-                                else if (i === 9) {
-                                    if (j === 0) {
-                                        if (!stateCopy.SUMap[i][j].sector.ship &&
-                                            !stateCopy.SUMap[i - 1][j].sector.ship &&
-                                            !stateCopy.SUMap[i - 1][j + 1].sector.ship &&
-                                            !stateCopy.SUMap[i][j + 1].sector.ship) {
-                                            stateCopy.SUMap[i][j] = {
-                                                sector: {
-                                                    ship: false,
-                                                    shot: false,
-                                                    x: j,
-                                                    y: i,
-                                                    unlock: true,
-                                                }
-                                            }
-                                        }
-                                    } else if (j === 9) {
-                                        if (!stateCopy.SUMap[i][j].sector.ship &&
-                                            !stateCopy.SUMap[i - 1][j].sector.ship &&
-                                            !stateCopy.SUMap[i - 1][j - 1].sector.ship &&
-                                            !stateCopy.SUMap[i][j - 1].sector.ship) {
-                                            stateCopy.SUMap[i][j] = {
-                                                sector: {
-                                                    ship: false,
-                                                    shot: false,
-                                                    x: j,
-                                                    y: i,
-                                                    unlock: true,
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        if (!stateCopy.SUMap[i][j].sector.ship &&
-                                            !stateCopy.SUMap[i - 1][j].sector.ship &&
-                                            !stateCopy.SUMap[i - 1][j + 1].sector.ship &&
-                                            !stateCopy.SUMap[i - 1][j - 1].sector.ship &&
-                                            !stateCopy.SUMap[i][j + 1].sector.ship &&
-                                            !stateCopy.SUMap[i][j - 1].sector.ship) {
-                                            stateCopy.SUMap[i][j] = {
-                                                sector: {
-                                                    ship: false,
-                                                    shot: false,
-                                                    x: j,
-                                                    y: i,
-                                                    unlock: true,
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                /*else if (!stateCopy.SUMap[i][j].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.SUMap[i - 1][j].sector.ship &&
-                                    !stateCopy.SUMap[i - 1][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i - 1][j - 1].sector.ship &&
-                                    !stateCopy.SUMap[i][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i][j - 1].sector.ship) {
-                                    stateCopy.SUMap[i][j] = {
-                                        sector: {
-                                            ship: false,
-                                            shot: false,
-                                            x: j,
-                                            y: i,
-                                            unlock: true,
-                                        }
-                                    }
-                                }*/
-
-                            }
-                        }
-                    } else {
+                        stateCopy.FUMap = checkForSingleShipInput(stateCopy.FUMap)
+                    }
+                    else {
                         stateCopy.SUMap = [...state.SUMap];
-                        for (let i = 0; i < 10; i++) {
-                            for (let j = 0; j < 10; j++) {
-                                if (!stateCopy.SUMap[i][j].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.SUMap[i - 1][j].sector.ship &&
-                                    !stateCopy.SUMap[i - 1][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i - 1][j - 1].sector.ship &&
-                                    !stateCopy.SUMap[i][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i][j - 1].sector.ship) {
-                                    stateCopy.SUMap[i][j] = {
-                                        sector: {
-                                            ship: false,
-                                            shot: false,
-                                            x: j,
-                                            y: i,
-                                            unlock: true,
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        stateCopy.SUMap=checkForSingleShipInput(stateCopy.SUMap)
                     }
                     return stateCopy
                 }
@@ -288,54 +148,11 @@ const battleMapReducer = (state = initialState, action) => {
                     stateCopy = {...state}
                     if (action.firstUser) {
                         stateCopy.FUMap = [...state.FUMap];
-                        for (let i = 0; i < 10; i++) {
-                            for (let j = 0; j < 10; j++) {
-                                if (!stateCopy.FUMap[i][j].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.FUMap[i - 1][j].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.FUMap[i][j + 1].sector.ship &&
-                                    !stateCopy.FUMap[i][j - 1].sector.ship) {
-                                    stateCopy.FUMap[i][j] = {
-                                        sector: {
-                                            ship: false,
-                                            shot: false,
-                                            x: j,
-                                            y: i,
-                                            unlock: true,
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
+                        stateCopy.FUMap = checkForDoubleShipInput(stateCopy.FUMap)
+                    }
+                    else {
                         stateCopy.SUMap = [...state.SUMap];
-                        for (let i = 0; i < 10; i++) {
-                            for (let j = 0; j < 10; j++) {
-                                if (!stateCopy.SUMap[i][j].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.SUMap[i - 1][j].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.SUMap[i][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i][j - 1].sector.ship) {
-                                    stateCopy.SUMap[i][j] = {
-                                        sector: {
-                                            ship: false,
-                                            shot: false,
-                                            x: j,
-                                            y: i,
-                                            unlock: true,
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        stateCopy.SUMap=checkForDoubleShipInput(stateCopy.SUMap)
                     }
                     return stateCopy
                 }
@@ -344,54 +161,11 @@ const battleMapReducer = (state = initialState, action) => {
                     stateCopy = {...state}
                     if (action.firstUser) {
                         stateCopy.FUMap = [...state.FUMap];
-                        for (let i = 0; i < 10; i++) {
-                            for (let j = 0; j < 10; j++) {
-                                if (!stateCopy.FUMap[i][j].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.FUMap[i - 1][j].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.FUMap[i][j + 1].sector.ship &&
-                                    !stateCopy.FUMap[i][j - 1].sector.ship) {
-                                    stateCopy.FUMap[i][j] = {
-                                        sector: {
-                                            ship: false,
-                                            shot: false,
-                                            x: j,
-                                            y: i,
-                                            unlock: true,
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
+                        stateCopy.FUMap = checkForThreeShipInput(stateCopy.FUMap)
+                    }
+                    else {
                         stateCopy.SUMap = [...state.SUMap];
-                        for (let i = 0; i < 10; i++) {
-                            for (let j = 0; j < 10; j++) {
-                                if (!stateCopy.SUMap[i][j].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.SUMap[i - 1][j].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.SUMap[i][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i][j - 1].sector.ship) {
-                                    stateCopy.SUMap[i][j] = {
-                                        sector: {
-                                            ship: false,
-                                            shot: false,
-                                            x: j,
-                                            y: i,
-                                            unlock: true,
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        stateCopy.SUMap=checkForThreeShipInput(stateCopy.SUMap)
                     }
                     return stateCopy
                 }
@@ -399,60 +173,30 @@ const battleMapReducer = (state = initialState, action) => {
                     stateCopy = {...state}
                     if (action.firstUser) {
                         stateCopy.FUMap = [...state.FUMap];
-                        for (let i = 0; i < 10; i++) {
-                            for (let j = 0; j < 10; j++) {
-                                if (!stateCopy.FUMap[i][j].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.FUMap[i - 1][j].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.FUMap[i][j + 1].sector.ship &&
-                                    !stateCopy.FUMap[i][j - 1].sector.ship) {
-                                    stateCopy.FUMap[i][j] = {
-                                        sector: {
-                                            ship: false,
-                                            shot: false,
-                                            x: j,
-                                            y: i,
-                                            unlock: true,
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
+                        stateCopy.FUMap = checkForSingleShipInput(stateCopy.FUMap)
+                    }
+                    else {
                         stateCopy.SUMap = [...state.SUMap];
-                        for (let i = 0; i < 10; i++) {
-                            for (let j = 0; j < 10; j++) {
-                                if (!stateCopy.SUMap[i][j].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.SUMap[i - 1][j].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
-                                    !stateCopy.SUMap[i][j + 1].sector.ship &&
-                                    !stateCopy.SUMap[i][j - 1].sector.ship) {
-                                    stateCopy.SUMap[i][j] = {
-                                        sector: {
-                                            ship: false,
-                                            shot: false,
-                                            x: j,
-                                            y: i,
-                                            unlock: true,
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        stateCopy.SUMap=checkForSingleShipInput(stateCopy.SUMap)
                     }
                     return stateCopy
                 }
                 default:
             }
             return stateCopy
+        }
+        case LOCK_ALL_MAP:{
+            if (action.firstUser) {
+                stateCopy = {...state}
+                stateCopy.FUMap = [...state.FUMap];
+                stateCopy.FUMap=lockMap(stateCopy.FUMap)
+                return stateCopy
+            } else {
+                stateCopy = {...state}
+                stateCopy.SUMap = [...state.SUMap];
+                stateCopy.SUMap=lockMap(stateCopy.SUMap)
+                return stateCopy
+            }
         }
         default:
             return state
@@ -488,6 +232,9 @@ export const toggleSettingShip = (value, firstUser) => {
 };
 export const unlockForSetShip = (idShip, firstUser) => {
     return ({type: "UNLOCK_FOR_SET_SHIP", idShip, firstUser})
+};
+export const lockAllMap = (firstUser) => {
+    return ({type: "LOCK_ALL_MAP", firstUser})
 };
 
 

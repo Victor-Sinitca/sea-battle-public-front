@@ -11,9 +11,7 @@ const DeskUser = (props) => {
     const ofSettingShip = () => {
         props.toggleSettingShip(false, props.firstUser)}
 
-    const unlockForSetShip11 =()=>{
-        debugger
-        props.unlockForSetShip(11,props.firstUser)}
+    const unlockForSetShip11 =()=>{props.unlockForSetShip(11,props.firstUser)}
     const unlockForSetShip12 =()=>{props.unlockForSetShip(12,props.firstUser)}
     const unlockForSetShip13 =()=>{props.unlockForSetShip(13,props.firstUser)}
     const unlockForSetShip14 =()=>{props.unlockForSetShip(14,props.firstUser)}
@@ -24,11 +22,6 @@ const DeskUser = (props) => {
     const unlockForSetShip32 =()=>{props.unlockForSetShip(32,props.firstUser)}
     const unlockForSetShip41 =()=>{props.unlockForSetShip(41,props.firstUser)}
 
-    const unlockForAddPartShip =()=>{
-    }
-
-
-debugger
     return (
         <div className={s.displayDesk}>
             <div>
@@ -82,7 +75,8 @@ debugger
                 <div className={s.displayUser}>
                     <Desk userMap={props.secondUserMap} firstDesk={false}
                           returnToClick={props.setShotUser} toClick={true}/>
-                    <RightBar settingShip={props.settingShip} onSettingShip={onSettingShip} ofSettingShip={ofSettingShip} />
+                    <RightBar settingShip={props.settingShip} onSettingShip={onSettingShip}
+                              ofSettingShip={ofSettingShip} lockAllMap={props.lockAllMap} firstUser={props.firstUser}/>
                     <DownBar userShips={props.SUShips}/>
                 </div>
             </div>

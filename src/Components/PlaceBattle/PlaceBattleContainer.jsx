@@ -3,7 +3,7 @@ import {compose} from "redux";
 import {connect} from "react-redux";
 import PlaceBattle from "./PlaceBattle";
 import {
-    finishSettingShip,
+    finishSettingShip, lockAllMap,
     setFirstUserMap,
     setSecondUserMap,
     setShipFirstUser, setShipSecondUser, setShotFirstUser, setShotSecondUser,
@@ -37,4 +37,4 @@ let mapStateToProps =(state)=>({
 export default compose(connect(mapStateToProps,
     {setFirstUserMap,setSecondUserMap,toBeginSettingShip,finishSettingShip,
         setShipFirstUser,setShipSecondUser,setShotFirstUser,setShotSecondUser,toggleSettingShip,
-        unlockForSetShip}))(PlaceBattleContainer)
+        unlockForSetShip,lockAllMap}))(PlaceBattleContainer)
