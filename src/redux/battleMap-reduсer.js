@@ -8,6 +8,7 @@ const SET_SHIP_SECOND_USER = "SET_SHIP_SECOND_USER"
 const SET_SHOT_FIRST_USER = "SET_SHOT_FIRST_USER"
 const SET_SHOT_SECOND_USER = "SET_SHOT_SECOND_USER"
 const TOGGLE_SETTING_SHIP = "TOGGLE_SETTING_SHIP"
+const UNLOCK_FOR_SET_SHIP = "UNLOCK_FOR_SET_SHIP"
 
 let initialState = {
     FUMap: null,
@@ -20,16 +21,16 @@ let initialState = {
 
     FUShips: {
         ship: [
-            {id: 11, set: false, parts: [], fieldsAround: []},
-            {id: 12, set: true, parts: [], fieldsAround: []},
-            {id: 13, set: true, parts: [], fieldsAround: []},
-            {id: 14, set: true, parts: [], fieldsAround: []},
-            {id: 21, set: true, parts: [], fieldsAround: []},
-            {id: 22, set: true, parts: [], fieldsAround: []},
-            {id: 23, set: true, parts: [], fieldsAround: []},
-            {id: 31, set: true, parts: [], fieldsAround: []},
-            {id: 32, set: true, parts: [], fieldsAround: []},
-            {id: 41, set: true, parts: [], fieldsAround: []},
+            {id: 11, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 12, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 13, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 14, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 21, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 22, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 23, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 31, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 32, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 41, set: true, lock: false, parts: [], fieldsAround: []},
         ],
         numberShips1: {
             count: 4,
@@ -46,16 +47,16 @@ let initialState = {
     },
     SUShips: {
         ship: [
-            {id: 11, set: true, parts: [], fieldsAround: []},
-            {id: 12, set: true, parts: [], fieldsAround: []},
-            {id: 13, set: true, parts: [], fieldsAround: []},
-            {id: 14, set: true, parts: [], fieldsAround: []},
-            {id: 21, set: true, parts: [], fieldsAround: []},
-            {id: 22, set: true, parts: [], fieldsAround: []},
-            {id: 23, set: true, parts: [], fieldsAround: []},
-            {id: 31, set: true, parts: [], fieldsAround: []},
-            {id: 32, set: true, parts: [], fieldsAround: []},
-            {id: 41, set: false, parts: [], fieldsAround: []},
+            {id: 11, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 12, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 13, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 14, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 21, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 22, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 23, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 31, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 32, set: true, lock: false, parts: [], fieldsAround: []},
+            {id: 41, set: true, lock: false, parts: [], fieldsAround: []},
         ],
         numberShips1: {
             count: 4,
@@ -118,6 +119,341 @@ const battleMapReducer = (state = initialState, action) => {
                 return {...state, settingShipSU: action.value}
             }
         }
+        case UNLOCK_FOR_SET_SHIP : {
+            switch (action.idShip) {
+                case 11:
+                case 12:
+                case 13:
+                case 14: {
+                    stateCopy = {...state}
+                    if (action.firstUser) {
+                        stateCopy.FUMap = [...state.FUMap];
+                        for (let i = 0; i < 10; i++) {
+                            for (let j = 0; j < 10; j++) {
+                                if (i === 0) {
+                                    if (j === 0) {
+                                        if (!stateCopy.FUMap[i][j].sector.ship &&
+                                            !stateCopy.FUMap[i + 1][j].sector.ship &&
+                                            !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
+                                            !stateCopy.FUMap[i][j + 1].sector.ship) {
+                                            stateCopy.FUMap[i][j] = {
+                                                sector: {
+                                                    ship: false,
+                                                    shot: false,
+                                                    x: j,
+                                                    y: i,
+                                                    unlock: true,
+                                                }
+                                            }
+                                        }
+                                    } else if (j === 9) {
+                                        if (!stateCopy.FUMap[i][j].sector.ship &&
+                                            !stateCopy.FUMap[i + 1][j].sector.ship &&
+                                            !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
+                                            !stateCopy.FUMap[i][j - 1].sector.ship) {
+                                            stateCopy.FUMap[i][j] = {
+                                                sector: {
+                                                    ship: false,
+                                                    shot: false,
+                                                    x: j,
+                                                    y: i,
+                                                    unlock: true,
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (!stateCopy.FUMap[i][j].sector.ship &&
+                                            !stateCopy.FUMap[i + 1][j].sector.ship &&
+                                            !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
+                                            !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
+                                            !stateCopy.FUMap[i][j + 1].sector.ship &&
+                                            !stateCopy.FUMap[i][j - 1].sector.ship) {
+                                            stateCopy.FUMap[i][j] = {
+                                                sector: {
+                                                    ship: false,
+                                                    shot: false,
+                                                    x: j,
+                                                    y: i,
+                                                    unlock: true,
+                                                }
+                                            }
+                                        }
+
+                                    }
+
+                                }
+                                else if (i === 9) {
+                                    if (j === 0) {
+                                        if (!stateCopy.SUMap[i][j].sector.ship &&
+                                            !stateCopy.SUMap[i - 1][j].sector.ship &&
+                                            !stateCopy.SUMap[i - 1][j + 1].sector.ship &&
+                                            !stateCopy.SUMap[i][j + 1].sector.ship) {
+                                            stateCopy.SUMap[i][j] = {
+                                                sector: {
+                                                    ship: false,
+                                                    shot: false,
+                                                    x: j,
+                                                    y: i,
+                                                    unlock: true,
+                                                }
+                                            }
+                                        }
+                                    } else if (j === 9) {
+                                        if (!stateCopy.SUMap[i][j].sector.ship &&
+                                            !stateCopy.SUMap[i - 1][j].sector.ship &&
+                                            !stateCopy.SUMap[i - 1][j - 1].sector.ship &&
+                                            !stateCopy.SUMap[i][j - 1].sector.ship) {
+                                            stateCopy.SUMap[i][j] = {
+                                                sector: {
+                                                    ship: false,
+                                                    shot: false,
+                                                    x: j,
+                                                    y: i,
+                                                    unlock: true,
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (!stateCopy.SUMap[i][j].sector.ship &&
+                                            !stateCopy.SUMap[i - 1][j].sector.ship &&
+                                            !stateCopy.SUMap[i - 1][j + 1].sector.ship &&
+                                            !stateCopy.SUMap[i - 1][j - 1].sector.ship &&
+                                            !stateCopy.SUMap[i][j + 1].sector.ship &&
+                                            !stateCopy.SUMap[i][j - 1].sector.ship) {
+                                            stateCopy.SUMap[i][j] = {
+                                                sector: {
+                                                    ship: false,
+                                                    shot: false,
+                                                    x: j,
+                                                    y: i,
+                                                    unlock: true,
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                /*else if (!stateCopy.SUMap[i][j].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.SUMap[i - 1][j].sector.ship &&
+                                    !stateCopy.SUMap[i - 1][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i - 1][j - 1].sector.ship &&
+                                    !stateCopy.SUMap[i][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i][j - 1].sector.ship) {
+                                    stateCopy.SUMap[i][j] = {
+                                        sector: {
+                                            ship: false,
+                                            shot: false,
+                                            x: j,
+                                            y: i,
+                                            unlock: true,
+                                        }
+                                    }
+                                }*/
+
+                            }
+                        }
+                    } else {
+                        stateCopy.SUMap = [...state.SUMap];
+                        for (let i = 0; i < 10; i++) {
+                            for (let j = 0; j < 10; j++) {
+                                if (!stateCopy.SUMap[i][j].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.SUMap[i - 1][j].sector.ship &&
+                                    !stateCopy.SUMap[i - 1][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i - 1][j - 1].sector.ship &&
+                                    !stateCopy.SUMap[i][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i][j - 1].sector.ship) {
+                                    stateCopy.SUMap[i][j] = {
+                                        sector: {
+                                            ship: false,
+                                            shot: false,
+                                            x: j,
+                                            y: i,
+                                            unlock: true,
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return stateCopy
+                }
+                case 21:
+                case 22:
+                case 23: {
+                    stateCopy = {...state}
+                    if (action.firstUser) {
+                        stateCopy.FUMap = [...state.FUMap];
+                        for (let i = 0; i < 10; i++) {
+                            for (let j = 0; j < 10; j++) {
+                                if (!stateCopy.FUMap[i][j].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.FUMap[i - 1][j].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.FUMap[i][j + 1].sector.ship &&
+                                    !stateCopy.FUMap[i][j - 1].sector.ship) {
+                                    stateCopy.FUMap[i][j] = {
+                                        sector: {
+                                            ship: false,
+                                            shot: false,
+                                            x: j,
+                                            y: i,
+                                            unlock: true,
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        stateCopy.SUMap = [...state.SUMap];
+                        for (let i = 0; i < 10; i++) {
+                            for (let j = 0; j < 10; j++) {
+                                if (!stateCopy.SUMap[i][j].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.SUMap[i - 1][j].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.SUMap[i][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i][j - 1].sector.ship) {
+                                    stateCopy.SUMap[i][j] = {
+                                        sector: {
+                                            ship: false,
+                                            shot: false,
+                                            x: j,
+                                            y: i,
+                                            unlock: true,
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return stateCopy
+                }
+                case 31:
+                case 32: {
+                    stateCopy = {...state}
+                    if (action.firstUser) {
+                        stateCopy.FUMap = [...state.FUMap];
+                        for (let i = 0; i < 10; i++) {
+                            for (let j = 0; j < 10; j++) {
+                                if (!stateCopy.FUMap[i][j].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.FUMap[i - 1][j].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.FUMap[i][j + 1].sector.ship &&
+                                    !stateCopy.FUMap[i][j - 1].sector.ship) {
+                                    stateCopy.FUMap[i][j] = {
+                                        sector: {
+                                            ship: false,
+                                            shot: false,
+                                            x: j,
+                                            y: i,
+                                            unlock: true,
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        stateCopy.SUMap = [...state.SUMap];
+                        for (let i = 0; i < 10; i++) {
+                            for (let j = 0; j < 10; j++) {
+                                if (!stateCopy.SUMap[i][j].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.SUMap[i - 1][j].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.SUMap[i][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i][j - 1].sector.ship) {
+                                    stateCopy.SUMap[i][j] = {
+                                        sector: {
+                                            ship: false,
+                                            shot: false,
+                                            x: j,
+                                            y: i,
+                                            unlock: true,
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return stateCopy
+                }
+                case 41: {
+                    stateCopy = {...state}
+                    if (action.firstUser) {
+                        stateCopy.FUMap = [...state.FUMap];
+                        for (let i = 0; i < 10; i++) {
+                            for (let j = 0; j < 10; j++) {
+                                if (!stateCopy.FUMap[i][j].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.FUMap[i - 1][j].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.FUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.FUMap[i][j + 1].sector.ship &&
+                                    !stateCopy.FUMap[i][j - 1].sector.ship) {
+                                    stateCopy.FUMap[i][j] = {
+                                        sector: {
+                                            ship: false,
+                                            shot: false,
+                                            x: j,
+                                            y: i,
+                                            unlock: true,
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        stateCopy.SUMap = [...state.SUMap];
+                        for (let i = 0; i < 10; i++) {
+                            for (let j = 0; j < 10; j++) {
+                                if (!stateCopy.SUMap[i][j].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.SUMap[i - 1][j].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i + 1][j - 1].sector.ship &&
+                                    !stateCopy.SUMap[i][j + 1].sector.ship &&
+                                    !stateCopy.SUMap[i][j - 1].sector.ship) {
+                                    stateCopy.SUMap[i][j] = {
+                                        sector: {
+                                            ship: false,
+                                            shot: false,
+                                            x: j,
+                                            y: i,
+                                            unlock: true,
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return stateCopy
+                }
+                default:
+            }
+            return stateCopy
+        }
         default:
             return state
     }
@@ -149,6 +485,9 @@ export const setShotSecondUser = (sector) => {
 };
 export const toggleSettingShip = (value, firstUser) => {
     return ({type: "TOGGLE_SETTING_SHIP", value, firstUser})
+};
+export const unlockForSetShip = (idShip, firstUser) => {
+    return ({type: "UNLOCK_FOR_SET_SHIP", idShip, firstUser})
 };
 
 

@@ -5,8 +5,12 @@ import s from "./Sector.module.css"
 const ReturnSector = (props) => {
 
     const clickSector = () => {
-        if (props.toClick)
-            props.returnToClick(props.sector)
+        if (props.toClick){
+            if(props.firstDesk){
+                if(props.sector.unlock) {props.returnToClick(props.sector)}
+            }
+            else {props.returnToClick(props.sector)}
+        }
     }
     return (
         props.firstDesk ?

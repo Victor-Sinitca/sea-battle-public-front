@@ -6,35 +6,10 @@ import {
     finishSettingShip,
     setFirstUserMap,
     setSecondUserMap,
-    setShip, setShipFirstUser, setShipSecondUser, setShotFirstUser, setShotSecondUser,
-    toBeginSettingShip, toggleSettingShip,
-    userShot
+    setShipFirstUser, setShipSecondUser, setShotFirstUser, setShotSecondUser,
+    toBeginSettingShip, toggleSettingShip, unlockForSetShip,
+
 } from "../../redux/battleMap-reduсer";
-
-/*
-
-if (!this.props.firstUserMap){
-    let UserMap = [], i, j
-    for (i=0; i<10; i++){
-        UserMap[i]=[]
-        for (j=0; j<10; j++){
-            UserMap[i][j]=1
-        }
-    }
-    this.props.setFirstUserMap(UserMap)
-}
-if (!this.props.secondUserMap){
-    let UserMap = [[]], i, j
-    for (i=0; i<10; i++){
-        UserMap[i]=[]
-        for (j=0; j<10; j++){
-            UserMap[i][j]=1
-        }
-    }
-    this.props.setSecondUserMap(UserMap)
-}
-
-*/
 
 
 class PlaceBattleContainer  extends React.Component{
@@ -61,4 +36,5 @@ let mapStateToProps =(state)=>({
 
 export default compose(connect(mapStateToProps,
     {setFirstUserMap,setSecondUserMap,toBeginSettingShip,finishSettingShip,
-        setShipFirstUser,setShipSecondUser,setShotFirstUser,setShotSecondUser,toggleSettingShip}))(PlaceBattleContainer)
+        setShipFirstUser,setShipSecondUser,setShotFirstUser,setShotSecondUser,toggleSettingShip,
+        unlockForSetShip}))(PlaceBattleContainer)

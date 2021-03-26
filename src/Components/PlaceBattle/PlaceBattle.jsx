@@ -4,10 +4,7 @@ import s from "./PlaceBattle.module.css"
 import DeskUser from "../DeskUser/DeskUser";
 
 
-
 let PlaceBattle = (props) => {
-
-
     if (!props.firstUserMap) {
         let userMap = [], i, j
         for (i = 0; i < 10; i++) {
@@ -19,7 +16,7 @@ let PlaceBattle = (props) => {
                         shot: false,
                         x: j,
                         y: i,
-                        canClick:true
+                        unlock:false,
                     }}}}
         props.setFirstUserMap(userMap)
     }
@@ -34,7 +31,7 @@ let PlaceBattle = (props) => {
                         shot: false,
                         x: j,
                         y: i,
-                        canClick:true
+                        unlock:false,
                     }}}
             props.setSecondUserMap(userMap)
         }
@@ -55,11 +52,11 @@ let PlaceBattle = (props) => {
         <DeskUser toggleSettingShip={props.toggleSettingShip}  firstUser={true} firstUserMap={props.firstUserMap}
                   secondUserMap={props.secondUserMap} setShipUser={props.setShipFirstUser}
                   setShotUser={props.setShotFirstUser} settingShip={settingShipFU}
-                  SUShips={props.SUShips} FUShips={props.FUShips}/>
+                  SUShips={props.SUShips} FUShips={props.FUShips} unlockForSetShip={props.unlockForSetShip}/>
         <DeskUser toggleSettingShip={props.toggleSettingShip}  firstUser={false} firstUserMap={props.secondUserMap}
                   secondUserMap={props.firstUserMap} setShipUser={props.setShipSecondUser}
                   setShotUser={props.setShotSecondUser} settingShip={settingShipSU}
-                  SUShips={props.FUShips} FUShips={props.SUShips}/>
+                  SUShips={props.FUShips} FUShips={props.SUShips} unlockForSetShip={props.unlockForSetShip}/>
     </div>
 }
 
