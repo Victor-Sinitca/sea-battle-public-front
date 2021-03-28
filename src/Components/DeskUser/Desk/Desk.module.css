@@ -1,3 +1,26 @@
+.display1{
+  display: grid;
+  grid-template-columns: 22px 1fr;
+}
+.display11{
+  display: grid;
+  grid-template-rows: repeat(10,20px);
+}
+.display2{
+  display: grid;
+  grid-template-rows: 22px 1fr;
+}
+.display3{
+  display: grid;
+  grid-template-columns: repeat(10,20px);
+  text-align: center;
+}
+
+
+
+
+
+
 .displayMap{
   display: grid;
   grid-template-columns: repeat(10,20px);

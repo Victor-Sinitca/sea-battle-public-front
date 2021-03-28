@@ -11,10 +11,10 @@ const DownBar = (props) => {
                 <div>Ships with four cage</div>
             </div>
             <div>
-                <div>{props.userShips.numberShips1.count}</div>
-                <div>{props.userShips.numberShips2.count}</div>
-                <div>{props.userShips.numberShips3.count}</div>
-                <div>{props.userShips.numberShips4.count}</div>
+                <div>{props.userShips.numberShips1}</div>
+                <div>{props.userShips.numberShips2}</div>
+                <div>{props.userShips.numberShips3}</div>
+                <div>{props.userShips.numberShips4}</div>
             </div>
         </div>
     )

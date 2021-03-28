@@ -1,0 +1,63 @@
+.displayShipButton{
+    display: grid;
+    grid-template-rows: 40px 40px 40px;
+}
+.displaySetShip{
+    display: grid;
+    grid-template-rows: 150px 1fr;
+}
+.displayShip1{
+    display: grid;
+    grid-template-columns: 20px;
+    grid-gap: 2px;
+}
+.displayShip2{
+    display: grid;
+    grid-template-columns: 22px 22px;
+}
+.displayShip3{
+    display: grid;
+    grid-template-columns: 22px 22px 22px;
+}
+.displayShip4{
+    display: grid;
+    grid-template-columns: 22px 22px 22px 22px;
+}
+
+
+
+
+
+
+.partShip{
+    width:15px;
+    height: 15px;
+    background-color: #06f53a;
+    border-radius: 4px;
+    border: #2807e7 1px solid ;
+}
+.active{
+    background-color: #06f53a;
+}
+.deActive{
+    background-color: #282c34;
+}
+
+.ship1{
+    display: grid;
+    grid-template-columns: 40px 10px 10px;
+}
+.ship2{
+    display: grid;
+    grid-template-columns: 60px 10px 10px;
+}
+.ship3{
+    display: grid;
+    grid-template-columns: 90px 10px 10px;
+}
+.ship4{
+    display: grid;
+    grid-template-columns: 120px 10px 10px;
+}
+
+

@@ -4,9 +4,9 @@ import {connect} from "react-redux";
 import PlaceBattle from "./PlaceBattle";
 import {
     finishSettingShip, lockAllMap,
-    setFirstUserMap,
+    setFirstUserMap, setHorizon,
     setSecondUserMap,
-    setShipFirstUser, setShipSecondUser, setShotFirstUser, setShotSecondUser,
+    setShipFirstUser, setShipSecondUser, setShotFirstUser, setShotSecondUser, setWhatSetShip,
     toBeginSettingShip, toggleSettingShip, unlockForSetShip,
 
 } from "../../redux/battleMap-reduсer";
@@ -29,6 +29,10 @@ let mapStateToProps =(state)=>({
     settingShipSU: state.battleMap.settingShipSU,
     FUShips: state.battleMap.FUShips,
     SUShips: state.battleMap.SUShips,
+    whatSetShipFU: state.battleMap.whatSetShipFU,
+    whatSetShipSU: state.battleMap.whatSetShipSU,
+    horizonSetShipFU: state.battleMap.horizonSetShipFU,
+    horizonSetShipSU: state.battleMap.horizonSetShipSU,
 })
 
 
@@ -37,4 +41,4 @@ let mapStateToProps =(state)=>({
 export default compose(connect(mapStateToProps,
     {setFirstUserMap,setSecondUserMap,toBeginSettingShip,finishSettingShip,
         setShipFirstUser,setShipSecondUser,setShotFirstUser,setShotSecondUser,toggleSettingShip,
-        unlockForSetShip,lockAllMap}))(PlaceBattleContainer)
+        unlockForSetShip,lockAllMap ,setWhatSetShip,setHorizon}))(PlaceBattleContainer)

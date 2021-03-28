@@ -1,12 +1,28 @@
 .shotMiss{
+    vertical-align: middle;
+    display: inline-block;
     background-color: #77ff00;
 }
 .noneShot{
+    vertical-align: middle;
+    display: inline-block;
     background-color: #2807e7;
 }
 .ship{
+    vertical-align: middle;
+    display: inline-block;
     background-color: #050505;
 }
 .shotToShip{
+    display: inline-block;
+    vertical-align: middle;
     background-color: #f50606;
+}
+.ship1{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    vertical-align: middle;
+
 }

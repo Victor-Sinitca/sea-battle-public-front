@@ -1,0 +1,39 @@
+.displaySetShip{
+    display: grid;
+    grid-template-rows: 80px 1fr;
+}
+.partShip{
+    width: 18px;
+    height: 18px;
+    background-color: #06f53a;
+    border-radius: 4px;
+    border: #2807e7 3px solid ;
+}
+.displayShip{
+    display: grid;
+    grid-template-columns: 60px 1fr;
+}
+.displayVert{
+    display: grid;
+    grid-template-rows: 30px 1fr;
+    margin-top: 5px;
+}
+.displayVert button{
+    width: 40px;
+}
+.displayHor{
+    display: grid;
+    grid-template-rows: 30px 1fr;
+    margin-top: 5px;
+}
+.horiz{
+    display: grid;
+    grid-template-columns: repeat(4, 22px) ;
+}
+.partShipFirst{
+    width: 18px;
+    height: 18px;
+    background-color: #06f53a;
+    border-radius: 4px;
+    border: #2807e7 3px solid ;
+}
