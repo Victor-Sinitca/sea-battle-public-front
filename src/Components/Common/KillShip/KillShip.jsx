@@ -1,4 +1,8 @@
-export const killShip = (sector, map1,ships) => {
+
+
+
+export const killShip = (sector, map1,ships,FUTurn) => {
+
     let map=map1;
     let i =sector.y, j=sector.x;
     let kill = true, iMax = null, iMin = null, jMax = null, jMin = null
@@ -97,8 +101,10 @@ export const killShip = (sector, map1,ships) => {
                     map[i][j].sector.shot = true
                 }
             }
-        }
-    }
 
+        }
+    }else{
+        FUTurn.turn = !FUTurn.turn;
+    }
     return map
 }

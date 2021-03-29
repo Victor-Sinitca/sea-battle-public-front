@@ -1,4 +1,9 @@
 .displayDownBar{
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 100px 1fr;
+
+}
+.displayString{
+  display: grid;
+  grid-template-rows: repeat(5,22px);
 }

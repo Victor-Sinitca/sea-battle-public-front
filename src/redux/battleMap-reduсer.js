@@ -1,9 +1,6 @@
-import {
-    checkForDoubleShipInput, checkForShipInput,
-    checkForSingleShipInput, checkForThreeShipInput, lockMap
-} from "../Components/Common/CheckForShipInput/CheckForSingleShipInput";
-import {killShip} from "../Components/Common/KillShip/KillShip";
+import { checkForShipInput,lockMap} from "../Components/Common/CheckForShipInput/CheckForSingleShipInput";
 import {deleteShipFromTheMap} from "../Components/Common/deleteShipFromTheMap/deleteShipFromTheMap";
+import {killShip} from "../Components/Common/KillShip/KillShip";
 
 const SET_FIRST_USER_MAP = "SET_FIRST_USER_MAP"
 const SET_SECOND_USER_MAP = "SET_SECOND_USER_MAP"
@@ -22,12 +19,20 @@ const SET_HORIZON = "SET_HORIZON"
 const TOGGLE_DELETE_SHIP = "TOGGLE_DELETE_SHIP"
 const DELETE_SHIP_FU = "DELETE_SHIP_FU"
 const DELETE_SHIP_SU = "DELETE_SHIP_SU"
+const START_GAME = "START_GAME"
+const TOGGLE_FU_TURN = "TOGGLE_FU_TURN"
 
 let initialState = {
     FUMap: null,
     SUMap: null,
 
-    FUTurn: true,
+    FUTurn: {
+        turn:true
+    },
+
+    gameComp:false,
+
+
 
     whatSetShipFU: null,
     whatSetShipSU: null,
@@ -36,28 +41,30 @@ let initialState = {
     deleteShipFU: false,
     deleteShipSU: false,
 
-    settingShipFU: true,
-    settingShipSU: true,
+    settingShipUser: {
+        firstUser: true,
+        secondUser: true,
+    },
 
     FUShips: {
-        ship1:4,
-        ship2:3,
-        ship3:2,
-        ship4:1,
-        numberShips1:4,
-        numberShips2:3,
-        numberShips3:2,
-        numberShips4:1,
+        ship1: 1,
+        ship2: 0,
+        ship3: 0,
+        ship4: 0,
+        numberShips1: 4,
+        numberShips2: 3,
+        numberShips3: 2,
+        numberShips4: 1,
     },
     SUShips: {
-        ship1:4,
-        ship2:3,
-        ship3:2,
-        ship4:1,
-        numberShips1:4,
-        numberShips2:3,
-        numberShips3:2,
-        numberShips4:1,
+        ship1: 4,
+        ship2: 3,
+        ship3: 2,
+        ship4: 1,
+        numberShips1: 4,
+        numberShips2: 3,
+        numberShips3: 2,
+        numberShips4: 1,
     },
 }
 
@@ -79,15 +86,17 @@ const battleMapReducer = (state = initialState, action) => {
         case FINISH_SETTING_SHIP :
             return {...state, settingShip: false}
         case DELETE_SHIP_FU :
-                stateCopy = {...state}
-                stateCopy.FUMap = [...state.FUMap];
-                stateCopy.FUMap = deleteShipFromTheMap(stateCopy.FUMap, action.sector, state.FUShips)
-                return stateCopy
+            stateCopy = {...state}
+            stateCopy.FUMap = [...state.FUMap];
+            stateCopy.FUMap = deleteShipFromTheMap(stateCopy.FUMap, action.sector, state.FUShips)
+            stateCopy.deleteShipFU = false
+            return stateCopy
         case DELETE_SHIP_SU :
-                stateCopy = {...state}
-                stateCopy.SUMap = [...state.SUMap];
-                stateCopy.SUMap = deleteShipFromTheMap(stateCopy.SUMap, action.sector, state.SUShips)
-                return stateCopy
+            stateCopy = {...state}
+            stateCopy.SUMap = [...state.SUMap];
+            stateCopy.SUMap = deleteShipFromTheMap(stateCopy.SUMap, action.sector, state.SUShips)
+            stateCopy.deleteShipSU = false
+            return stateCopy
         case SET_SHIP_FIRST_USER:
             stateCopy = {...state};
             stateCopy.FUMap = [...state.FUMap];
@@ -100,24 +109,48 @@ const battleMapReducer = (state = initialState, action) => {
             } else {
                 if (state.horizonSetShipFU) {
                     stateCopy.FUMap[action.sector.y][action.sector.x].sector.ship = true
-                    if (state.whatSetShipFU===1) {stateCopy.FUMap[action.sector.y][action.sector.x].sector.img = 1}
-                    if(state.whatSetShipFU>1) {stateCopy.FUMap[action.sector.y][action.sector.x + 1].sector.ship = true}
-                    if(state.whatSetShipFU>2) {stateCopy.FUMap[action.sector.y][action.sector.x + 2].sector.ship = true}
-                    if(state.whatSetShipFU>3) {stateCopy.FUMap[action.sector.y][action.sector.x + 3].sector.ship = true}
+                    if (state.whatSetShipFU === 1) {
+                        stateCopy.FUMap[action.sector.y][action.sector.x].sector.img = 1
+                    }
+                    if (state.whatSetShipFU > 1) {
+                        stateCopy.FUMap[action.sector.y][action.sector.x + 1].sector.ship = true
+                    }
+                    if (state.whatSetShipFU > 2) {
+                        stateCopy.FUMap[action.sector.y][action.sector.x + 2].sector.ship = true
+                    }
+                    if (state.whatSetShipFU > 3) {
+                        stateCopy.FUMap[action.sector.y][action.sector.x + 3].sector.ship = true
+                    }
                 } else {
                     stateCopy.FUMap[action.sector.y][action.sector.x].sector.ship = true
-                    if (state.whatSetShipFU===1) {stateCopy.FUMap[action.sector.y][action.sector.x].sector.img = 1}
-                    if(state.whatSetShipFU>1) {stateCopy.FUMap[action.sector.y + 1][action.sector.x].sector.ship = true}
-                    if(state.whatSetShipFU>2) {stateCopy.FUMap[action.sector.y + 2][action.sector.x].sector.ship = true}
-                    if(state.whatSetShipFU>3) {stateCopy.FUMap[action.sector.y + 3][action.sector.x].sector.ship = true}
+                    if (state.whatSetShipFU === 1) {
+                        stateCopy.FUMap[action.sector.y][action.sector.x].sector.img = 1
+                    }
+                    if (state.whatSetShipFU > 1) {
+                        stateCopy.FUMap[action.sector.y + 1][action.sector.x].sector.ship = true
+                    }
+                    if (state.whatSetShipFU > 2) {
+                        stateCopy.FUMap[action.sector.y + 2][action.sector.x].sector.ship = true
+                    }
+                    if (state.whatSetShipFU > 3) {
+                        stateCopy.FUMap[action.sector.y + 3][action.sector.x].sector.ship = true
+                    }
                 }
-                stateCopy.whatSetShipFU= null
-                stateCopy.horizonSetShipFU=null
+                stateCopy.whatSetShipFU = null
+                stateCopy.horizonSetShipFU = null
                 stateCopy.FUMap = lockMap(stateCopy.FUMap)
-                if(state.whatSetShipFU===1){stateCopy.FUShips.ship1-=1}
-                if(state.whatSetShipFU===2){stateCopy.FUShips.ship2-=1}
-                if(state.whatSetShipFU===3){stateCopy.FUShips.ship3-=1}
-                if(state.whatSetShipFU===4){stateCopy.FUShips.ship4-=1}
+                if (state.whatSetShipFU === 1) {
+                    stateCopy.FUShips.ship1 -= 1
+                }
+                if (state.whatSetShipFU === 2) {
+                    stateCopy.FUShips.ship2 -= 1
+                }
+                if (state.whatSetShipFU === 3) {
+                    stateCopy.FUShips.ship3 -= 1
+                }
+                if (state.whatSetShipFU === 4) {
+                    stateCopy.FUShips.ship4 -= 1
+                }
             }
             return stateCopy
         case SET_SHIP_SECOND_USER:
@@ -132,35 +165,55 @@ const battleMapReducer = (state = initialState, action) => {
             } else {
                 if (state.horizonSetShipSU) {
                     stateCopy.SUMap[action.sector.y][action.sector.x].sector.ship = true
-                    if(state.whatSetShipSU>1) {stateCopy.SUMap[action.sector.y][action.sector.x + 1].sector.ship = true}
-                    if(state.whatSetShipSU>2) {stateCopy.SUMap[action.sector.y][action.sector.x + 2].sector.ship = true}
-                    if(state.whatSetShipSU>3) {stateCopy.SUMap[action.sector.y][action.sector.x + 3].sector.ship = true}
+                    if (state.whatSetShipSU > 1) {
+                        stateCopy.SUMap[action.sector.y][action.sector.x + 1].sector.ship = true
+                    }
+                    if (state.whatSetShipSU > 2) {
+                        stateCopy.SUMap[action.sector.y][action.sector.x + 2].sector.ship = true
+                    }
+                    if (state.whatSetShipSU > 3) {
+                        stateCopy.SUMap[action.sector.y][action.sector.x + 3].sector.ship = true
+                    }
                 } else {
                     stateCopy.SUMap[action.sector.y][action.sector.x].sector.ship = true
-                    if(state.whatSetShipSU>1) {stateCopy.SUMap[action.sector.y + 1][action.sector.x].sector.ship = true}
-                    if(state.whatSetShipSU>2) {stateCopy.SUMap[action.sector.y + 2][action.sector.x].sector.ship = true}
-                    if(state.whatSetShipSU>3) {stateCopy.SUMap[action.sector.y + 3][action.sector.x].sector.ship = true}
+                    if (state.whatSetShipSU > 1) {
+                        stateCopy.SUMap[action.sector.y + 1][action.sector.x].sector.ship = true
+                    }
+                    if (state.whatSetShipSU > 2) {
+                        stateCopy.SUMap[action.sector.y + 2][action.sector.x].sector.ship = true
+                    }
+                    if (state.whatSetShipSU > 3) {
+                        stateCopy.SUMap[action.sector.y + 3][action.sector.x].sector.ship = true
+                    }
                 }
-                stateCopy.whatSetShipSU= null
-                stateCopy.horizonSetShipSU=null
+                stateCopy.whatSetShipSU = null
+                stateCopy.horizonSetShipSU = null
                 stateCopy.SUMap = lockMap(stateCopy.SUMap)
-                if(state.whatSetShipSU===1){stateCopy.SUShips.ship1-=1}
-                if(state.whatSetShipSU===2){stateCopy.SUShips.ship2-=1}
-                if(state.whatSetShipSU===3){stateCopy.SUShips.ship3-=1}
-                if(state.whatSetShipSU===4){stateCopy.SUShips.ship4-=1}
+                if (state.whatSetShipSU === 1) {
+                    stateCopy.SUShips.ship1 -= 1
+                }
+                if (state.whatSetShipSU === 2) {
+                    stateCopy.SUShips.ship2 -= 1
+                }
+                if (state.whatSetShipSU === 3) {
+                    stateCopy.SUShips.ship3 -= 1
+                }
+                if (state.whatSetShipSU === 4) {
+                    stateCopy.SUShips.ship4 -= 1
+                }
             }
             return stateCopy
         case SET_SHOT_FIRST_USER:
             stateCopy = {...state}
             stateCopy.SUMap = [...state.SUMap];
             stateCopy.SUMap[action.sector.y][action.sector.x].sector.shot = true
-            stateCopy.SUMap=killShip(action.sector,stateCopy.SUMap,stateCopy.SUShips)
+            stateCopy.SUMap = killShip(action.sector, stateCopy.SUMap, stateCopy.SUShips,stateCopy.FUTurn)
             return stateCopy
         case SET_SHOT_SECOND_USER:
             stateCopy = {...state}
             stateCopy.FUMap = [...state.FUMap];
             stateCopy.FUMap[action.sector.y][action.sector.x].sector.shot = true
-            stateCopy.FUMap=killShip(action.sector,stateCopy.FUMap,stateCopy.FUShips)
+            stateCopy.FUMap = killShip(action.sector, stateCopy.FUMap, stateCopy.FUShips, stateCopy.FUTurn)
             return stateCopy
         case TOGGLE_SETTING_SHIP : {
             if (action.firstUser) {
@@ -171,15 +224,13 @@ const battleMapReducer = (state = initialState, action) => {
         }
         case TOGGLE_DELETE_SHIP: {
             if (action.firstUser) {
-                if(state.deleteShipFU){
+                if (state.deleteShipFU) {
                     return {...state, deleteShipFU: false}
-                }
-                else  return {...state, deleteShipFU: true}
+                } else return {...state, deleteShipFU: true}
             } else {
-                if(state.deleteShipSU){
+                if (state.deleteShipSU) {
                     return {...state, deleteShipSU: false}
-                }
-                else  return {...state, deleteShipSU: true}
+                } else return {...state, deleteShipSU: true}
             }
         }
         case UNLOCK_FOR_SET_SHIP : {
@@ -211,14 +262,31 @@ const battleMapReducer = (state = initialState, action) => {
         case SET_HORIZON: {
             if (action.firstUser) {
                 stateCopy = {...state}
-                stateCopy.horizonSetShipFU=action.horizon
+                stateCopy.horizonSetShipFU = action.horizon
                 return stateCopy
             } else {
                 stateCopy = {...state}
-                stateCopy.horizonSetShipSU=action.horizon
+                stateCopy.horizonSetShipSU = action.horizon
                 return stateCopy
             }
         }
+        case START_GAME: {
+            if (action.firstUser) {
+                stateCopy = {...state}
+                stateCopy.settingShipUser={...state.settingShipUser}
+                stateCopy.settingShipUser.firstUser = false
+                return stateCopy
+            } else {
+                stateCopy = {...state}
+                stateCopy.settingShipUser={...state.settingShipUser}
+                stateCopy.settingShipUser.secondUser = false
+                return stateCopy
+            }
+        }
+        case TOGGLE_FU_TURN:{
+            debugger
+            if(state.FUTurn) {return {...state, FUTurn: false}}
+            else return {...state, FUTurn: true}}
         default:
             return state
     }
@@ -227,7 +295,6 @@ const battleMapReducer = (state = initialState, action) => {
 export const setWhatSetShip = (ship, firstUser) => {
     return ({type: "SET_WHAT_SET_SHIP", ship, firstUser})
 };
-
 export const setFirstUserMap = (FUMap) => {
     return ({type: "SET_FIRST_USER_MAP", FUMap})
 };
@@ -240,16 +307,12 @@ export const toBeginSettingShip = () => {
 export const finishSettingShip = () => {
     return ({type: "FINISH_SETTING_SHIP"})
 };
-
-
 export const setShipFirstUser = (sector, valueShip = 1, horizon = true) => {
     return ({type: "SET_SHIP_FIRST_USER", sector, valueShip, horizon})
 };
 export const setShipSecondUser = (sector, valueShip = 1, horizon = true) => {
     return ({type: "SET_SHIP_SECOND_USER", sector, valueShip, horizon})
 };
-
-
 export const setShotFirstUser = (sector) => {
     return ({type: "SET_SHOT_FIRST_USER", sector})
 };
@@ -268,14 +331,20 @@ export const unlockForSetShip = (shipValue, horizon, firstUser,) => {
 export const lockAllMap = (firstUser) => {
     return ({type: "LOCK_ALL_MAP", firstUser})
 };
-export const setHorizon = (horizon,firstUser) => {
-    return ({type: "SET_HORIZON", horizon,firstUser})
+export const setHorizon = (horizon, firstUser) => {
+    return ({type: "SET_HORIZON", horizon, firstUser})
 };
 export const deleteShipFUonMap = (sector) => {
     return ({type: "DELETE_SHIP_FU", sector})
 };
 export const deleteShipSUonMap = (sector) => {
     return ({type: "DELETE_SHIP_SU", sector})
+};
+export const startGame = (firstUser) => {
+    return ({type: "START_GAME", firstUser})
+};
+export const toggleFUTurn = () => {
+    return ({type: "TOGGLE_FU_TURN"})
 };
 
 

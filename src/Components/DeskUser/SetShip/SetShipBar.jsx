@@ -21,7 +21,7 @@ const SetShipBar = (props) => {
         props.setWhatSetShip(4, props.firstUser)
     }
 
-    const startGame = (props) => {
+    const startGame = () => {
         props.startGame(props.firstUser)
     }
 

@@ -7,8 +7,13 @@ const NavBar=()=>{
     return(
         <div>
             <div>
-                <NavLink to='/placeBattle' className={s.navLink}> Place to battle</NavLink>
+                <NavLink to='/placeBattleMan' className={s.navLink}> Battle with man </NavLink>
             </div>
+            <div> ------</div>
+            <div>
+                <NavLink to='/placeBattleComputer' className={s.navLink}> Battle with the computer </NavLink>
+            </div>
+
         </div>
     )
 }

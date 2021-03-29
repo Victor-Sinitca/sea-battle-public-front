@@ -48,8 +48,6 @@ const SetShip = (props) => {
                                 </div>
                             </button>
                         </div>
-
-
                     </div>
                 </div>
             : <div></div>

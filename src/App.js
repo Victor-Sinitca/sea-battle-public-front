@@ -12,7 +12,9 @@ function App() {
             <div className="displayHeader"> Header</div>
             <NavBar/>
             <div className="displayPlace">
-                <Route path='/placeBattle' render={()=><PlaceBattleContainer/>}/>
+                <Route path='/placeBattleComputer' render={()=><PlaceBattleContainer/>}/>
+                <Route path='/placeBattleMan' render={()=><PlaceBattleContainer/>}/>
+
             </div>
         </div>
     );
