@@ -22,3 +22,9 @@
 .deActive{
   background-color: #282c34;
 }
+.deleteShipButtonActive{
+  background-color: #a1145c
+}
+.deleteShipButtonDizActive{
+  background-color: #282c34
+}

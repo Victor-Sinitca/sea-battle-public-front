@@ -4,7 +4,6 @@ import s from "./PlaceBattle.module.css"
 import DeskUser from "../DeskUser/DeskUser";
 
 
-
 let PlaceBattle = (props) => {
     if (!props.firstUserMap) {
         let userMap = [], i, j
@@ -44,20 +43,21 @@ let PlaceBattle = (props) => {
     const settingShipFU=(props)=>{props.settingShipFU(props)}
     const settingShipSU=(props)=>{props.settingShipSU(props)}
 
-
     return <div className={s.displayMapBattle}>
         <DeskUser toggleSettingShip={props.toggleSettingShip}  firstUser={true} firstUserMap={props.firstUserMap}
-                  secondUserMap={props.secondUserMap} setShipUser={props.setShipFirstUser}
+                  secondUserMap={props.secondUserMap}
+                  setShipUser={props.deleteShipFU? props.deleteShipFUonMap :props.setShipFirstUser}
                   setShotUser={props.setShotFirstUser} settingShip={settingShipFU}
                   SUShips={props.SUShips} FUShips={props.FUShips} unlockForSetShip={props.unlockForSetShip}
                   lockAllMap={props.lockAllMap} whatSetShip={props.whatSetShipFU} setWhatSetShip={props.setWhatSetShip}
-                  setHorizon={props.setHorizon}/>
+                  setHorizon={props.setHorizon} toggleDeleteShip={props.toggleDeleteShip} deleteShipUser={props.deleteShipFU}/>
         <DeskUser toggleSettingShip={props.toggleSettingShip}  firstUser={false} firstUserMap={props.secondUserMap}
-                  secondUserMap={props.firstUserMap} setShipUser={props.setShipSecondUser}
+                  secondUserMap={props.firstUserMap} 
+                  setShipUser={props.deleteShipSU? props.deleteShipSUonMap :props.setShipSecondUser}
                   setShotUser={props.setShotSecondUser} settingShip={settingShipSU}
                   SUShips={props.FUShips} FUShips={props.SUShips} unlockForSetShip={props.unlockForSetShip}
                   lockAllMap={props.lockAllMap} whatSetShip={props.whatSetShipSU} setWhatSetShip={props.setWhatSetShip}
-                  setHorizon={props.setHorizon}/>
+                  setHorizon={props.setHorizon} toggleDeleteShip={props.toggleDeleteShip} deleteShipUser={props.deleteShipSU}/>
     </div>
 }
 

@@ -1,10 +1,10 @@
 .displayShipButton{
     display: grid;
-    grid-template-rows: 40px 40px 40px;
+    grid-template-rows: 30px 30px 30px;
 }
 .displaySetShip{
     display: grid;
-    grid-template-rows: 150px 1fr;
+    grid-template-rows: 120px 1fr;
 }
 .displayShip1{
     display: grid;

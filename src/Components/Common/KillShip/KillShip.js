@@ -1,28 +1,3 @@
-/*
-
-sector: {
-    ship: false,
-    shot: false,
-    x: j,
-    y: i,
-    unlock:false,
-}
-*/
-
-const lookLeft =()=>{
-
-}
-const lookUp =()=>{
-
-}
-const lookRight =()=>{
-
-}
-const lookDown =()=>{
-
-}
-
-
 export const killShip = (sector, map1,ships) => {
     let map=map1;
     let i =sector.y, j=sector.x;
