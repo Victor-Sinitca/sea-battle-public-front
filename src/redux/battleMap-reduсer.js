@@ -30,7 +30,11 @@ let initialState = {
         turn:true
     },
 
-    gameComp:false,
+    comp:{
+        game:true,
+        hit:false,
+        sector:null
+    },
 
 
 
@@ -49,12 +53,12 @@ let initialState = {
     FUShips: {
         ship1: 1,
         ship2: 0,
-        ship3: 0,
+        ship3: 1,
         ship4: 0,
-        numberShips1: 4,
-        numberShips2: 3,
-        numberShips3: 2,
-        numberShips4: 1,
+        numberShips1: 1,
+        numberShips2: 0,
+        numberShips3: 1,
+        numberShips4: 0,
     },
     SUShips: {
         ship1: 4,
@@ -67,7 +71,6 @@ let initialState = {
         numberShips4: 1,
     },
 }
-
 
 const battleMapReducer = (state = initialState, action) => {
     let stateCopy = null
@@ -156,11 +159,10 @@ const battleMapReducer = (state = initialState, action) => {
         case SET_SHIP_SECOND_USER:
             stateCopy = {...state};
             stateCopy.SUMap = [...state.SUMap];
+
             if (stateCopy.SUMap[action.sector.y][action.sector.x].sector.ship) {
                 if (state.horizonSetShipSU) {
-
                 } else {
-
                 }
             } else {
                 if (state.horizonSetShipSU) {
@@ -204,23 +206,33 @@ const battleMapReducer = (state = initialState, action) => {
             }
             return stateCopy
         case SET_SHOT_FIRST_USER:
-            stateCopy = {...state}
-            stateCopy.SUMap = [...state.SUMap];
-            stateCopy.SUMap[action.sector.y][action.sector.x].sector.shot = true
-            stateCopy.SUMap = killShip(action.sector, stateCopy.SUMap, stateCopy.SUShips,stateCopy.FUTurn)
-            return stateCopy
+            if(!state.SUMap[action.sector.y][action.sector.x].sector.shot){ // если не стреляли по сектору, то среляем и выполняем проверку на убит/не убит
+                stateCopy = {...state}
+                stateCopy.SUMap = [...state.SUMap];
+                stateCopy.SUMap[action.sector.y][action.sector.x].sector.shot = true
+                stateCopy.SUMap = killShip(action.sector, stateCopy.SUMap, stateCopy.SUShips,stateCopy.FUTurn,stateCopy.comp)
+                return stateCopy
+            } else return state        //если ужее стреляли по сектору - ничего не делаем и продолжаем стрельбу
         case SET_SHOT_SECOND_USER:
-            stateCopy = {...state}
-            stateCopy.FUMap = [...state.FUMap];
-            stateCopy.FUMap[action.sector.y][action.sector.x].sector.shot = true
-            stateCopy.FUMap = killShip(action.sector, stateCopy.FUMap, stateCopy.FUShips, stateCopy.FUTurn)
-            return stateCopy
+            if(!state.FUMap[action.sector.y][action.sector.x].sector.shot){ // если не стреляли по сектору, то среляем и выполняем проверку на убит/не убит
+                stateCopy = {...state}
+                stateCopy.FUMap = [...state.FUMap];
+                stateCopy.FUMap[action.sector.y][action.sector.x].sector.shot = true
+                stateCopy.FUMap = killShip(action.sector, stateCopy.FUMap, stateCopy.FUShips, stateCopy.FUTurn, stateCopy.comp)
+                return stateCopy
+            }else return state
         case TOGGLE_SETTING_SHIP : {
             if (action.firstUser) {
-                return {...state, settingShipFU: action.value}
+                stateCopy = {...state}
+                stateCopy.settingShipUser={...state.settingShipUser}
+                stateCopy.settingShipUser.firstUser =action.value
             } else {
-                return {...state, settingShipSU: action.value}
+                debugger
+                stateCopy = {...state}
+                stateCopy.settingShipUser={...state.settingShipUser}
+                stateCopy.settingShipUser.secondUser = action.value
             }
+            return  stateCopy
         }
         case TOGGLE_DELETE_SHIP: {
             if (action.firstUser) {
@@ -346,7 +358,5 @@ export const startGame = (firstUser) => {
 export const toggleFUTurn = () => {
     return ({type: "TOGGLE_FU_TURN"})
 };
-
-
 
 export default battleMapReducer;

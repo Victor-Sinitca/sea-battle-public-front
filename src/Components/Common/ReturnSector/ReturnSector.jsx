@@ -1,9 +1,15 @@
-import React from "react";
+import React, {useCallback} from "react";
 import s from "./ReturnSector.module.css"
 import ship1 from "../../../assets/img/1.png"
+import {useDispatch} from "react-redux";
 
 
 const ReturnSector = (props) => {
+
+
+
+
+
     const clickSector = () => {
         if (props.toClick) {
             if (props.firstDesk) {

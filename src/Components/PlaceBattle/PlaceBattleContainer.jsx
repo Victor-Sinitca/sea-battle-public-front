@@ -15,6 +15,7 @@ import {
 
 class PlaceBattleContainer  extends React.Component{
 
+
     render() {
         return (
             <PlaceBattle {...this.props}/>
@@ -36,7 +37,7 @@ let mapStateToProps =(state)=>({
     deleteShipSU: state.battleMap.deleteShipSU,
     settingShipUser: state.battleMap.settingShipUser,
     FUTurn: state.battleMap.FUTurn.turn,
-    gameComp: state.battleMap.gameComp,
+    comp: state.battleMap.comp,
 
 })
 

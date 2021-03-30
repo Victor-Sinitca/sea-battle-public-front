@@ -1,3 +1,7 @@
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+}
+
 const lookAroundNoShip = (i, j, userMap) => {
     return (!userMap[i + 1]?.[j].sector.ship) &&
         (!userMap[i + 1]?.[j + 1]?.sector.ship) &&
@@ -9,6 +13,20 @@ const lookAroundNoShip = (i, j, userMap) => {
         (!userMap[i][j + 1]?.sector.ship) &&
         (!userMap[i][j - 1]?.sector.ship);
 }
+const lookAroundNoFire = (i, j, userMap) => {
+    return (!userMap[i + 1]?.[j].sector.shot) &&
+        (!userMap[i + 1]?.[j + 1]?.sector.shot) &&
+        (!userMap[i + 1]?.[j - 1]?.sector.shot) &&
+        (!userMap[i - 1]?.[j].sector.shot) &&
+        (!userMap[i - 1]?.[j + 1]?.sector.shot) &&
+        (!userMap[i - 1]?.[j - 1]?.sector.shot) &&
+        (!userMap[i][j].sector.shot) &&
+        (!userMap[i][j + 1]?.sector.shot) &&
+        (!userMap[i][j - 1]?.sector.shot);
+}
+
+
+
 const lookRightNoShip = (i, j, x, userMap) => {
     return (
         (!userMap[i + 1]?.[j + x]?.sector.ship) &&
@@ -85,6 +103,37 @@ export const checkForShipInputComp = (map, horizon, shipValue) => {
                     shipInputState.push(userMap[i][j].sector)
                 }
             }
+        }
+    }
+    return shipInputState
+}
+
+
+export const checkForShipFireComp = (map) => {
+
+    let userMap = map
+    let shipInputState=[]
+    let turn=true
+
+    while (turn){
+        let random =getRandomInt(2)
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                if (random===0) {
+                    if (!userMap[i][j].sector.shot) {
+                        userMap[i][j].sector.unlock = true
+                        shipInputState.push(userMap[i][j].sector)
+                    }
+                } else if (random===1) {
+                    if (lookAroundNoFire(i, j, userMap)) {
+                        userMap[i][j].sector.unlock = true
+                        shipInputState.push(userMap[i][j].sector)
+                    }
+                }
+            }
+        }
+        if (shipInputState.length>0){
+            turn=false
         }
     }
     return shipInputState
