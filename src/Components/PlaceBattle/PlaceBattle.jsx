@@ -17,15 +17,9 @@ let PlaceBattle = (props) => {
             let horizon = true;
             let shipValue = 1;
             let shipInputState;
-            for (let i = 0; i < 4; i++) {
-                props.setWhatSetShip(shipValue, false)
-                props.setHorizon(horizon, false)
-                props.unlockForSetShip(shipValue, horizon, false)
-                shipInputState = checkForShipInputComp(props.secondUserMap, horizon, shipValue);
-                props.setShipSecondUser(shipInputState[getRandomInt(shipInputState.length)], shipValue, horizon);
-            }
-            shipValue = 2;
-            for (let i = 0; i < 3; i++) {
+
+            shipValue = 4;
+            for (let i = 0; i < 1; i++) {
                 props.setWhatSetShip(shipValue, false)
                 props.setHorizon(horizon, false)
                 props.unlockForSetShip(shipValue, horizon, false)
@@ -40,20 +34,39 @@ let PlaceBattle = (props) => {
                 shipInputState = checkForShipInputComp(props.secondUserMap, horizon, shipValue);
                 props.setShipSecondUser(shipInputState[getRandomInt(shipInputState.length)], shipValue, horizon);
             }
-            shipValue = 4;
-            for (let i = 0; i < 1; i++) {
+            shipValue = 2;
+            for (let i = 0; i < 3; i++) {
                 props.setWhatSetShip(shipValue, false)
                 props.setHorizon(horizon, false)
                 props.unlockForSetShip(shipValue, horizon, false)
                 shipInputState = checkForShipInputComp(props.secondUserMap, horizon, shipValue);
                 props.setShipSecondUser(shipInputState[getRandomInt(shipInputState.length)], shipValue, horizon);
             }
-
+            for (let i = 0; i < 4; i++) {
+                props.setWhatSetShip(shipValue, false)
+                props.setHorizon(horizon, false)
+                props.unlockForSetShip(shipValue, horizon, false)
+                shipInputState = checkForShipInputComp(props.secondUserMap, horizon, shipValue);
+                props.setShipSecondUser(shipInputState[getRandomInt(shipInputState.length)], shipValue, horizon);
+            }
         }
         if (props.comp.game && !props.FUTurn) { //ход компьютера
-            let shipFireState;
-            shipFireState = checkForShipFireComp(props.firstUserMap,)
-            props.setShotSecondUser(shipFireState[getRandomInt(shipFireState.length)])
+            if(props.comp.damaged){
+                debugger
+                let IndexElemMass=0
+                if(props.comp.sectorFire.length > 0){
+                    IndexElemMass=getRandomInt(props.comp.sectorFire.length)
+                    props.setShotSecondUser(props.comp.sectorFire[IndexElemMass])
+                    props.comp.sectorFire.splice((IndexElemMass),1)
+                }else {
+                    props.setShotSecondUser(props.comp.sectorFire[IndexElemMass])
+                    props.comp.sectorFire.splice((IndexElemMass),1)
+                }
+
+            }else{
+                let shipFireState = checkForShipFireComp(props.firstUserMap,)
+                props.setShotSecondUser(shipFireState[getRandomInt(shipFireState.length)])
+            }
         }
     });
 

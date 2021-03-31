@@ -8,7 +8,7 @@ const pushShip = (left, right) => {
 }
 
 export const killShip = (sector, map1, ships, FUTurn, comp) => {
-
+    let stateShip = []
     let map = map1;
     let i = sector.y, j = sector.x;
     let kill = true, iMax = null, iMin = null, jMax = null, jMin = null
@@ -17,6 +17,7 @@ export const killShip = (sector, map1, ships, FUTurn, comp) => {
         iMax = i + 1;
         jMin = j - 1;
         jMax = j + 1;
+
 
         //проверка по вертикали
         if (map[i - 1]?.[j].sector.ship) { //есть ли корабль слева на -1
@@ -206,26 +207,119 @@ export const killShip = (sector, map1, ships, FUTurn, comp) => {
                     map[i][j].sector.shot = true
                 }
             }
-            comp.hit = false //если комп убил, стреляет случайно
-            comp.sector = null
+            comp.damaged = false //если комп убил, стреляет случайно
 
         } else {
+            debugger
             if (comp.game) {//если комп попал, но не убил, продолжает стрелять рядом
-                if()
-
-                comp.hit = true
-
-
+                comp.sectorFire.length = 0
+                if (map[i - 1]?.[j].sector.ship && map[i - 1]?.[j].sector.shot) { //Ищем части поврежденного корабля слева и запоминаем координаты следующих выстрелов
+                    if (map[i - 2]?.[j].sector.ship && map[i - 2]?.[j].sector.shot) {
+                        if ((i > 2) && !map[i - 3][j].sector.shot) {
+                            comp.sectorFire.push(map[i - 3][j].sector)
+                        }
+                        if ((i < 9)&& !map[i +1][j].sector.shot) {
+                            comp.sectorFire.push(map[i + 1][j].sector)
+                        }
+                    } else if (map[i + 1]?.[j].sector.ship && map[i + 1]?.[j].sector.shot) {
+                        if ((i > 1) && !map[i - 2][j].sector.shot) {
+                            comp.sectorFire.push(map[i - 2][j].sector)
+                        }
+                        if ((i < 8) && !map[i +2][j].sector.shot) {
+                            comp.sectorFire.push(map[i + 2][j].sector)
+                        }
+                    } else {
+                        if ((i > 1) && !map[i - 2][j].sector.shot) {
+                            comp.sectorFire.push(map[i - 2][j].sector)
+                        }
+                        if ((i < 9) && !map[i +1][j].sector.shot) {
+                            comp.sectorFire.push(map[i + 1][j].sector)
+                        }
+                    }
+                } else if (map[i + 1]?.[j].sector.ship && map[i + 1]?.[j].sector.shot) { //Ищем части поврежденного корабля справа и запоминаем координаты следующих выстрелов
+                    if (map[i + 2]?.[j].sector.ship && map[i + 2]?.[j].sector.shot) {
+                        if ((i > 0) && !map[i - 1][j].sector.shot) {
+                            comp.sectorFire.push(map[i - 1][j].sector)
+                        }
+                        if ((i < 7) && !map[i + 3][j].sector.shot) {
+                            comp.sectorFire.push(map[i + 3][j].sector)
+                        } else {
+                            if ((i > 1) && !map[i - 1][j].sector.shot) {
+                                comp.sectorFire.push(map[i - 1][j].sector)
+                            }
+                            if ((i < 8) && !map[i + 2][j].sector.shot) {
+                                comp.sectorFire.push(map[i + 2][j].sector)
+                            }
+                        }
+                    }else { //проверить
+                        if ((i > 1) && !map[i - 1][j].sector.shot) {
+                            comp.sectorFire.push(map[i - 1][j].sector)
+                        }
+                    }
+                } else  if (map[i][j - 1]?.sector.ship && map[i][j - 1]?.sector.shot) { //Ищем части поврежденного корабля сверху и запоминаем координаты следующих выстрелов
+                    if (map[i][j - 2]?.sector.ship && map[i][j - 2]?.sector.shot) {
+                        if ((j > 2) && !map[i][j - 3].sector.shot) {
+                            comp.sectorFire.push(map[i][j - 3].sector)
+                        }
+                        if ((j < 9) && !map[i][j + 1].sector.shot) {
+                            comp.sectorFire.push(map[i][j + 1].sector)
+                        }
+                    } else if (map[i][j + 1]?.sector.ship && map[i][j + 1]?.sector.shot) {
+                        if ((j > 1) && !map[i][j - 2].sector.shot) {
+                            comp.sectorFire.push(map[i][j - 2].sector)
+                        }
+                        if ((j < 8) && !map[i][j + 2].sector.shot) {
+                            comp.sectorFire.push(map[i][j + 2].sector)
+                        }
+                    } else {
+                        if ((j > 1) && !map[i][j - 2].sector.shot) {
+                            comp.sectorFire.push(map[i][j - 2].sector)
+                        }
+                        if ((j < 9) && !map[i][j + 1].sector.shot) {
+                            comp.sectorFire.push(map[i][j + 1].sector)
+                        }
+                    }
+                } else if (map[i][j + 1]?.sector.ship && map[i][j + 1]?.sector.shot) { //Ищем части поврежденного корабля снизу и запоминаем координаты следующих выстрелов
+                    if (map[i][j + 2]?.sector.ship && map[i][j + 2]?.sector.shot) {
+                        if ((j > 0) && !map[i][j - 1].sector.shot) {
+                            comp.sectorFire.push(map[i][j - 1].sector)
+                        }
+                        if ((j < 7) && !map[i][j + 3].sector.shot) {
+                            comp.sectorFire.push(map[i][j + 3].sector)
+                        } else {
+                            if ((j > 0) && !map[i][j - 1].sector.shot) {
+                                comp.sectorFire.push(map[i][j - 1].sector)
+                            }
+                            if ((j < 8) && !map[i][j + 2].sector.shot) {
+                                comp.sectorFire.push(map[i][j + 2].sector)
+                            }
+                        }
+                    }else { //проверить
+                        if ((j > 1) && !map[i][j - 1].sector.shot) {
+                            comp.sectorFire.push(map[i][j - 1].sector)
+                        }
+                    }
+                } else {
+                    if ((j > 0) && !map[i][j - 1].sector.shot) {
+                        comp.sectorFire.push(map[i][j-1].sector)
+                    }
+                    if ((j < 9) && !map[i][j + 1].sector.shot) {
+                        comp.sectorFire.push(map[i][j+1].sector)
+                    }
+                    if ((i > 0) && !map[i-1][j].sector.shot) {
+                        comp.sectorFire.push(map[i-1][j].sector)
+                    }
+                    if ((i < 9) && !map[i+1][j].sector.shot) {
+                        comp.sectorFire.push(map[i+1][j].sector)
+                    }
+                }
+                comp.damaged = true // корабль поврежден и не убит - стреляем рандомно  по запомненным коорднатам.
             }
-
-
         }
-
     } else { //если не попал в корабль - передается ход другому игроку
-        if (!map[i][j].sector.ship.shot) { //передается ход только если попал в пустую от выстрела клетку
+        if (!map[i][j].sector.ship.shot) { //передается ход только если попал в пустую от выстрела клетку (проверка для ручного ввода)
             FUTurn.turn = !FUTurn.turn;
         }
-        comp.hit = false // если комп ромахнулся - следущий выстрел рандомно
     }
     return map
 }

@@ -32,8 +32,8 @@ let initialState = {
 
     comp:{
         game:true,
-        hit:false,
-        sector:null
+        damaged:false,
+        sectorFire:[]
     },
 
 
@@ -51,14 +51,14 @@ let initialState = {
     },
 
     FUShips: {
-        ship1: 1,
-        ship2: 0,
-        ship3: 1,
-        ship4: 0,
-        numberShips1: 1,
-        numberShips2: 0,
-        numberShips3: 1,
-        numberShips4: 0,
+        ship1: 4,
+        ship2: 3,
+        ship3: 2,
+        ship4: 1,
+        numberShips1: 4,
+        numberShips2: 3,
+        numberShips3: 2,
+        numberShips4: 1,
     },
     SUShips: {
         ship1: 4,
