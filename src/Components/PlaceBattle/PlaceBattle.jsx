@@ -54,7 +54,7 @@ let PlaceBattle = (props) => {
             if(props.comp.damaged){
                 debugger
                 let IndexElemMass=0
-                if(props.comp.sectorFire.length > 0){
+                if(props.comp.sectorFire.length > 1){
                     IndexElemMass=getRandomInt(props.comp.sectorFire.length)
                     props.setShotSecondUser(props.comp.sectorFire[IndexElemMass])
                     props.comp.sectorFire.splice((IndexElemMass),1)

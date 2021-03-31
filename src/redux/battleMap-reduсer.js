@@ -1,6 +1,6 @@
 import { checkForShipInput,lockMap} from "../Components/Common/CheckForShipInput/CheckForSingleShipInput";
 import {deleteShipFromTheMap} from "../Components/Common/deleteShipFromTheMap/deleteShipFromTheMap";
-import {killShip} from "../Components/Common/KillShip/KillShip";
+import {fireAfterHitComp, FireAfterHitComp, killShip} from "../Components/Common/KillShip/KillShip";
 
 const SET_FIRST_USER_MAP = "SET_FIRST_USER_MAP"
 const SET_SECOND_USER_MAP = "SET_SECOND_USER_MAP"
@@ -210,7 +210,12 @@ const battleMapReducer = (state = initialState, action) => {
                 stateCopy = {...state}
                 stateCopy.SUMap = [...state.SUMap];
                 stateCopy.SUMap[action.sector.y][action.sector.x].sector.shot = true
-                stateCopy.SUMap = killShip(action.sector, stateCopy.SUMap, stateCopy.SUShips,stateCopy.FUTurn,stateCopy.comp)
+                let stateKillShip=killShip(action.sector, stateCopy.SUMap, stateCopy.SUShips)
+                stateCopy.SUMap=stateKillShip.map
+                stateCopy.SUShips=stateKillShip.ships
+                if(!stateKillShip.hit){
+                    stateCopy.FUTurn.turn = !stateCopy.FUTurn.turn;
+                }
                 return stateCopy
             } else return state        //если ужее стреляли по сектору - ничего не делаем и продолжаем стрельбу
         case SET_SHOT_SECOND_USER:
@@ -218,7 +223,18 @@ const battleMapReducer = (state = initialState, action) => {
                 stateCopy = {...state}
                 stateCopy.FUMap = [...state.FUMap];
                 stateCopy.FUMap[action.sector.y][action.sector.x].sector.shot = true
-                stateCopy.FUMap = killShip(action.sector, stateCopy.FUMap, stateCopy.FUShips, stateCopy.FUTurn, stateCopy.comp)
+                let stateKillShip=killShip(action.sector, stateCopy.FUMap, stateCopy.FUShips)
+                stateCopy.FUMap=stateKillShip.map
+                stateCopy.FUShips=stateKillShip.ships
+                if(state.comp.game && !stateKillShip.kill && stateKillShip.hit){
+                    stateCopy.comp.sectorFire=fireAfterHitComp(stateCopy.FUMap,action.sector)
+                    stateCopy.comp.damaged=true
+                }else if(state.comp.game && stateKillShip.kill){
+                    stateCopy.comp.damaged=false
+                }
+                if(!stateKillShip.hit){
+                    stateCopy.FUTurn.turn = !stateCopy.FUTurn.turn;
+                }
                 return stateCopy
             }else return state
         case TOGGLE_SETTING_SHIP : {
