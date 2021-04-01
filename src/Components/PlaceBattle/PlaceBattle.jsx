@@ -42,6 +42,7 @@ let PlaceBattle = (props) => {
                 shipInputState = checkForShipInputComp(props.secondUserMap, horizon, shipValue);
                 props.setShipSecondUser(shipInputState[getRandomInt(shipInputState.length)], shipValue, horizon);
             }
+            shipValue = 1;
             for (let i = 0; i < 4; i++) {
                 props.setWhatSetShip(shipValue, false)
                 props.setHorizon(horizon, false)
@@ -51,21 +52,25 @@ let PlaceBattle = (props) => {
             }
         }
         if (props.comp.game && !props.FUTurn) { //ход компьютера
-            if(props.comp.damaged){
+            if (props.comp.damaged) {
                 debugger
-                let IndexElemMass=0
-                if(props.comp.sectorFire.length > 1){
-                    IndexElemMass=getRandomInt(props.comp.sectorFire.length)
+                let IndexElemMass = 0
+                if (props.comp.sectorFire.length > 0) {
+                    IndexElemMass = getRandomInt(props.comp.sectorFire.length)
                     props.setShotSecondUser(props.comp.sectorFire[IndexElemMass])
-                    props.comp.sectorFire.splice((IndexElemMass),1)
-                }else {
+                } else {
                     props.setShotSecondUser(props.comp.sectorFire[IndexElemMass])
-                    props.comp.sectorFire.splice((IndexElemMass),1)
                 }
-
-            }else{
+                if (!props.comp.hit) {
+                    props.increaseSectorFire(IndexElemMass)
+                }
+            } else {
                 let shipFireState = checkForShipFireComp(props.firstUserMap,)
                 props.setShotSecondUser(shipFireState[getRandomInt(shipFireState.length)])
+            }
+            if (props.FUShips.numberShips1 === 0 && props.FUShips.numberShips2 === 0 &&
+                props.FUShips.numberShips3 === 0 && props.FUShips.numberShips4 === 0) {
+                props.setCompGame(false)
             }
         }
     });
@@ -112,8 +117,6 @@ let PlaceBattle = (props) => {
     if (!props.firstUserMap || !props.secondUserMap) return <Preloader/>
 
 
-
-
     return <div className={s.displayMapBattle}>
         <DeskUser toggleSettingShip={props.toggleSettingShip} firstUser={true} firstUserMap={props.firstUserMap}
                   secondUserMap={props.secondUserMap}
@@ -123,16 +126,23 @@ let PlaceBattle = (props) => {
                   lockAllMap={props.lockAllMap} whatSetShip={props.whatSetShipFU} setWhatSetShip={props.setWhatSetShip}
                   setHorizon={props.setHorizon} toggleDeleteShip={props.toggleDeleteShip}
                   deleteShipUser={props.deleteShipFU}
-                  settingShipUser={props.settingShipUser} startGame={props.startGame} UserTurn={props.FUTurn}/>
-        <DeskUser toggleSettingShip={props.toggleSettingShip} firstUser={false} firstUserMap={props.secondUserMap}
-                  secondUserMap={props.firstUserMap}
-                  setShipUser={props.deleteShipSU ? props.deleteShipSUonMap : props.setShipSecondUser}
-                  setShotUser={props.setShotSecondUser}
-                  SUShips={props.FUShips} FUShips={props.SUShips} unlockForSetShip={props.unlockForSetShip}
-                  lockAllMap={props.lockAllMap} whatSetShip={props.whatSetShipSU} setWhatSetShip={props.setWhatSetShip}
-                  setHorizon={props.setHorizon} toggleDeleteShip={props.toggleDeleteShip}
-                  deleteShipUser={props.deleteShipSU}
-                  settingShipUser={props.settingShipUser} startGame={props.startGame} UserTurn={!props.FUTurn}/>
+                  settingShipUser={props.settingShipUser} startGame={props.startGame} UserTurn={props.FUTurn}
+                  toggleLookSecondUser={props.toggleLookSecondUser}/>
+        {props.lookSecondUser ?
+            <DeskUser toggleSettingShip={props.toggleSettingShip} firstUser={false} firstUserMap={props.secondUserMap}
+                      secondUserMap={props.firstUserMap}
+                      setShipUser={props.deleteShipSU ? props.deleteShipSUonMap : props.setShipSecondUser}
+                      setShotUser={props.setShotSecondUser}
+                      SUShips={props.FUShips} FUShips={props.SUShips} unlockForSetShip={props.unlockForSetShip}
+                      lockAllMap={props.lockAllMap} whatSetShip={props.whatSetShipSU}
+                      setWhatSetShip={props.setWhatSetShip}
+                      setHorizon={props.setHorizon} toggleDeleteShip={props.toggleDeleteShip}
+                      deleteShipUser={props.deleteShipSU}
+                      settingShipUser={props.settingShipUser} startGame={props.startGame} UserTurn={!props.FUTurn}
+                      toggleLookSecondUser={props.toggleLookSecondUser}/>
+            :
+            <div> Place for second User </div>
+        }
     </div>
 }
 

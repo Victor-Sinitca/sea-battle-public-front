@@ -15,6 +15,11 @@ const DeskUser = (props) => {
     const toggleDeleteShip = () => {
         props.toggleDeleteShip(props.firstUser)
     }
+    const lookSecondUser =()=>{
+        props.toggleLookSecondUser()
+    }
+
+
     return (
         <div className={s.displayDesk}>
             <div>
@@ -32,7 +37,7 @@ const DeskUser = (props) => {
                                       startGame={props.startGame}/>
                         : <DownBar userShips={props.SUShips} firstUser={props.firstUser} UserTurn ={props.UserTurn}/>
                     }
-                    <div></div>
+                    <div> <button onClick={lookSecondUser}>toggle look second user</button></div>
                     {((props.firstUser&&props.settingShipUser.firstUser)||(!props.firstUser&&props.settingShipUser.secondUser))
                         ? <div>
                             <button onClick={toggleDeleteShip} className={props.deleteShipUser ?

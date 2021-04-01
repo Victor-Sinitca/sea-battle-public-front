@@ -4,11 +4,11 @@ import {connect} from "react-redux";
 import PlaceBattle from "./PlaceBattle";
 import {
     deleteShipFUonMap, deleteShipSUonMap,
-    finishSettingShip, lockAllMap,
+    finishSettingShip, increaseSectorFire, lockAllMap, setCompGame,
     setFirstUserMap, setHorizon,
     setSecondUserMap,
     setShipFirstUser, setShipSecondUser, setShotFirstUser, setShotSecondUser, setWhatSetShip, startGame,
-    toBeginSettingShip, toggleDeleteShip, toggleSettingShip, unlockForSetShip,
+    toBeginSettingShip, toggleDeleteShip, toggleLookSecondUser, toggleSettingShip, unlockForSetShip,
 
 } from "../../redux/battleMap-reduсer";
 
@@ -38,6 +38,7 @@ let mapStateToProps =(state)=>({
     settingShipUser: state.battleMap.settingShipUser,
     FUTurn: state.battleMap.FUTurn.turn,
     comp: state.battleMap.comp,
+    lookSecondUser: state.battleMap.lookSecondUser,
 
 })
 
@@ -47,5 +48,5 @@ let mapStateToProps =(state)=>({
 export default compose(connect(mapStateToProps,
     {setFirstUserMap,setSecondUserMap,toBeginSettingShip,finishSettingShip,
         setShipFirstUser,setShipSecondUser,setShotFirstUser,setShotSecondUser,toggleSettingShip,
-        unlockForSetShip,lockAllMap ,setWhatSetShip,setHorizon,toggleDeleteShip,deleteShipFUonMap,deleteShipSUonMap
-    ,startGame}))(PlaceBattleContainer)
+        unlockForSetShip,lockAllMap ,setWhatSetShip,setHorizon,toggleDeleteShip,deleteShipFUonMap,deleteShipSUonMap,
+        startGame,increaseSectorFire,setCompGame,toggleLookSecondUser}))(PlaceBattleContainer)
