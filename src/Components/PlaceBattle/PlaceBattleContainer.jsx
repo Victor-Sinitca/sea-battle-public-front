@@ -7,7 +7,7 @@ import {
     finishSettingShip, increaseSectorFire, lockAllMap, setCompGame,
     setFirstUserMap, setHorizon,
     setSecondUserMap,
-    setShipFirstUser, setShipSecondUser, setShotFirstUser, setShotSecondUser, setWhatSetShip, startGame,
+    setShipFirstUser, setShipSecondUser, setShipsRandom, setShotFirstUser, setShotSecondUser, setWhatSetShip, startGame,
     toBeginSettingShip, toggleDeleteShip, toggleLookSecondUser, toggleSettingShip, unlockForSetShip,
 
 } from "../../redux/battleMap-reduсer";
@@ -49,4 +49,4 @@ export default compose(connect(mapStateToProps,
     {setFirstUserMap,setSecondUserMap,toBeginSettingShip,finishSettingShip,
         setShipFirstUser,setShipSecondUser,setShotFirstUser,setShotSecondUser,toggleSettingShip,
         unlockForSetShip,lockAllMap ,setWhatSetShip,setHorizon,toggleDeleteShip,deleteShipFUonMap,deleteShipSUonMap,
-        startGame,increaseSectorFire,setCompGame,toggleLookSecondUser}))(PlaceBattleContainer)
+        startGame,increaseSectorFire,setCompGame,toggleLookSecondUser,setShipsRandom}))(PlaceBattleContainer)

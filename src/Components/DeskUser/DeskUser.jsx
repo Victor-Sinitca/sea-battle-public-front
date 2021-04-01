@@ -5,11 +5,11 @@ import DownBar from "./DownBar/DownBar";
 import SetShipBar from "./SetShip/SetShipBar";
 
 
+
 const DeskUser = (props) => {
     let shipOpponent
-    if(props.SUShips.numberShips1>0||props.SUShips.numberShips2>0||
-        props.SUShips.numberShips3>0||props.SUShips.numberShips4>0)
-    {shipOpponent=true} else shipOpponent=false
+    shipOpponent = props.SUShips.numberShips1 > 0 || props.SUShips.numberShips2 > 0 ||
+        props.SUShips.numberShips3 > 0 || props.SUShips.numberShips4 > 0;
 
 
     const toggleDeleteShip = () => {
@@ -17,6 +17,9 @@ const DeskUser = (props) => {
     }
     const lookSecondUser =()=>{
         props.toggleLookSecondUser()
+    }
+    const setShipsRandom=()=>{
+        props.setShipsRandom(props.firstUser,props.firstUserMap)
     }
 
 
@@ -67,6 +70,7 @@ const DeskUser = (props) => {
                     :
                     <div>
                         This place is for the second player's map
+                        <button onClick={setShipsRandom}>set ships random</button>
                     </div>
                 }
             </div>

@@ -1,6 +1,11 @@
-import {checkForShipInput, lockMap} from "../Components/Common/CheckForShipInput/CheckForSingleShipInput";
+import {
+    checkForShipInput,
+    checkForShipInputComp,
+    lockMap
+} from "../Components/Common/CheckForShipInput/CheckForSingleShipInput";
 import {deleteShipFromTheMap} from "../Components/Common/deleteShipFromTheMap/deleteShipFromTheMap";
 import {fireAfterHitComp, killShip} from "../Components/Common/KillShip/KillShip";
+import {getRandomInt} from "../Components/Common/getRandom/getRandom";
 
 const SET_FIRST_USER_MAP = "SET_FIRST_USER_MAP"
 const SET_SECOND_USER_MAP = "SET_SECOND_USER_MAP"
@@ -23,6 +28,7 @@ const START_GAME = "START_GAME"
 const INCREASE_SECTOR_FIRE = "INCREASE_SECTOR_FIRE"
 const SET_COMP_GAME = "SET_COMP_GAME"
 const TOGGLE_LOOK_SECOND_USER = "TOGGLE_LOOK_SECOND_USER"
+
 
 let initialState = {
     FUMap: null,
@@ -402,5 +408,27 @@ export const setCompGame = (value) => {
 export const toggleLookSecondUser = (value) => {
     return ({type: "TOGGLE_LOOK_SECOND_USER", value})
 };
+
+export const setShipsRandom =(firstUser, userMap)=>{
+    let horizon = true;
+    let shipInputState;
+    return (dispatch)=>{
+        for (let shipValue = 4; shipValue >= 1; shipValue--) {
+            for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
+                horizon = getRandomInt(2)
+                dispatch(setWhatSetShip(shipValue, firstUser))
+                dispatch(setHorizon(horizon, firstUser))
+                dispatch(unlockForSetShip(shipValue, horizon, firstUser))
+                shipInputState = checkForShipInputComp(userMap, horizon, shipValue);
+                dispatch(setShipSecondUser(shipInputState[getRandomInt(shipInputState.length)], shipValue, horizon));
+            }
+        }
+    }
+}
+
+
+
+
+
 
 export default battleMapReducer;
