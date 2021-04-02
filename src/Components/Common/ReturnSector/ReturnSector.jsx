@@ -7,9 +7,6 @@ import {useDispatch} from "react-redux";
 const ReturnSector = (props) => {
 
 
-
-
-
     const clickSector = () => {
         if (props.toClick) {
             if (props.firstDesk) {
@@ -24,7 +21,7 @@ const ReturnSector = (props) => {
     }
     return (
         props.firstDesk ?
-            <button onClick={clickSector} className={props.sector.shot
+            <div onClick={clickSector} className={props.sector.shot
                 ? props.sector.ship
                     ? s.shotToShip
                     : s.shotMiss
@@ -32,16 +29,16 @@ const ReturnSector = (props) => {
                     ? s.ship
                     : s.noneShot}>
                 {props.sector.img === 1 ? <img src={ship1} className={s.ship1} alt="no img"/> : null}
-            </button>
+            </div>
             :
-            <button onClick={clickSector} className={props.sector.shot
+            <div onClick={clickSector} className={props.sector.shot
                 ? props.sector.ship
                     ? s.shotToShip
                     : s.shotMiss
                 : props.sector.ship
                     ? s.noneShot
                     : s.noneShot}>
-            </button>
+            </div>
     )
 }
 export default ReturnSector

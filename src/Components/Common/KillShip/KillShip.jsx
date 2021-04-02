@@ -1,18 +1,3 @@
-const pushShip = (left, right) => {
-    let stateShip = []
-    stateShip.push(left)
-    if (right) {
-        stateShip.push(right)
-    }
-    return stateShip
-}
-
-
-
-
-
-
-
 export const killShip = (sector, map1, shipsState) => {
     let stateKillShip = {
         map: null,

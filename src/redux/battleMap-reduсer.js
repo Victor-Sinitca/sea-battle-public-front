@@ -452,42 +452,37 @@ export const toggleGameWithComp = () => {
     return ({type: "TOGGLE_GAME_WITH_COMP",})
 };
 
-export const setShipsRandom1 = (firstUser, userMap) => {
-    let horizon = true;
-    let shipInputState;
-    return (dispatch) => {
-        /* dispatch(initializeTheMap(firstUser))*/
-        for (let shipValue = 4; shipValue >= 1; shipValue--) {
-            for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
-                horizon = getRandomInt(2)
-                dispatch(setWhatSetShip(shipValue, firstUser))
-                dispatch(setHorizon(horizon, firstUser))
-                dispatch(unlockForSetShip(shipValue, horizon, firstUser))
-                shipInputState = checkForShipInputComp(userMap, horizon, shipValue);
-                dispatch(setShipSecondUser(shipInputState[getRandomInt(shipInputState.length)], shipValue, horizon));
-            }
-        }
-    }
-}
+
+/*dispatch(initializeTheMap(firstUser))*/
+
+
+
+
+
 
 export const setShipsRandom = (firstUser, userMap) => {
     let horizon = true;
     let shipInputState;
     return dispatch => {
-        /*dispatch(initializeTheMap(firstUser))*/
-        for (let shipValue = 4; shipValue >= 1; shipValue--) {
-            for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
-                horizon = getRandomInt(2)
-                let promise = dispatch(setWhatSetShip(shipValue, firstUser))
-                let promise1 = dispatch(setHorizon(horizon, firstUser))
-                let promise2 = dispatch(unlockForSetShip(shipValue, horizon, firstUser))
-                shipInputState = checkForShipInputComp(userMap, horizon, shipValue);
-                Promise.all([horizon, promise, promise1, promise2, shipInputState])
-                    .then(dispatch(setShipSecondUser(shipInputState[getRandomInt(shipInputState.length)], shipValue, horizon)))
+            for (let shipValue = 4; shipValue >= 1; shipValue--) {
+                for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
+                    horizon = getRandomInt(2)
+                    shipInputState = checkForShipInputComp(userMap, horizon, shipValue);
+                    Promise.all([ // перечисляем в нужной последовательности операции для выполнения как промисы
+                        horizon,
+                        dispatch(setWhatSetShip(shipValue, firstUser)),
+                        dispatch(setHorizon(horizon, firstUser)),
+                        dispatch(unlockForSetShip(shipValue, horizon, firstUser)),
+                        shipInputState])
+                        .then(
+                            !firstUser ?
+                                dispatch(setShipSecondUser(shipInputState[getRandomInt(shipInputState.length)], shipValue, horizon))
+                                :
+                                dispatch(setShipFirstUser(shipInputState[getRandomInt(shipInputState.length)], shipValue, horizon))
+                        )
+                }
             }
-        }
     }
 }
-
 
 export default battleMapReducer;

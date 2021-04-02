@@ -1,9 +1,11 @@
 .shotMiss{
+    border: #000000 1px solid;
     vertical-align: middle;
     display: inline-block;
     background-color: #77ff00;
 }
 .noneShot{
+    border: #000000 1px solid;
     vertical-align: middle;
     display: inline-block;
     background-color: #2807e7;
@@ -19,10 +21,8 @@
     background-color: #f50606;
 }
 .ship1{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-    vertical-align: middle;
-
+    width: 20px;height: 20px;
 }
+
+/*
+border: #0f5a0f 1px solid;*/

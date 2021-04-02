@@ -19,7 +19,7 @@ const DeskUser = (props) => {
         props.toggleLookSecondUser()
     }
     const setShipsRandom=()=>{
-        props.setShipsRandom(props.firstUser,props.firstUserMap)
+       props.setShipsRandom(props.firstUser,props.firstUserMap)
     }
     const clearMap=()=>{
         props.initializeTheMap(props.firstUser)
@@ -78,14 +78,13 @@ const DeskUser = (props) => {
                         This place is for the second player's map
                         <button onClick={setShipsRandom}>set ships random</button>
                         <button onClick={clearMap}>clear map</button>
-                        {props.comp.game?
-                            <button onClick={compGame}>click to comp game to man</button>
-                            :
-                            <button onClick={compGame}>click to comp game to comp</button>
-                        }
-
-
-
+                        <div>
+                            {props.comp.game?
+                                <button onClick={compGame}>click to game to man</button>
+                                :
+                                <button onClick={compGame}>click to game to comp</button>
+                            }
+                        </div>
                     </div>
                 }
             </div>

@@ -11,53 +11,51 @@ import {initializeTheMap, toggleGameWithComp} from "../../redux/battleMap-reduс
 
 
 let PlaceBattle = (props) => {
+    useEffect(() => {
+        if (!props.firstUserMap||!props.secondUserMap) {
+            let userMap1 = [], userMap2 = [],i, j
+            for (i = 0; i < 10; i++) {
+                userMap1[i] = []
+                userMap2[i] = []
+                for (j = 0; j < 10; j++) {
+                    userMap1[i][j] = {
+                        sector: {
+                            ship: false,
+                            shot: false,
+                            x: j,
+                            y: i,
+                            unlock: false,
+                            img: null
+                        }
+                    }
+                    userMap2[i][j] = {
+                        sector: {
+                            ship: false,
+                            shot: false,
+                            x: j,
+                            y: i,
+                            unlock: false,
+                            img: null
+                        }
+                    }
+                }
+            }
+            props.setFirstUserMap(userMap1)
+            props.setSecondUserMap(userMap2)
+        }
+    });
+
+
     useEffect(() => { //расстановка кораблей компьютером
         if (props.comp.game && !props.settingShipUser.firstUser && props.settingShipUser.secondUser) { // заполнение поля компьютером
-            props.setShipsRandom(false,props.firstUserMap)
+            props.setShipsRandom(false,props.secondUserMap)
             props.startGame(false) //true - start game first user, false - start game second user
-
-
-            /* let horizon = true;
-             let shipInputState;
-             for (let shipValue = 4; shipValue >= 1; shipValue--) {
-                 for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
-                     horizon = getRandomInt(2)
-                     props.setWhatSetShip(shipValue, false)
-                     props.setHorizon(horizon, false)
-                     props.unlockForSetShip(shipValue, horizon, false)
-                     shipInputState = checkForShipInputComp(props.secondUserMap, horizon, shipValue);
-                     props.setShipSecondUser(shipInputState[getRandomInt(shipInputState.length)], shipValue, horizon);
-                 }
-             }*/
         }
-        /*if (props.comp.game && !props.FUTurn) { //ход компьютера
-            if (props.comp.damaged) {
-                debugger
-                let IndexElemMass = 0
-                if (props.comp.sectorFire.length > 0) {
-                    IndexElemMass = getRandomInt(props.comp.sectorFire.length)
-                    props.setShotSecondUser(props.comp.sectorFire[IndexElemMass])
-                } else {
-                    props.setShotSecondUser(props.comp.sectorFire[IndexElemMass])
-                }
-                if (!props.comp.hit) {
-                    props.increaseSectorFire(IndexElemMass)
-                }
-            } else {
-                let shipFireState = checkForShipFireComp(props.firstUserMap,)
-                props.setShotSecondUser(shipFireState[getRandomInt(shipFireState.length)])
-            }
-            if (props.FUShips.numberShips1 === 0 && props.FUShips.numberShips2 === 0 &&
-                props.FUShips.numberShips3 === 0 && props.FUShips.numberShips4 === 0) {
-                props.setCompGame(false)
-            }
-        }*/
-    });
+    },[props.settingShipUser.firstUser]);
 
     useEffect(() => { //стрельба компьютера
-        if (props.comp.game && !props.FUTurn&& !props.settingShipUser.secondUser) { //ход компьютера
+        if (props.comp.game && !props.FUTurn && !props.settingShipUser.secondUser) { //ход компьютера
             if (props.comp.damaged) {
-                debugger
                 let IndexElemMass = 0
                 if (props.comp.sectorFire.length > 0) {
                     IndexElemMass = getRandomInt(props.comp.sectorFire.length)
@@ -79,48 +77,6 @@ let PlaceBattle = (props) => {
         }
     });
 
-
-
-
-
-    if (!props.firstUserMap) {
-        let userMap = [], i, j
-        for (i = 0; i < 10; i++) {
-            userMap[i] = []
-            for (j = 0; j < 10; j++) {
-                userMap[i][j] = {
-                    sector: {
-                        ship: false,
-                        shot: false,
-                        x: j,
-                        y: i,
-                        unlock: false,
-                        img: null
-                    }
-                }
-            }
-        }
-        props.setFirstUserMap(userMap)
-    }
-    if (!props.secondUserMap) {
-        let userMap = [[]], i, j
-        for (i = 0; i < 10; i++) {
-            userMap[i] = []
-            for (j = 0; j < 10; j++) {
-                userMap[i][j] = {
-                    sector: {
-                        ship: false,
-                        shot: false,
-                        x: j,
-                        y: i,
-                        unlock: false,
-                        img: null
-                    }
-                }
-            }
-            props.setSecondUserMap(userMap)
-        }
-    }
     if (!props.firstUserMap || !props.secondUserMap) return <Preloader/>
 
 
