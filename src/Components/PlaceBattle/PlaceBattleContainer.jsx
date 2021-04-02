@@ -4,11 +4,11 @@ import {connect} from "react-redux";
 import PlaceBattle from "./PlaceBattle";
 import {
     deleteShipFUonMap, deleteShipSUonMap,
-    finishSettingShip, increaseSectorFire, lockAllMap, setCompGame,
+    finishSettingShip, increaseSectorFire, initializeTheMap, lockAllMap, setCompGame,
     setFirstUserMap, setHorizon,
     setSecondUserMap,
     setShipFirstUser, setShipSecondUser, setShipsRandom, setShotFirstUser, setShotSecondUser, setWhatSetShip, startGame,
-    toBeginSettingShip, toggleDeleteShip, toggleLookSecondUser, toggleSettingShip, unlockForSetShip,
+    toBeginSettingShip, toggleDeleteShip, toggleGameWithComp, toggleLookSecondUser, toggleSettingShip, unlockForSetShip,
 
 } from "../../redux/battleMap-reduсer";
 
@@ -49,4 +49,5 @@ export default compose(connect(mapStateToProps,
     {setFirstUserMap,setSecondUserMap,toBeginSettingShip,finishSettingShip,
         setShipFirstUser,setShipSecondUser,setShotFirstUser,setShotSecondUser,toggleSettingShip,
         unlockForSetShip,lockAllMap ,setWhatSetShip,setHorizon,toggleDeleteShip,deleteShipFUonMap,deleteShipSUonMap,
-        startGame,increaseSectorFire,setCompGame,toggleLookSecondUser,setShipsRandom}))(PlaceBattleContainer)
+        startGame,increaseSectorFire,setCompGame,toggleLookSecondUser,setShipsRandom,initializeTheMap,
+        toggleGameWithComp}))(PlaceBattleContainer)

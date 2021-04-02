@@ -6,6 +6,7 @@ import {
 import {deleteShipFromTheMap} from "../Components/Common/deleteShipFromTheMap/deleteShipFromTheMap";
 import {fireAfterHitComp, killShip} from "../Components/Common/KillShip/KillShip";
 import {getRandomInt} from "../Components/Common/getRandom/getRandom";
+import {initializeTheMapFunction} from "../Components/Common/initializeTheMapFunction/initializeTheMapFunction";
 
 const SET_FIRST_USER_MAP = "SET_FIRST_USER_MAP"
 const SET_SECOND_USER_MAP = "SET_SECOND_USER_MAP"
@@ -28,6 +29,8 @@ const START_GAME = "START_GAME"
 const INCREASE_SECTOR_FIRE = "INCREASE_SECTOR_FIRE"
 const SET_COMP_GAME = "SET_COMP_GAME"
 const TOGGLE_LOOK_SECOND_USER = "TOGGLE_LOOK_SECOND_USER"
+const INITIALIZE_THE_MAP = "INITIALIZE_THE_MAP"
+const TOGGLE_GAME_WITH_COMP = "TOGGLE_GAME_WITH_COMP"
 
 
 let initialState = {
@@ -39,13 +42,13 @@ let initialState = {
     },
 
     comp: {
-        game: true,
+        game: false,
         damaged: false,
-        hit:false,
+        hit: false,
         sectorFire: []
     },
 
-    lookSecondUser:true,
+    lookSecondUser: true,
 
 
     whatSetShipFU: null,
@@ -149,7 +152,7 @@ const battleMapReducer = (state = initialState, action) => {
                         stateCopy.FUMap[action.sector.y + 3][action.sector.x].sector.ship = true
                     }
                 }
-                stateCopy.whatSetShipFU = null
+
                 stateCopy.horizonSetShipFU = null
                 stateCopy.FUMap = lockMap(stateCopy.FUMap)
                 if (state.whatSetShipFU === 1) {
@@ -164,6 +167,7 @@ const battleMapReducer = (state = initialState, action) => {
                 if (state.whatSetShipFU === 4) {
                     stateCopy.FUShips.ship4 -= 1
                 }
+                stateCopy.whatSetShipFU = null
             }
             return stateCopy
         case SET_SHIP_SECOND_USER:
@@ -198,7 +202,6 @@ const battleMapReducer = (state = initialState, action) => {
                         stateCopy.SUMap[action.sector.y + 3][action.sector.x].sector.ship = true
                     }
                 }
-                stateCopy.whatSetShipSU = null
                 stateCopy.horizonSetShipSU = null
                 stateCopy.SUMap = lockMap(stateCopy.SUMap)
                 if (state.whatSetShipSU === 1) {
@@ -213,6 +216,7 @@ const battleMapReducer = (state = initialState, action) => {
                 if (state.whatSetShipSU === 4) {
                     stateCopy.SUShips.ship4 -= 1
                 }
+                stateCopy.whatSetShipSU = null
             }
             return stateCopy
         case SET_SHOT_FIRST_USER:
@@ -241,16 +245,16 @@ const battleMapReducer = (state = initialState, action) => {
                     if (state.comp.game && !stateKillShip.kill && stateKillShip.hit) {
                         stateCopy.comp.sectorFire = [...fireAfterHitComp(stateCopy.FUMap, action.sector)]
                         stateCopy.comp.damaged = true
-                        stateCopy.comp.hit=true
+                        stateCopy.comp.hit = true
                     } else if (state.comp.game && stateKillShip.kill) {
                         stateCopy.comp.damaged = false
                     }
-                }else {
-                    stateCopy.comp.hit=false
+                } else {
+                    stateCopy.comp.hit = false
                     stateCopy.FUTurn.turn = !stateCopy.FUTurn.turn;
                 }
                 return stateCopy
-            }else return state
+            } else return state
         case TOGGLE_SETTING_SHIP : {
             if (action.firstUser) {
                 stateCopy = {...state}
@@ -335,13 +339,45 @@ const battleMapReducer = (state = initialState, action) => {
         case SET_COMP_GAME : {
             stateCopy = {...state}
             stateCopy.comp = {...state.comp}
-            stateCopy.comp.game=false
+            stateCopy.comp.game = false
             return stateCopy
         }
-        case TOGGLE_LOOK_SECOND_USER:{
+        case TOGGLE_LOOK_SECOND_USER: {
             stateCopy = {...state}
-            stateCopy.lookSecondUser=!stateCopy.lookSecondUser
+            stateCopy.lookSecondUser = !stateCopy.lookSecondUser
             return stateCopy
+        }
+        case INITIALIZE_THE_MAP: {
+            if (action.firstUser) {
+                stateCopy = {...state}
+                stateCopy.FUShips = {...state.FUShips}
+                stateCopy.FUMap = [...initializeTheMapFunction()]
+                stateCopy.FUShips.ship1 = 4
+                stateCopy.FUShips.ship2 = 3
+                stateCopy.FUShips.ship3 = 2
+                stateCopy.FUShips.ship4 = 1
+                return stateCopy
+            } else {
+                stateCopy = {...state}
+                stateCopy.SUShips = {...state.SUShips}
+                stateCopy.SUMap = [...initializeTheMapFunction()]
+                stateCopy.SUShips.ship1 = 4
+                stateCopy.SUShips.ship2 = 3
+                stateCopy.SUShips.ship3 = 2
+                stateCopy.SUShips.ship4 = 1
+                return stateCopy
+            }
+        }
+        case TOGGLE_GAME_WITH_COMP: {
+            stateCopy = {...state}
+            stateCopy.comp = {...state.comp}
+            if (state.comp.game) {
+                stateCopy.comp.game = false
+                return stateCopy
+            } else {
+                stateCopy.comp.game = true
+                return stateCopy
+            }
         }
         default:
             return state
@@ -409,10 +445,18 @@ export const toggleLookSecondUser = (value) => {
     return ({type: "TOGGLE_LOOK_SECOND_USER", value})
 };
 
-export const setShipsRandom =(firstUser, userMap)=>{
+export const initializeTheMap = (firstUser) => {
+    return ({type: "INITIALIZE_THE_MAP", firstUser})
+};
+export const toggleGameWithComp = () => {
+    return ({type: "TOGGLE_GAME_WITH_COMP",})
+};
+
+export const setShipsRandom1 = (firstUser, userMap) => {
     let horizon = true;
     let shipInputState;
-    return (dispatch)=>{
+    return (dispatch) => {
+        /* dispatch(initializeTheMap(firstUser))*/
         for (let shipValue = 4; shipValue >= 1; shipValue--) {
             for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
                 horizon = getRandomInt(2)
@@ -426,9 +470,24 @@ export const setShipsRandom =(firstUser, userMap)=>{
     }
 }
 
-
-
-
+export const setShipsRandom = (firstUser, userMap) => {
+    let horizon = true;
+    let shipInputState;
+    return dispatch => {
+        /*dispatch(initializeTheMap(firstUser))*/
+        for (let shipValue = 4; shipValue >= 1; shipValue--) {
+            for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
+                horizon = getRandomInt(2)
+                let promise = dispatch(setWhatSetShip(shipValue, firstUser))
+                let promise1 = dispatch(setHorizon(horizon, firstUser))
+                let promise2 = dispatch(unlockForSetShip(shipValue, horizon, firstUser))
+                shipInputState = checkForShipInputComp(userMap, horizon, shipValue);
+                Promise.all([horizon, promise, promise1, promise2, shipInputState])
+                    .then(dispatch(setShipSecondUser(shipInputState[getRandomInt(shipInputState.length)], shipValue, horizon)))
+            }
+        }
+    }
+}
 
 
 export default battleMapReducer;
