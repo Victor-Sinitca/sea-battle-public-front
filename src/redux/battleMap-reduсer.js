@@ -49,8 +49,6 @@ let initialState = {
     },
 
     lookSecondUser: true,
-
-
     whatSetShipFU: null,
     whatSetShipSU: null,
     horizonSetShipFU: null,
