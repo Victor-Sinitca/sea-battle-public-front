@@ -3,23 +3,13 @@ import s from "./DeskUser.module.css";
 import Desk from "./Desk/Desk";
 import DownBar from "./DownBar/DownBar";
 import SetShipBar from "./SetShip/SetShipBar";
-import {useSelector} from "react-redux";
-
 
 
 const DeskUser = (props) => {
-    const numberShips1 = useSelector(state => state.battleMap.SUShips.numberShips1 );
-    const numberShips2 = useSelector(state => state.battleMap.SUShips.numberShips2 );
-    const numberShips3 = useSelector(state => state.battleMap.SUShips.numberShips3 );
-    const numberShips4 = useSelector(state => state.battleMap.SUShips.numberShips4 );
 
 
-
-
-
-    let shipOpponent
-    shipOpponent = numberShips1 > 0 || numberShips2 > 0 ||
-        numberShips3 > 0 || numberShips4 > 0;
+    let shipOpponent = props.SUShips.numberShips1 > 0 || props.SUShips.numberShips2 > 0 ||
+        props.SUShips.numberShips3 > 0 || props.SUShips.numberShips4 > 0;
 
 
     const toggleDeleteShip = () => {

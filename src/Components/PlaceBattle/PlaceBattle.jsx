@@ -100,9 +100,9 @@ let PlaceBattle = (props) => {
                   deleteShipUser={props.deleteShipFU}
 
 
-                  firstUser={true} firstUserMap={firstUserMap} secondUserMap={secondUserMap}
-                  SUShips={SUShips}
-                  FUShips={FUShips}
+                  firstUser={true} firstUserMap={props.firstUserMap} secondUserMap={props.secondUserMap}
+                  SUShips={props.SUShips}
+                  FUShips={props.FUShips}
                   whatSetShip={props.whatSetShipFU}
 
 
@@ -118,7 +118,7 @@ let PlaceBattle = (props) => {
 
 
 
-                    UserTurn={FUTurn}
+                    UserTurn={props.FUTurn}
                   toggleLookSecondUser={props.toggleLookSecondUser} setShipsRandom={props.setShipsRandom}
                   initializeTheMap={props.initializeTheMap} toggleGameWithComp={props.toggleGameWithComp}
                   comp={props.comp}/>
