@@ -37,10 +37,10 @@
     border: #2807e7 1px solid ;
 }
 .active{
-    background-color: #06f53a;
+    background-color: #01a121;
 }
 .deActive{
-    background-color: #282c34;
+    background-color: #0174d0;
 }
 
 .ship1{
@@ -60,4 +60,7 @@
     grid-template-columns: 120px 10px 10px;
 }
 
+.ship{
+    height: 20px;
+}
 

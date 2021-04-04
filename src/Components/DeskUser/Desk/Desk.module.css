@@ -1,6 +1,9 @@
 .display1{
   display: grid;
   grid-template-columns: 22px 1fr;
+  background-color: #316d84;
+  padding: 10px;
+  box-shadow: 0 0 8px 8px #84caf6 inset;
 }
 .display11{
   display: grid;

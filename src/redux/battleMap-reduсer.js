@@ -144,21 +144,21 @@ const battleMapReducer = (state = initialState, action) => {
                     stateCopy.FUMap[action.sector.y][action.sector.x].sector.img = 1
                 }
                 if (state.whatSetShipFU > 1) {
-                    stateCopy.FUMap[action.sector.y][action.sector.x].sector.img = 211
-                    stateCopy.FUMap[action.sector.y + 1][action.sector.x].sector.img = 221
+                    stateCopy.FUMap[action.sector.y][action.sector.x].sector.img = 221
+                    stateCopy.FUMap[action.sector.y + 1][action.sector.x].sector.img = 211
                     stateCopy.FUMap[action.sector.y + 1][action.sector.x].sector.ship = true
                 }
                 if (state.whatSetShipFU > 2) {
-                    stateCopy.FUMap[action.sector.y][action.sector.x].sector.img = 311
+                    stateCopy.FUMap[action.sector.y][action.sector.x].sector.img = 331
                     stateCopy.FUMap[action.sector.y + 1][action.sector.x].sector.img = 321
-                    stateCopy.FUMap[action.sector.y + 2][action.sector.x].sector.img = 331
+                    stateCopy.FUMap[action.sector.y + 2][action.sector.x].sector.img = 311
                     stateCopy.FUMap[action.sector.y + 2][action.sector.x].sector.ship = true
                 }
                 if (state.whatSetShipFU > 3) {
-                    stateCopy.FUMap[action.sector.y][action.sector.x].sector.img = 411
-                    stateCopy.FUMap[action.sector.y + 1][action.sector.x].sector.img = 421
-                    stateCopy.FUMap[action.sector.y + 2][action.sector.x].sector.img = 431
-                    stateCopy.FUMap[action.sector.y + 3][action.sector.x].sector.img = 441
+                    stateCopy.FUMap[action.sector.y][action.sector.x].sector.img = 441
+                    stateCopy.FUMap[action.sector.y + 1][action.sector.x].sector.img = 431
+                    stateCopy.FUMap[action.sector.y + 2][action.sector.x].sector.img = 421
+                    stateCopy.FUMap[action.sector.y + 3][action.sector.x].sector.img = 411
                     stateCopy.FUMap[action.sector.y + 3][action.sector.x].sector.ship = true
                 }
             }
@@ -218,21 +218,21 @@ const battleMapReducer = (state = initialState, action) => {
                         stateCopy.SUMap[action.sector.y][action.sector.x].sector.img = 1
                     }
                     if (state.whatSetShipSU > 1) {
-                        stateCopy.SUMap[action.sector.y][action.sector.x].sector.img = 211
-                        stateCopy.SUMap[action.sector.y + 1][action.sector.x].sector.img = 221
+                        stateCopy.SUMap[action.sector.y][action.sector.x].sector.img = 221
+                        stateCopy.SUMap[action.sector.y + 1][action.sector.x].sector.img = 211
                         stateCopy.SUMap[action.sector.y + 1][action.sector.x].sector.ship = true
                     }
                     if (state.whatSetShipSU > 2) {
-                        stateCopy.SUMap[action.sector.y][action.sector.x].sector.img = 311
+                        stateCopy.SUMap[action.sector.y][action.sector.x].sector.img = 331
                         stateCopy.SUMap[action.sector.y + 1][action.sector.x].sector.img = 321
-                        stateCopy.SUMap[action.sector.y + 2][action.sector.x].sector.img = 331
+                        stateCopy.SUMap[action.sector.y + 2][action.sector.x].sector.img = 311
                         stateCopy.SUMap[action.sector.y + 2][action.sector.x].sector.ship = true
                     }
                     if (state.whatSetShipSU > 3) {
-                        stateCopy.SUMap[action.sector.y][action.sector.x].sector.img = 411
-                        stateCopy.SUMap[action.sector.y + 1][action.sector.x].sector.img = 421
-                        stateCopy.SUMap[action.sector.y + 2][action.sector.x].sector.img = 431
-                        stateCopy.SUMap[action.sector.y + 3][action.sector.x].sector.img = 441
+                        stateCopy.SUMap[action.sector.y][action.sector.x].sector.img = 441
+                        stateCopy.SUMap[action.sector.y + 1][action.sector.x].sector.img = 431
+                        stateCopy.SUMap[action.sector.y + 2][action.sector.x].sector.img = 421
+                        stateCopy.SUMap[action.sector.y + 3][action.sector.x].sector.img = 411
                         stateCopy.SUMap[action.sector.y + 3][action.sector.x].sector.ship = true
                     }
                 }

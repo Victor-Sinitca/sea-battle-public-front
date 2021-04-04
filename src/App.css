@@ -9,21 +9,27 @@
   grid-template-columns: 100px 1fr;
   grid-gap: 15px;
   border:  2px #21e81a;
-  background-color: #aaeeaa;
+  background-color: #93d8ee;
   align-content: center;
   margin: 0 auto;
+  box-shadow: 0 0 12px 8px #9baeb6 inset;
+  padding: 20px;
 }
 
 .displayHeader{
   grid-area: h;
   background-color: #2d79ea;
+  box-shadow: 0 0 8px 8px #93d8ee inset;
+  padding: 20px;
 }
 .displayNavBar{
   background-color: #9af89a;
+  padding: 10px;
 }
 .displayPlace{
   padding: 20px;
-  background-color: #d6ead6;
+  background-color: #84caf6;
+  box-shadow: 0 0 8px 8px #93d8ee inset;
 }
 
 

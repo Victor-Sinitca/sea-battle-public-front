@@ -4,8 +4,8 @@
 }
 .displayUser{
   display: grid;
-  grid-template-columns: 240px 1fr;
-  grid-template-rows: 230px 1fr;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows:260px 1fr;
 }
 .displaySetShip{
   display: grid;

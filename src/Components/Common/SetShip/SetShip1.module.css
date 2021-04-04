@@ -17,23 +17,32 @@
     display: grid;
     grid-template-rows: 30px 1fr;
     margin-top: 5px;
+
 }
 .displayVert button{
-    width: 40px;
+    width: 35px;
+    background-color: #94b5e0;
 }
 .displayHor{
     display: grid;
     grid-template-rows: 30px 1fr;
     margin-top: 5px;
 }
-.horiz{
-    display: grid;
-    grid-template-columns: repeat(4, 22px) ;
+.displayHor button{
+    background-color: #94b5e0;
 }
+
+
 .partShipFirst{
     width: 18px;
     height: 18px;
     background-color: #06f53a;
     border-radius: 4px;
     border: #2807e7 3px solid ;
+}
+.ship{
+    width: 20px;
+}
+.ship1{
+    height: 20px;
 }

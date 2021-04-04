@@ -1,6 +1,11 @@
 import React from "react";
 import s from "./SetShipBar.module.css";
 import SetShip from "../../Common/SetShip/SetShip1";
+import ship1 from "../../../assets/img/1.png"
+import ship2 from "../../../assets/img/20.png"
+import ship3 from "../../../assets/img/3.png"
+import ship4 from "../../../assets/img/40.png"
+
 
 
 const SetShipBar = (props) => {
@@ -33,9 +38,7 @@ const SetShipBar = (props) => {
                 <span>
                     <button disabled={!props.FUShips.ship1} onClick={SetShip1}
                             className={props.whatSetShip === 1 ? s.active : s.deActive}>
-                        <div className={s.displayShip1}>
-                            <div className={s.partShip}> </div>
-                        </div>
+                        <img className={s.ship}  src={ship1} alt="no img"/>
                     </button>
                 </span>
                 <div></div>
@@ -45,10 +48,7 @@ const SetShipBar = (props) => {
                 <div>
                     <button disabled={!props.FUShips.ship2} onClick={SetShip2}
                             className={props.whatSetShip === 2 ? s.active : s.deActive}>
-                        <div className={s.displayShip2}>
-                            <div className={s.partShip}></div>
-                            <div className={s.partShip}></div>
-                        </div>
+                        <img className={s.ship}  src={ship2} alt="no img"/>
                     </button>
                 </div>
                 <div></div>
@@ -58,11 +58,7 @@ const SetShipBar = (props) => {
                 <div>
                     <button disabled={!props.FUShips.ship3} onClick={SetShip3}
                             className={props.whatSetShip === 3 ? s.active : s.deActive}>
-                        <div className={s.displayShip3}>
-                            <div className={s.partShip}></div>
-                            <div className={s.partShip}></div>
-                            <div className={s.partShip}></div>
-                        </div>
+                        <img className={s.ship}  src={ship3} alt="no img"/>
                     </button>
                 </div>
                 <div></div>
@@ -72,12 +68,7 @@ const SetShipBar = (props) => {
                 <div>
                     <button disabled={!props.FUShips.ship4} onClick={SetShip4}
                             className={props.whatSetShip === 4 ? s.active : s.deActive}>
-                        <div className={s.displayShip4}>
-                            <div className={s.partShip}></div>
-                            <div className={s.partShip}></div>
-                            <div className={s.partShip}></div>
-                            <div className={s.partShip}></div>
-                        </div>
+                        <img className={s.ship}  src={ship4} alt="no img"/>
                     </button>
                 </div>
                 <div></div>

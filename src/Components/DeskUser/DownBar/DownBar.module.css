@@ -7,3 +7,6 @@
   display: grid;
   grid-template-rows: repeat(5,22px);
 }
+.ship{
+  height: 20px;
+}
