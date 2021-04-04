@@ -15,16 +15,16 @@ const DeskUser = (props) => {
     const toggleDeleteShip = () => {
         props.toggleDeleteShip(props.firstUser)
     }
-    const lookSecondUser =()=>{
+    const lookSecondUser = () => {
         props.toggleLookSecondUser()
     }
-    const setShipsRandom=()=>{
-       props.setShipsRandom(props.firstUser,props.firstUserMap)
+    const setShipsRandom = () => {
+        props.setShipsRandom(props.firstUser, props.firstUserMap)
     }
-    const clearMap=()=>{
+    const clearMap = () => {
         props.initializeTheMap(props.firstUser)
     }
-    const compGame=()=>{
+    const compGame = () => {
         props.toggleGameWithComp()
     }
 
@@ -37,17 +37,19 @@ const DeskUser = (props) => {
                     <Desk userMap={props.firstUserMap} firstDesk={true}
                           returnToClick={props.setShipUser} toClick={true}
                           deleteShipUser={props.deleteShipUser}/>
-                    {((props.firstUser&&props.settingShipUser.firstUser)||(!props.firstUser&&props.settingShipUser.secondUser))
+                    {((props.firstUser && props.settingShipUser.firstUser) || (!props.firstUser && props.settingShipUser.secondUser))
                         ? <SetShipBar FUShips={props.FUShips} whatSetShip={props.whatSetShip}
                                       firstUserMap={props.firstUserMap}
                                       unlockForSetShip={props.unlockForSetShip} firstUser={props.firstUser}
                                       setHorizon={props.setHorizon}
                                       lockAllMap={props.lockAllMap} setWhatSetShip={props.setWhatSetShip}
                                       startGame={props.startGame}/>
-                        : <DownBar userShips={props.SUShips} firstUser={props.firstUser} UserTurn ={props.UserTurn}/>
+                        : <DownBar userShips={props.SUShips} firstUser={props.firstUser} UserTurn={props.UserTurn}/>
                     }
-                    <div> <button onClick={lookSecondUser}>toggle look second user</button></div>
-                    {((props.firstUser&&props.settingShipUser.firstUser)||(!props.firstUser&&props.settingShipUser.secondUser))
+                    <div>
+                        <button onClick={lookSecondUser}>toggle look second user</button>
+                    </div>
+                    {((props.firstUser && props.settingShipUser.firstUser) || (!props.firstUser && props.settingShipUser.secondUser))
                         ? <div>
                             <button onClick={toggleDeleteShip} className={props.deleteShipUser ?
                                 s.deleteShipButtonActive :
@@ -64,11 +66,11 @@ const DeskUser = (props) => {
                         <div>Field two</div>
                         <div className={s.displayUser}>
                             <Desk userMap={props.secondUserMap} firstDesk={false}
-                                  returnToClick={props.setShotUser} toClick={shipOpponent? props.UserTurn :false }/>
+                                  returnToClick={props.setShotUser} toClick={shipOpponent ? props.UserTurn : false}/>
                         </div>
-                        {!shipOpponent?
-                            <div> WIIIIIIN  </div>
-                            :null
+                        {!shipOpponent ?
+                            <div> WIIIIIIN </div>
+                            : null
                         }
                     </div>
                     :
@@ -77,7 +79,7 @@ const DeskUser = (props) => {
                         <button onClick={setShipsRandom}>set ships random</button>
                         <button onClick={clearMap}>clear map</button>
                         <div>
-                            {props.comp.game?
+                            {props.comp.game ?
                                 <button onClick={compGame}>click to game to man</button>
                                 :
                                 <button onClick={compGame}>click to game to comp</button>

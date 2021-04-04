@@ -4,29 +4,28 @@ import s from "./PlaceBattle.module.css"
 import DeskUser from "../DeskUser/DeskUser";
 import {checkForShipFireComp, checkForShipInputComp} from "../Common/CheckForShipInput/CheckForSingleShipInput";
 import {getRandomInt} from "../Common/getRandom/getRandom";
-import {initializeTheMap, toggleGameWithComp} from "../../redux/battleMap-reduсer";
+import {
+    initializeTheMap,
+    setHorizon, setShipFirstUser, setShipSecondUser,
+    setWhatSetShip,
+    toggleGameWithComp,
+    unlockForSetShip
+} from "../../redux/battleMap-reduсer";
 import {useSelector} from "react-redux";
 
 
-
-
-
 let PlaceBattle = (props) => {
-    const firstUserMap = useSelector(state => state.battleMap.FUMap );
-    const secondUserMap = useSelector(state => state.battleMap.SUMap );
-    const comp = useSelector(state => state.battleMap.comp );
-    const settingShipUser = useSelector(state => state.battleMap.settingShipUser );
-    const FUTurn = useSelector(state => state.battleMap.FUTurn );
-    const FUShips = useSelector(state => state.battleMap.FUShips );
-    const SUShips = useSelector(state => state.battleMap.SUShips );
-
-
-
+    const firstUserMap = useSelector(state => state.battleMap.FUMap);
+    const secondUserMap = useSelector(state => state.battleMap.SUMap);
+    const comp = useSelector(state => state.battleMap.comp);
+    const settingShipUser = useSelector(state => state.battleMap.settingShipUser);
+    const FUTurn = useSelector(state => state.battleMap.FUTurn);
+    const FUShips = useSelector(state => state.battleMap.FUShips);
 
 
     useEffect(() => {
-        if (!firstUserMap||!secondUserMap) {
-            let userMap1 = [], userMap2 = [],i, j
+        if (!firstUserMap || !secondUserMap) {
+            let userMap1 = [], userMap2 = [], i, j
             for (i = 0; i < 10; i++) {
                 userMap1[i] = []
                 userMap2[i] = []
@@ -61,10 +60,10 @@ let PlaceBattle = (props) => {
 
     useEffect(() => { //расстановка кораблей компьютером
         if (comp.game && !settingShipUser.firstUser && settingShipUser.secondUser) { // заполнение поля компьютером
-            props.setShipsRandom(false,props.secondUserMap)
+            props.setShipsRandom(false, props.secondUserMap)
             props.startGame(false) //true - start game first user, false - start game second user
         }
-    },[settingShipUser.firstUser]);
+    }, [settingShipUser.firstUser]);
 
     useEffect(() => { //стрельба компьютера
         if (comp.game && !FUTurn.turn && !settingShipUser.secondUser) { //ход компьютера
@@ -117,11 +116,10 @@ let PlaceBattle = (props) => {
                   settingShipUser={props.settingShipUser}
 
 
-
-                    UserTurn={props.FUTurn}
+                  UserTurn={props.FUTurn}
                   toggleLookSecondUser={props.toggleLookSecondUser} setShipsRandom={props.setShipsRandom}
                   initializeTheMap={props.initializeTheMap} toggleGameWithComp={props.toggleGameWithComp}
-                  comp={props.comp}/>
+                  comp={props.comp} />
         {props.lookSecondUser ?
             <DeskUser toggleSettingShip={props.toggleSettingShip} firstUser={false} firstUserMap={props.secondUserMap}
                       secondUserMap={props.firstUserMap}
@@ -135,7 +133,7 @@ let PlaceBattle = (props) => {
                       settingShipUser={props.settingShipUser} startGame={props.startGame} UserTurn={!props.FUTurn}
                       toggleLookSecondUser={props.toggleLookSecondUser} setShipsRandom={props.setShipsRandom}
                       initializeTheMap={props.initializeTheMap} toggleGameWithComp={props.toggleGameWithComp}
-                      comp={props.comp}/>
+                      comp={props.comp} />
             :
             <div> Place for second User </div>
         }

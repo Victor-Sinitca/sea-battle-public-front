@@ -16,12 +16,13 @@
 
 .displayHeader{
   grid-area: h;
-  background-color: #0f5a0f;
+  background-color: #2d79ea;
 }
 .displayNavBar{
   background-color: #9af89a;
 }
 .displayPlace{
+  padding: 20px;
   background-color: #d6ead6;
 }
 

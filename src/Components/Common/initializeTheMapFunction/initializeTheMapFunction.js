@@ -1,4 +1,3 @@
-
 export const initializeTheMapFunction=()=>{
     let userMap = [], i, j
     for (i = 0; i < 10; i++) {

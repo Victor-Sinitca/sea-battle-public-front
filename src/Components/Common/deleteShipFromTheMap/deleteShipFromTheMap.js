@@ -57,6 +57,8 @@ export const deleteShipFromTheMap=(map1, sector, ships)=>{
         for(i=iMin; i<=iMax ; i++){
             for(j=jMin; j<=jMax ; j++){
                 map[i][j].sector.ship = false
+                map[i][j].sector.img = 0
+
             }
         }
     }
