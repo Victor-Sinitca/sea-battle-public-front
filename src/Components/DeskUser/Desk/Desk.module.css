@@ -8,6 +8,13 @@
 .display11{
   display: grid;
   grid-template-rows: repeat(10,20px);
+  padding-left: 5px;
+}
+.display11 div{
+  color: #dcd3bc;
+  font-weight:bold;
+
+
 }
 .display2{
   display: grid;
@@ -18,7 +25,10 @@
   grid-template-columns: repeat(10,20px);
   text-align: center;
 }
-
+.display3 div{
+  color: #dcd3bc;
+  font-weight:bold
+}
 
 
 

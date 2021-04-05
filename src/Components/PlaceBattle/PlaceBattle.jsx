@@ -56,14 +56,14 @@ let PlaceBattle = (props) => {
             props.setSecondUserMap(userMap2)
         }
     });
-
-
     useEffect(() => { //расстановка кораблей компьютером
         if (comp.game && !settingShipUser.firstUser && settingShipUser.secondUser) { // заполнение поля компьютером
             props.setShipsRandom(false, props.secondUserMap)
             props.startGame(false) //true - start game first user, false - start game second user
         }
     }, [settingShipUser.firstUser]);
+
+
 
     useEffect(() => { //стрельба компьютера
         if (comp.game && !FUTurn.turn && !settingShipUser.secondUser) { //ход компьютера

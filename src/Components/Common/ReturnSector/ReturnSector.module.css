@@ -4,6 +4,8 @@
     background-color: #48b300;
     border: #000000 1px solid;
     box-shadow: 0 0 4px 1px #0c0786 inset;
+    animation-duration: 3s;
+    animation-name: slidein;
 }
 .noneShot{
     border: #000000 1px solid;
@@ -30,5 +32,28 @@
 
 }
 
+
+
+@keyframes slidein {
+    from {
+        color: #d5127d;
+        border-radius: 10px;
+        height: 50%;
+        width: 50%;
+    }
+
+    to {
+        color: #01a121;
+        align-self: center;
+        height: 150%;
+        width: 150%;
+    }
+    to {
+        color: #a1145c;
+        align-self: center;
+        height: 100%;
+        width: 100%;
+    }
+}
 /*
 border: #0f5a0f 1px solid;*/

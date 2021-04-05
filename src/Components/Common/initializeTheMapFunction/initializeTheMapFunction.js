@@ -1,9 +1,9 @@
-export const initializeTheMapFunction=()=>{
-    let userMap = [], i, j
+export const initializeTheMapFunction=(userMap)=>{
+    let userMap1 = userMap, i, j
     for (i = 0; i < 10; i++) {
         userMap[i] = []
         for (j = 0; j < 10; j++) {
-            userMap[i][j] = {
+            userMap1[i][j] = {
                 sector: {
                     ship: false,
                     shot: false,
@@ -15,5 +15,5 @@ export const initializeTheMapFunction=()=>{
             }
         }
     }
-    return  userMap
+    return  userMap1
 }
