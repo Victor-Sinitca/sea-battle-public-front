@@ -19,6 +19,8 @@ import ship411 from "../../../assets/img/411.png"
 import ship421 from "../../../assets/img/421.png"
 import ship431 from "../../../assets/img/431.png"
 import ship441 from "../../../assets/img/441.png"
+import fire from "../../../assets/img/fire.png"
+import fire1 from "../../../assets/img/fire1.png"
 
 
 
@@ -66,6 +68,7 @@ const ReturnSector = (props) => {
                 {props.sector.img === 421 ? <img src={ship421} className={s.ship1} alt="no img"/> : null}
                 {props.sector.img === 431 ? <img src={ship431} className={s.ship1} alt="no img"/> : null}
                 {props.sector.img === 441 ? <img src={ship441} className={s.ship1} alt="no img"/> : null}
+                {props.sector.shot&&!props.sector.ship? <img className={s.fire} src={fire1} alt="no img" />:null}
             </div>
             :
             <div onClick={clickSector} className={props.sector.shot
@@ -75,6 +78,8 @@ const ReturnSector = (props) => {
                 : props.sector.ship
                     ? s.noneShot
                     : s.noneShot}>
+                {props.sector.shot?
+                <img className={s.fire} src={fire1} alt="no img" />:null}
             </div>
     )
 }

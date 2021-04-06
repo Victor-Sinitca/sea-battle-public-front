@@ -5,6 +5,47 @@
   padding: 10px;
   box-shadow: 0 0 8px 8px #84caf6 inset;
 }
+.display1Win{
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  background-color: #316d84;
+  padding: 10px;
+  box-shadow: 0 0 8px 8px #b3f1c1 inset;
+}
+.display1Loss{
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  background-color: #316d84;
+  padding: 10px;
+  box-shadow: 0 0 8px 8px #b13d54 inset;
+}
+.display1Turn{
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  background-color: #316d84;
+  padding: 10px;
+  box-shadow: 0 0 8px 8px #5fdb8b inset
+}
+.display1TurnWinn{
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  background-color: #316d84;
+  padding: 10px;
+  box-shadow: 0 0 8px 8px #5fdb8b inset
+}
+.display1TurnLoss{
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  background-color: #316d84;
+  padding: 10px;
+  box-shadow: 0 0 8px 8px #5fdb8b inset
+}
+
+
+
+
+
+
 .display11{
   display: grid;
   grid-template-rows: repeat(10,20px);
@@ -29,10 +70,6 @@
   color: #dcd3bc;
   font-weight:bold
 }
-
-
-
-
 
 .displayMap{
   display: grid;

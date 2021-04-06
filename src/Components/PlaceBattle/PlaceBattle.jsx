@@ -134,8 +134,8 @@ let PlaceBattle = (props) => {
                       toggleLookSecondUser={props.toggleLookSecondUser} setShipsRandom={props.setShipsRandom}
                       initializeTheMap={props.initializeTheMap} toggleGameWithComp={props.toggleGameWithComp}
                       comp={props.comp} />
-            :
-            <div> Place for second User </div>
+            :null
+
         }
     </div>
 }

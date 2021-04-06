@@ -1,3 +1,7 @@
+.displayBar{
+  padding-left: 10px;
+}
+
 .displayDownBar{
   display: grid;
   grid-template-columns: 100px 1fr;
@@ -7,6 +11,20 @@
   display: grid;
   grid-template-rows: repeat(5,22px);
 }
+.displayString div{
+ font-weight: bold;
+}
+
+
 .ship{
   height: 20px;
+}
+.fireShip{
+  height: 100px;
+
+}
+.header{
+  padding: 10px;
+  color: #020d87;
+  font-weight:bold;
 }

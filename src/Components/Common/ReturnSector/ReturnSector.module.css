@@ -1,59 +1,55 @@
 .shotMiss{
     vertical-align: middle;
-    display: inline-block;
-    background-color: #48b300;
+
+    background-color: #0c0786;
     border: #000000 1px solid;
     box-shadow: 0 0 4px 1px #0c0786 inset;
-    animation-duration: 3s;
-    animation-name: slidein;
 }
 .noneShot{
     border: #000000 1px solid;
     vertical-align: middle;
-    display: inline-block;
     background-color: #0c0786;
 }
 .ship{
     vertical-align: middle;
-    display: inline-block;
     background-color: #5a90ec;
     box-shadow: 0 0 1px 1px #0c0786 inset;
 
 }
 .shotToShip{
-    display: inline-block;
     vertical-align: middle;
     background-color: #ff0000;
     border: #000000 1px solid;
     box-shadow: 0 0 10px 1px #0c0786 inset;
 }
 .ship1{
-    width: 20px;height: 20px;
+    width: 22px;height: 22px;
+}
 
+.fire{
+    width: 18px; height: 18px;
+    animation-duration: 1s;
+    align-items:center;
+    animation: pulsing 0.5s ;
+    opacity:10;
 }
 
 
 
-@keyframes slidein {
-    from {
-        color: #d5127d;
-        border-radius: 10px;
-        height: 50%;
-        width: 50%;
-    }
 
-    to {
-        color: #01a121;
-        align-self: center;
-        height: 150%;
-        width: 150%;
+@keyframes pulsing {
+    0% {
+        transform: scale(0.5, 0.5)
     }
-    to {
-        color: #a1145c;
-        align-self: center;
-        height: 100%;
-        width: 100%;
+    50% {
+        transform: scale(1.5, 1.5);
+    }
+    100% {
+        transform: scale(1, 1);
     }
 }
+
+
+
 /*
 border: #0f5a0f 1px solid;*/

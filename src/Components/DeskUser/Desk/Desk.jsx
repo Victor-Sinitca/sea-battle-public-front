@@ -6,7 +6,14 @@ import ReturnSector from "../../Common/ReturnSector/ReturnSector";
 
 const Desk = (props) => {
     return (
-        <div className={s.display1}>
+        <div className={
+            props.yourShips?
+                props.shipOpponent?
+                    props.UserTurn &&!props.firstDesk? s.display1Turn
+                        : s.display1
+                    : s.display1Win
+                : s.display1Loss
+        }>
             <div className={s.display11}>
                 <div></div>
                 <div>A</div>

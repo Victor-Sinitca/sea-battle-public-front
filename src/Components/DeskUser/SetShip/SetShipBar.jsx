@@ -33,16 +33,15 @@ const SetShipBar = (props) => {
 
 
     return <div className={s.displaySetShip}>
-        <div className={s.displayShipButton}>
+        <div >
             <div className={s.ship1}>
-                <span>
+                <div>
                     <button disabled={!props.FUShips.ship1} onClick={SetShip1}
                             className={props.whatSetShip === 1 ? s.active : s.deActive}>
                         <img className={s.ship}  src={ship1} alt="no img"/>
                     </button>
-                </span>
-                <div></div>
-                <div> {props.FUShips.ship1} </div>
+                </div>
+                <div className={s.number}> {props.FUShips.ship1} </div>
             </div>
             <div className={s.ship2}>
                 <div>
@@ -51,8 +50,7 @@ const SetShipBar = (props) => {
                         <img className={s.ship}  src={ship2} alt="no img"/>
                     </button>
                 </div>
-                <div></div>
-                <div> {props.FUShips.ship2} </div>
+                <div className={s.number}> {props.FUShips.ship2} </div>
             </div>
             <div className={s.ship3}>
                 <div>
@@ -61,8 +59,7 @@ const SetShipBar = (props) => {
                         <img className={s.ship}  src={ship3} alt="no img"/>
                     </button>
                 </div>
-                <div></div>
-                <div> {props.FUShips.ship3} </div>
+                <div className={s.number}> {props.FUShips.ship3} </div>
             </div>
             <div className={s.ship4}>
                 <div>
@@ -71,8 +68,7 @@ const SetShipBar = (props) => {
                         <img className={s.ship}  src={ship4} alt="no img"/>
                     </button>
                 </div>
-                <div></div>
-                <div> {props.FUShips.ship4} </div>
+                <div className={s.number}> {props.FUShips.ship4} </div>
             </div>
         </div>
         {(props.FUShips.ship1 || props.FUShips.ship2 || props.FUShips.ship3 || props.FUShips.ship4)
@@ -82,8 +78,8 @@ const SetShipBar = (props) => {
                          setHorizon={props.setHorizon}/>
             </div>
             :
-            <div>
-                <button onClick={startGame}> Start game</button>
+            <div className={s.startGameButton}>
+                <button  onClick={startGame}> Start game</button>
             </div>
         }
 

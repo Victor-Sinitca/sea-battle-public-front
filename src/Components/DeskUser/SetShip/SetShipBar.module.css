@@ -1,10 +1,8 @@
-.displayShipButton{
-    display: grid;
-    grid-template-rows: 30px 30px 30px;
-}
+
 .displaySetShip{
     display: grid;
-    grid-template-rows: 120px 1fr;
+    grid-template-rows: 150px 1fr;
+    padding-left: 10px;
 }
 .displayShip1{
     display: grid;
@@ -24,11 +22,6 @@
     grid-template-columns: 22px 22px 22px 22px;
 }
 
-
-
-
-
-
 .partShip{
     width:15px;
     height: 15px;
@@ -44,23 +37,67 @@
 }
 
 .ship1{
+    padding-top: 5px;
     display: grid;
-    grid-template-columns: 40px 10px 10px;
+    grid-template-columns: 120px 1fr;
 }
 .ship2{
+    padding-top: 5px;
     display: grid;
-    grid-template-columns: 60px 10px 10px;
+    grid-template-columns: 120px 1fr;
 }
 .ship3{
+    padding-top: 5px;
     display: grid;
-    grid-template-columns: 90px 10px 10px;
+    grid-template-columns: 120px 1fr;
 }
 .ship4{
+    padding-top: 5px;
     display: grid;
-    grid-template-columns: 120px 10px 10px;
+    grid-template-columns: 120px 1fr;
 }
 
 .ship{
     height: 20px;
 }
+.number{
+    color: #020d87;
+    font-weight: bold;
+}
+.startGameButton {
+align-items: center;
+}
 
+.startGameButton button{
+    background-color: #52a3ff;
+    box-shadow: 0 0 8px 8px #025f8d inset;
+    height: 80px;
+    width: 120px;
+    color: #020d87;
+    font-weight:bold;
+    animation: pulsing 6s infinite;
+
+}
+.startGameButton button:hover {
+/*    height: 82px;
+    width: 122px;*/
+    align-items: center;
+    font-size: 20px;
+}
+
+
+@keyframes pulsing {
+    0% {
+        /*transform: scale(0.95, 0.95);*/
+        background-color: #52a3ff;
+
+    }
+    50% {
+        /*transform: scale(1.01, 1.01);*/
+        background-color: #01a121;
+    }
+    100% {
+        /*transform: scale(0.95, 0.95);*/
+        background-color: #52a3ff;
+    }
+}
