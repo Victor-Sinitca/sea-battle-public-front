@@ -2,11 +2,11 @@ import {
     checkForShipInput,
     checkForShipInputComp,
     lockMap
-} from "../Components/Common/CheckForShipInput/CheckForSingleShipInput";
-import {deleteShipFromTheMap} from "../Components/Common/deleteShipFromTheMap/deleteShipFromTheMap";
-import {fireAfterHitComp, killShip} from "../Components/Common/KillShip/KillShip";
-import {getRandomInt} from "../Components/Common/getRandom/getRandom";
-import {initializeTheMapFunction} from "../Components/Common/initializeTheMapFunction/initializeTheMapFunction";
+} from "../commen/logics/CheckForShipInput/CheckForSingleShipInput";
+import {deleteShipFromTheMap} from "../commen/logics/deleteShipFromTheMap/deleteShipFromTheMap";
+import {fireAfterHitComp, killShip} from "../commen/logics/KillShip/KillShip";
+import {getRandomInt} from "../commen/logics/getRandom/getRandom";
+import {initializeTheMapFunction} from "../commen/logics/initializeTheMapFunction/initializeTheMapFunction";
 
 const SET_FIRST_USER_MAP = "SET_FIRST_USER_MAP"
 const SET_SECOND_USER_MAP = "SET_SECOND_USER_MAP"
@@ -384,7 +384,8 @@ const battleMapReducer = (state = initialState, action) => {
         case INITIALIZE_THE_MAP: {
             if (action.firstUser) {
                 stateCopy = {...state}
-                stateCopy.FUMap = initializeTheMapFunction()
+                stateCopy.FUMap = initializeTheMapFunction(stateCopy.FUMap)
+                stateCopy.FUShips={...state.FUShips}
                 stateCopy.FUShips.ship1 = 4
                 stateCopy.FUShips.ship2 = 3
                 stateCopy.FUShips.ship3 = 2
@@ -392,7 +393,8 @@ const battleMapReducer = (state = initialState, action) => {
                 return stateCopy
             } else {
                 stateCopy = {...state}
-                stateCopy.SUMap = initializeTheMapFunction()
+                stateCopy.SUMap = initializeTheMapFunction(stateCopy.SUMap)
+                stateCopy.SUShips={...state.SUShips}
                 stateCopy.SUShips.ship1 = 4
                 stateCopy.SUShips.ship2 = 3
                 stateCopy.SUShips.ship3 = 2
@@ -496,41 +498,19 @@ export const toggleLookSecondUser = (value) => {
     return ({type: "TOGGLE_LOOK_SECOND_USER", value})
 };
 
-export const initializeTheMap = (firstUser) => {
+export const clearTheMap = (firstUser) => {
     debugger
     return ({type: "INITIALIZE_THE_MAP", firstUser})
 };
 export const toggleGameWithComp = () => {
     return ({type: "TOGGLE_GAME_WITH_COMP",})
 };
-export const clearShipsForInstall = (firstUser) => {
-    return ({type: "CLEAR_SHIPS_FOR_INSTALL",firstUser})
-};
 
-
-/*dispatch(initializeTheMap(firstUser))*/
 
 
 export const setShipsRandom = (firstUser, userMap) => {
     return dispatch => {
-
-        let i, j
-        for (i = 0; i < 10; i++) {
-            userMap[i] = []
-            for (j = 0; j < 10; j++) {
-                userMap[i][j] = {
-                    sector: {
-                        ship: false,
-                        shot: false,
-                        x: j,
-                        y: i,
-                        unlock: false,
-                        img: null
-                    }
-                }
-            }
-        }
-        dispatch(clearShipsForInstall(firstUser))
+        dispatch(clearTheMap(firstUser))
         let horizon = true;
         let shipInputState;
         for (let shipValue = 4; shipValue >= 1; shipValue--) {

@@ -1,5 +1,5 @@
 import React from "react";
-import s from "./DownBar.module.css";
+import s from "./ShipBar.module.css";
 import ship1 from "../../../assets/img/1.png"
 import ship2 from "../../../assets/img/20.png"
 import ship3 from "../../../assets/img/3.png"
@@ -7,7 +7,7 @@ import ship4 from "../../../assets/img/40.png"
 import fireShip from "../../../assets/img/fireShip.png"
 import shield from "../../../assets/img/shield.png"
 
-const DownBar = (props) => {
+const ShipBar = (props) => {
     return (
         <div className={s.displayBar}>
             <div className={s.header}> Enemy ships</div>
@@ -26,12 +26,12 @@ const DownBar = (props) => {
                 </div>
             </div>
             {props.UserTurn ?
-                <div > <img className={s.fireShip} src={fireShip}/> </div>
+                <div > <img className={s.fireShip} src={fireShip} alt="no img"/> </div>
                 :
-                <div> <img className={s.fireShip} src={shield}/></div>
+                <div> <img className={s.fireShip} src={shield} alt="no img"/></div>
             }
         </div>
 
     )
 }
-export default DownBar
+export default ShipBar

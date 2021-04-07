@@ -2,15 +2,8 @@ import React, {useEffect} from "react";
 import Preloader from "../../commen/Preloader/Preloader";
 import s from "./PlaceBattle.module.css"
 import DeskUser from "../DeskUser/DeskUser";
-import {checkForShipFireComp, checkForShipInputComp} from "../Common/CheckForShipInput/CheckForSingleShipInput";
-import {getRandomInt} from "../Common/getRandom/getRandom";
-import {
-    initializeTheMap,
-    setHorizon, setShipFirstUser, setShipSecondUser,
-    setWhatSetShip,
-    toggleGameWithComp,
-    unlockForSetShip
-} from "../../redux/battleMap-reduсer";
+import {checkForShipFireComp} from "../../commen/logics/CheckForShipInput/CheckForSingleShipInput";
+import {getRandomInt} from "../../commen/logics/getRandom/getRandom";
 import {useSelector} from "react-redux";
 
 
@@ -61,7 +54,7 @@ let PlaceBattle = (props) => {
             props.setShipsRandom(false, props.secondUserMap)
             props.startGame(false) //true - start game first user, false - start game second user
         }
-    }, [settingShipUser.firstUser]);
+    });
 
 
 
@@ -118,7 +111,7 @@ let PlaceBattle = (props) => {
 
                   UserTurn={props.FUTurn}
                   toggleLookSecondUser={props.toggleLookSecondUser} setShipsRandom={props.setShipsRandom}
-                  initializeTheMap={props.initializeTheMap} toggleGameWithComp={props.toggleGameWithComp}
+                  clearTheMap={props.clearTheMap} toggleGameWithComp={props.toggleGameWithComp}
                   comp={props.comp} />
         {props.lookSecondUser ?
             <DeskUser toggleSettingShip={props.toggleSettingShip} firstUser={false} firstUserMap={props.secondUserMap}
@@ -132,7 +125,7 @@ let PlaceBattle = (props) => {
                       deleteShipUser={props.deleteShipSU}
                       settingShipUser={props.settingShipUser} startGame={props.startGame} UserTurn={!props.FUTurn}
                       toggleLookSecondUser={props.toggleLookSecondUser} setShipsRandom={props.setShipsRandom}
-                      initializeTheMap={props.initializeTheMap} toggleGameWithComp={props.toggleGameWithComp}
+                      clearTheMap={props.clearTheMap} toggleGameWithComp={props.toggleGameWithComp}
                       comp={props.comp} />
             :null
 

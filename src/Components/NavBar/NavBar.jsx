@@ -7,11 +7,7 @@ const NavBar=()=>{
     return(
         <div>
             <div>
-                <NavLink to='/placeBattleMan' className={s.navLink}> Battle with man </NavLink>
-            </div>
-            <div> ------</div>
-            <div>
-                <NavLink to='/placeBattleComputer' className={s.navLink}> Battle with the computer </NavLink>
+                <NavLink to='/placeBattleMan' className={s.navLink}>Sea battle</NavLink>
             </div>
 
         </div>

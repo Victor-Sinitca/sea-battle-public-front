@@ -1,8 +1,8 @@
 import React from "react";
 import s from "./DeskUser.module.css";
 import Desk from "./Desk/Desk";
-import DownBar from "./DownBar/DownBar";
-import SetShipBar from "./SetShip/SetShipBar";
+import ShipBar from "./ShipBar/ShipBar";
+import SetShipBar from "./SetShipBar/SetShipBar";
 
 
 const DeskUser = (props) => {
@@ -22,7 +22,7 @@ const DeskUser = (props) => {
         props.setShipsRandom(props.firstUser, props.firstUserMap)
     }
     const clearMap = () => {
-        props.initializeTheMap(props.firstUser)
+        props.clearTheMap(props.firstUser)
     }
     const compGame = () => {
         props.toggleGameWithComp()
@@ -44,10 +44,10 @@ const DeskUser = (props) => {
                                       setHorizon={props.setHorizon}
                                       lockAllMap={props.lockAllMap} setWhatSetShip={props.setWhatSetShip}
                                       startGame={props.startGame}/>
-                        : <DownBar userShips={props.SUShips} firstUser={props.firstUser} UserTurn={props.UserTurn}/>
+                        : <ShipBar userShips={props.SUShips} firstUser={props.firstUser} UserTurn={props.UserTurn}/>
                     }
                     <div>
-                        <button className={s.toggleLook} onClick={lookSecondUser}>toggle look second user</button>
+                        <button className={s.toggleLook} onClick={lookSecondUser}>show second user</button>
                     </div>
                     {((props.firstUser && props.settingShipUser.firstUser) || (!props.firstUser && props.settingShipUser.secondUser))
                         ? <div>
@@ -74,7 +74,8 @@ const DeskUser = (props) => {
                         </div>
                     </div>
                     :
-                    <div className={s.buttonHeader}>
+                    ((props.firstUser && props.settingShipUser.firstUser) || (!props.firstUser && props.settingShipUser.secondUser))
+                    ?<div className={s.buttonHeader}>
                         <div className={s.button1}>
                             <button  onClick={setShipsRandom}>set ships random</button>
                         </div>
@@ -90,6 +91,7 @@ const DeskUser = (props) => {
                             }
                         </div>
                     </div>
+                        :<div className={s.header}> Waiting second user</div>
                 }
             </div>
         </div>

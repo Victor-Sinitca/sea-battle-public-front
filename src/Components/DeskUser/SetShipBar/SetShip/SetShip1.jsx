@@ -1,12 +1,12 @@
 import React from "react";
 import s from "./SetShip1.module.css"
-import ship1 from "../../../assets/img/1.png"
-import ship2 from "../../../assets/img/20.png"
-import ship3 from "../../../assets/img/3.png"
-import ship4 from "../../../assets/img/40.png"
-import ship21 from "../../../assets/img/201.png"
-import ship31 from "../../../assets/img/301.png"
-import ship41 from "../../../assets/img/401.png"
+import ship1 from "../../../../assets/img/1.png"
+import ship2 from "../../../../assets/img/20.png"
+import ship3 from "../../../../assets/img/3.png"
+import ship4 from "../../../../assets/img/40.png"
+import ship21 from "../../../../assets/img/201.png"
+import ship31 from "../../../../assets/img/301.png"
+import ship41 from "../../../../assets/img/401.png"
 
 const SetShip = (props) => {
     const setShipVertical = () => {

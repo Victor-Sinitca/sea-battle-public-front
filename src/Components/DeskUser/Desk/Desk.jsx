@@ -1,10 +1,14 @@
 import React from "react";
 
 import s from "./Desk.module.css"
-import ReturnSector from "../../Common/ReturnSector/ReturnSector";
+import ReturnSector from "../ReturnSector/ReturnSector";
 
 
 const Desk = (props) => {
+
+
+
+
     return (
         <div className={
             props.yourShips?
@@ -39,11 +43,10 @@ const Desk = (props) => {
                     <div>7</div>
                     <div>8</div>
                     <div>9</div>
-
                 </div>
                 <div className={s.displayMap}>
                     {props.userMap.map(a => a.map(b =>
-                        <ReturnSector firstDesk={props.firstDesk} sector={b.sector}
+                        <ReturnSector key={b.sector.x} firstDesk={props.firstDesk} sector={b.sector}
                                       returnToClick={props.returnToClick}
                                       toClick={props.toClick} deleteShipUser={props.deleteShipUser}/>
                     ))}

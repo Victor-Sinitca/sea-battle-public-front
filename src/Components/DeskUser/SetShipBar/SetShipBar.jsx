@@ -1,6 +1,6 @@
 import React from "react";
 import s from "./SetShipBar.module.css";
-import SetShip from "../../Common/SetShip/SetShip1";
+import SetShip from "./SetShip/SetShip1";
 import ship1 from "../../../assets/img/1.png"
 import ship2 from "../../../assets/img/20.png"
 import ship3 from "../../../assets/img/3.png"
