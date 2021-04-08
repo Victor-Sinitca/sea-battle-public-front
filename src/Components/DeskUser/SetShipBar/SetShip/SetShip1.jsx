@@ -23,7 +23,7 @@ const SetShip = (props) => {
         {props.ship ?
             props.ship === 1
                 ? <div className={s.displayVert}>
-                    <div>
+                    <div className={s.shipsButton}>
                         <button onClick={setShipVertical}  >
                             <img className={s.ship}  src={ship1} alt="no img"/>
                         </button>
@@ -32,25 +32,21 @@ const SetShip = (props) => {
                 :
                 <div className={s.displayShip}>
                     <div className={s.displayVert}>
-                        <div>
+                        <div className={s.shipsButton}>
                             <button onClick={setShipVertical}>
-                                <div>
                                     {props.ship === 2 ? <img className={s.ship}  src={ship21} alt="no img"/> : null}
                                     {props.ship === 3 ? <img className={s.ship}  src={ship31} alt="no img"/> : null}
                                     {props.ship === 4 ? <img className={s.ship}  src={ship41} alt="no img"/> : null}
-                                </div>
                             </button>
                         </div>
 
                     </div>
                     <div className={s.displayHor}>
-                        <div>
+                        <div className={s.shipsButton}>
                             <button onClick={setShipHorizontal}>
-                                <div >
                                     {props.ship === 2 ? <img className={s.ship1}  src={ship2} alt="no img"/> : null}
                                     {props.ship === 3 ? <img className={s.ship1}  src={ship3} alt="no img"/> : null}
                                     {props.ship === 4 ? <img className={s.ship1}  src={ship4} alt="no img"/> : null}
-                                </div>
                             </button>
                         </div>
                     </div>

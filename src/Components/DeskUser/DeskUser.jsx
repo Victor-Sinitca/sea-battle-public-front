@@ -27,6 +27,9 @@ const DeskUser = (props) => {
     const compGame = () => {
         props.toggleGameWithComp()
     }
+    const startNewGame = () => {
+         props.startNewGame();
+    }
 
     return (
         <div className={yourShips ? !shipOpponent ? s.displayDeskWinn : s.displayDesk : s.displayDeskLoss}>
@@ -51,14 +54,18 @@ const DeskUser = (props) => {
                     </div>
                     {((props.firstUser && props.settingShipUser.firstUser) || (!props.firstUser && props.settingShipUser.secondUser))
                         ? <div>
-                            <button onClick={toggleDeleteShip} className={props.deleteShipUser ?
-                                s.deleteShipButtonActive :
-                                s.deleteShipButtonDizActive}>delete ship
-                            </button>
-                        </div>
+                            {props.deleteShipUser ?
+                                <button onClick={toggleDeleteShip} className={s.deleteShipButtonActive}>click to ship</button>
+                                :
+                                <button onClick={toggleDeleteShip} className={s.deleteShipButtonDizActive}>delete ship</button>
+                            }
+                          </div>
                         : <div>
-                            {!shipOpponent ? <div className={s.endGameWin}> you WIN </div> : null}
-                            {!yourShips ? <div className={s.endGameLose}> you are lose </div> : null}
+                            {!shipOpponent ?
+                                <button onClick={startNewGame} className={s.endGameWin}> you WIN click to start new
+                                    game </button> : null}
+                            {!yourShips ? <button className={s.endGameLose}> you are lose click to start new
+                                game </button> : null}
                         </div>
                     }
                 </div>
@@ -72,26 +79,29 @@ const DeskUser = (props) => {
                                   returnToClick={props.setShotUser} toClick={shipOpponent ? props.UserTurn : false}
                                   shipOpponent={shipOpponent} yourShips={yourShips}/>
                         </div>
+                        <div>
+                            <button onClick={startNewGame} >reset the game</button>
+                        </div>
                     </div>
                     :
                     ((props.firstUser && props.settingShipUser.firstUser) || (!props.firstUser && props.settingShipUser.secondUser))
-                    ?<div className={s.buttonHeader}>
-                        <div className={s.button1}>
-                            <button  onClick={setShipsRandom}>set ships random</button>
+                        ? <div className={s.buttonHeader}>
+                            <div className={s.button1}>
+                                <button onClick={setShipsRandom}>set ships random</button>
+                            </div>
+                            <div className={s.button1}>
+                                <button onClick={clearMap}>clear map</button>
+                            </div>
+                            {}
+                            <div className={s.button1}>
+                                {props.comp.game ?
+                                    <button className={s.button1} onClick={compGame}>play with a man</button>
+                                    :
+                                    <button className={s.button1} onClick={compGame}>play with a comp</button>
+                                }
+                            </div>
                         </div>
-                        <div className={s.button1}>
-                            <button  onClick={clearMap}>clear map</button>
-                        </div >
-                        {}
-                        <div className={s.button1}>
-                            {props.comp.game ?
-                                <button className={s.button1} onClick={compGame}>click to game to man</button>
-                                :
-                                <button className={s.button1} onClick={compGame}>click to game to comp</button>
-                            }
-                        </div>
-                    </div>
-                        :<div className={s.header}> Waiting second user</div>
+                        : <div className={s.header}> Waiting second user</div>
                 }
             </div>
         </div>

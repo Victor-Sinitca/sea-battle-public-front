@@ -112,7 +112,7 @@ let PlaceBattle = (props) => {
                   UserTurn={props.FUTurn}
                   toggleLookSecondUser={props.toggleLookSecondUser} setShipsRandom={props.setShipsRandom}
                   clearTheMap={props.clearTheMap} toggleGameWithComp={props.toggleGameWithComp}
-                  comp={props.comp} />
+                  comp={props.comp} startNewGame={props.startNewGame} />
         {props.lookSecondUser ?
             <DeskUser toggleSettingShip={props.toggleSettingShip} firstUser={false} firstUserMap={props.secondUserMap}
                       secondUserMap={props.firstUserMap}
@@ -126,7 +126,7 @@ let PlaceBattle = (props) => {
                       settingShipUser={props.settingShipUser} startGame={props.startGame} UserTurn={!props.FUTurn}
                       toggleLookSecondUser={props.toggleLookSecondUser} setShipsRandom={props.setShipsRandom}
                       clearTheMap={props.clearTheMap} toggleGameWithComp={props.toggleGameWithComp}
-                      comp={props.comp} />
+                      comp={props.comp} startNewGame={props.startNewGame} />
             :null
 
         }

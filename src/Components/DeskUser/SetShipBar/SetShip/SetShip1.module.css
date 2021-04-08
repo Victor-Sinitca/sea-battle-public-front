@@ -43,6 +43,15 @@
 .ship{
     width: 20px;
 }
+.shipsButton button {
+    border: 3px solid #1b4af8;
+    border-radius: 5px;
+
+}
+.shipsButton  :focus{
+    box-shadow: inset 0 0 2px 5px #619eec;
+}
+
 .ship1{
     height: 20px;
 }

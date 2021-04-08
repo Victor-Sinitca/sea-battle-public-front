@@ -11,8 +11,6 @@ import {initializeTheMapFunction} from "../commen/logics/initializeTheMapFunctio
 const SET_FIRST_USER_MAP = "SET_FIRST_USER_MAP"
 const SET_SECOND_USER_MAP = "SET_SECOND_USER_MAP"
 const TOGGLE_FIRST_USER_TURN = "TOGGLE_FIRST_USER_TURN"
-const TO_BEGIN_SETTING_SHIP = "TO_BEGIN_SETTING_SHIP"
-const FINISH_SETTING_SHIP = "FINISH_SETTING_SHIP"
 const SET_SHIP_FIRST_USER = "SET_SHIP_FIRST_USER"
 const SET_SHIP_SECOND_USER = "SET_SHIP_SECOND_USER"
 const SET_SHOT_FIRST_USER = "SET_SHOT_FIRST_USER"
@@ -31,7 +29,7 @@ const SET_COMP_GAME = "SET_COMP_GAME"
 const TOGGLE_LOOK_SECOND_USER = "TOGGLE_LOOK_SECOND_USER"
 const INITIALIZE_THE_MAP = "INITIALIZE_THE_MAP"
 const TOGGLE_GAME_WITH_COMP = "TOGGLE_GAME_WITH_COMP"
-const CLEAR_SHIPS_FOR_INSTALL = "CLEAR_SHIPS_FOR_INSTALL"
+const INITIAL_STATE_USERS = "INITIAL_STATE_USERS"
 
 
 let initialState = {
@@ -96,10 +94,6 @@ const battleMapReducer = (state = initialState, action) => {
             return {...state, SUMap: action.SUMap}
         case TOGGLE_FIRST_USER_TURN:
             return {...state, FUMap: action.firstUserTurn}
-        case TO_BEGIN_SETTING_SHIP:
-            return {...state, settingShip: true}
-        case FINISH_SETTING_SHIP :
-            return {...state, settingShip: false}
         case DELETE_SHIP_FU :
             stateCopy = {...state}
             stateCopy.FUMap = [...state.FUMap];
@@ -385,7 +379,7 @@ const battleMapReducer = (state = initialState, action) => {
             if (action.firstUser) {
                 stateCopy = {...state}
                 stateCopy.FUMap = initializeTheMapFunction(stateCopy.FUMap)
-                stateCopy.FUShips={...state.FUShips}
+                stateCopy.FUShips = {...state.FUShips}
                 stateCopy.FUShips.ship1 = 4
                 stateCopy.FUShips.ship2 = 3
                 stateCopy.FUShips.ship3 = 2
@@ -394,26 +388,7 @@ const battleMapReducer = (state = initialState, action) => {
             } else {
                 stateCopy = {...state}
                 stateCopy.SUMap = initializeTheMapFunction(stateCopy.SUMap)
-                stateCopy.SUShips={...state.SUShips}
-                stateCopy.SUShips.ship1 = 4
-                stateCopy.SUShips.ship2 = 3
-                stateCopy.SUShips.ship3 = 2
-                stateCopy.SUShips.ship4 = 1
-                return stateCopy
-            }
-        }
-        case CLEAR_SHIPS_FOR_INSTALL: {
-            if (action.firstUser) {
-                stateCopy = {...state}
-                stateCopy.FUShips={...state.FUShips}
-                stateCopy.FUShips.ship1 = 4
-                stateCopy.FUShips.ship2 = 3
-                stateCopy.FUShips.ship3 = 2
-                stateCopy.FUShips.ship4 = 1
-                return stateCopy
-            } else {
-                stateCopy = {...state}
-                stateCopy.SUShips={...state.FUShips}
+                stateCopy.SUShips = {...state.SUShips}
                 stateCopy.SUShips.ship1 = 4
                 stateCopy.SUShips.ship2 = 3
                 stateCopy.SUShips.ship3 = 2
@@ -432,6 +407,53 @@ const battleMapReducer = (state = initialState, action) => {
                 return stateCopy
             }
         }
+        case INITIAL_STATE_USERS: {
+            stateCopy = {...state}
+            stateCopy.FUMap = [...state.FUMap];
+            stateCopy.SUMap = [...state.SUMap];
+            stateCopy.FUTurn = {...state.FUTurn};
+            stateCopy.comp = {...state.comp};
+            stateCopy.settingShipUser = {...state.settingShipUser};
+            stateCopy.FUShips = {...state.FUShips};
+            stateCopy.SUShips = {...state.SUShips};
+            stateCopy.FUMap = initializeTheMapFunction(stateCopy.FUMap)
+            stateCopy.SUMap = initializeTheMapFunction(stateCopy.SUMap)
+            stateCopy.FUShips.ship1 = 4
+            stateCopy.FUShips.ship2 = 3
+            stateCopy.FUShips.ship3 = 2
+            stateCopy.FUShips.ship4 = 1
+            stateCopy.FUShips.numberShips1 = 4
+            stateCopy.FUShips.numberShips2 = 3
+            stateCopy.FUShips.numberShips3 = 2
+            stateCopy.FUShips.numberShips4 = 1
+            stateCopy.SUShips.ship1 = 4
+            stateCopy.SUShips.ship2 = 3
+            stateCopy.SUShips.ship3 = 2
+            stateCopy.SUShips.ship4 = 1
+            stateCopy.SUShips.numberShips1 = 4
+            stateCopy.SUShips.numberShips2 = 3
+            stateCopy.SUShips.numberShips3 = 2
+            stateCopy.SUShips.numberShips4 = 1
+
+            stateCopy.comp.game = false
+            stateCopy.comp.damaged = false
+            stateCopy.comp.hit = false
+            stateCopy.comp.sectorFire = []
+
+            stateCopy.FUTurn.turn = false
+
+            stateCopy.lookSecondUser = true
+            stateCopy.whatSetShipFU = null
+            stateCopy.whatSetShipSU = null
+            stateCopy.horizonSetShipFU = null
+            stateCopy.horizonSetShipSU = null
+            stateCopy.deleteShipFU = false
+            stateCopy.deleteShipSU = false
+
+            stateCopy.settingShipUser.secondUser=true
+            stateCopy.settingShipUser.firstUser=true
+            return stateCopy
+        }
         default:
             return state
     }
@@ -445,12 +467,6 @@ export const setFirstUserMap = (FUMap) => {
 };
 export const setSecondUserMap = (SUMap) => {
     return ({type: "SET_SECOND_USER_MAP", SUMap})
-};
-export const toBeginSettingShip = () => {
-    return ({type: "TO_BEGIN_SETTING_SHIP"})
-};
-export const finishSettingShip = () => {
-    return ({type: "FINISH_SETTING_SHIP"})
 };
 export const setShipFirstUser = (sector, valueShip = 1, horizon = true) => {
     return ({type: "SET_SHIP_FIRST_USER", sector, valueShip, horizon})
@@ -497,7 +513,6 @@ export const setCompGame = (value) => {
 export const toggleLookSecondUser = (value) => {
     return ({type: "TOGGLE_LOOK_SECOND_USER", value})
 };
-
 export const clearTheMap = (firstUser) => {
     debugger
     return ({type: "INITIALIZE_THE_MAP", firstUser})
@@ -505,7 +520,9 @@ export const clearTheMap = (firstUser) => {
 export const toggleGameWithComp = () => {
     return ({type: "TOGGLE_GAME_WITH_COMP",})
 };
-
+export const startNewGame = () => {
+    return ({type: "INITIAL_STATE_USERS",})
+};
 
 
 export const setShipsRandom = (firstUser, userMap) => {

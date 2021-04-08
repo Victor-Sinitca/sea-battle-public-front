@@ -94,6 +94,11 @@
   width: 120px;
   color: #020d87;
   font-weight:bold;
+  border-radius: 5px;
+}
+
+.button1 button:focus{
+  box-shadow: 0 0 8px 8px #2f4a93 inset;
 }
 .toggleLook{
   background-color: #b3f1c1;
