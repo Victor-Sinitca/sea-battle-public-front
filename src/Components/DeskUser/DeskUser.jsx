@@ -28,7 +28,7 @@ const DeskUser = (props) => {
         props.toggleGameWithComp()
     }
     const startNewGame = () => {
-         props.startNewGame();
+        props.startNewGame();
     }
 
     return (

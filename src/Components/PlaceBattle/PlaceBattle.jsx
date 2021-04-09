@@ -55,9 +55,6 @@ let PlaceBattle = (props) => {
             props.startGame(false) //true - start game first user, false - start game second user
         }
     });
-
-
-
     useEffect(() => { //стрельба компьютера
         if (comp.game && !FUTurn.turn && !settingShipUser.secondUser) { //ход компьютера
             if (comp.damaged) {
@@ -91,12 +88,10 @@ let PlaceBattle = (props) => {
                   setShotUser={props.setShotFirstUser}
                   deleteShipUser={props.deleteShipFU}
 
-
                   firstUser={true} firstUserMap={props.firstUserMap} secondUserMap={props.secondUserMap}
                   SUShips={props.SUShips}
                   FUShips={props.FUShips}
                   whatSetShip={props.whatSetShipFU}
-
 
                   unlockForSetShip={props.unlockForSetShip}
                   lockAllMap={props.lockAllMap}
@@ -128,9 +123,7 @@ let PlaceBattle = (props) => {
                       clearTheMap={props.clearTheMap} toggleGameWithComp={props.toggleGameWithComp}
                       comp={props.comp} startNewGame={props.startNewGame} />
             :null
-
         }
     </div>
 }
-
 export default PlaceBattle

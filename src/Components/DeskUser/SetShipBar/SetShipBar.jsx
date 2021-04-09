@@ -82,7 +82,6 @@ const SetShipBar = (props) => {
                 <button  onClick={startGame}> Start game</button>
             </div>
         }
-
     </div>
 }
 export default SetShipBar;
