@@ -440,7 +440,7 @@ const battleMapReducer = (state = initialState, action) => {
             stateCopy.comp.hit = false
             stateCopy.comp.sectorFire = []
 
-            stateCopy.FUTurn.turn = false
+            stateCopy.FUTurn.turn = true
 
             stateCopy.lookSecondUser = true
             stateCopy.whatSetShipFU = null

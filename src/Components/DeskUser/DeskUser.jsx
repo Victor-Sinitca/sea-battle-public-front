@@ -101,7 +101,7 @@ const DeskUser = (props) => {
                                 }
                             </div>
                         </div>
-                        : <div className={s.header}> Waiting second user</div>
+                        : <div className={s.header}> Waiting for the second user</div>
                 }
             </div>
         </div>

@@ -21,10 +21,11 @@
   background-color: #2d79ea;
   box-shadow: 0 0 2px 10px #93d8ee inset;
   padding: 20px;
+  font-weight: bold;
 }
 .displayNavBar{
   background-color: #9af89a;
-  padding: 10px;
+
 }
 .displayPlace{
   padding: 20px;

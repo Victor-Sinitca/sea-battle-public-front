@@ -5,11 +5,10 @@ import {NavLink} from "react-router-dom";
 
 const NavBar=()=>{
     return(
-        <div>
+        <div className={s.displayNavBar}>
             <div>
                 <NavLink to='/placeBattleMan' className={s.navLink}>Sea battle</NavLink>
             </div>
-
         </div>
     )
 }
