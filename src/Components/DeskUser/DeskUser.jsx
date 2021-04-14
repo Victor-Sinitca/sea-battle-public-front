@@ -3,6 +3,10 @@ import s from "./DeskUser.module.css";
 import Desk from "./Desk/Desk";
 import ShipBar from "./ShipBar/ShipBar";
 import SetShipBar from "./SetShipBar/SetShipBar";
+import ship1 from "../../assets/img/1.png";
+import user from "../../assets/img/human-head.png";
+import user1 from "../../assets/img/human-head1.png";
+import comp from "../../assets/img/intelligence-brain.png";
 
 
 const DeskUser = (props) => {
@@ -62,9 +66,10 @@ const DeskUser = (props) => {
                           </div>
                         : <div>
                             {!shipOpponent ?
-                                <button onClick={startNewGame} className={s.endGameWin}> you WIN click to start new
+                                <button onClick={startNewGame} className={s.endGameWin}> you WIN start new
                                     game </button> : null}
-                            {!yourShips ? <button className={s.endGameLose}> you are lose click to start new
+                            {!yourShips ?
+                                <button onClick={startNewGame}className={s.endGameLose}> you are lose start new
                                 game </button> : null}
                         </div>
                     }
@@ -95,9 +100,17 @@ const DeskUser = (props) => {
                             {}
                             <div className={s.button1}>
                                 {props.comp.game ?
-                                    <button className={s.button1} onClick={compGame}>play with a man</button>
+                                    <button className={s.button1} onClick={compGame}>
+                                        <img className={s.userImg}  src={user} alt="no img"/>
+                                        VS
+                                        <img className={s.userImg}  src={comp} alt="no img"/>
+                                    </button>
                                     :
-                                    <button className={s.button1} onClick={compGame}>play with a comp</button>
+                                    <button className={s.button1} onClick={compGame}>
+                                        <img className={s.userImg}  src={user} alt="no img"/>
+                                        VS
+                                        <img className={s.userImg}  src={user1} alt="no img"/>
+                                    </button>
                                 }
                             </div>
                         </div>

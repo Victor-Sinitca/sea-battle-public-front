@@ -47,7 +47,7 @@ let initialState = {
         sectorFire: []
     },
 
-    lookSecondUser: true,
+    lookSecondUser: false,
     whatSetShipFU: null,
     whatSetShipSU: null,
     horizonSetShipFU: null,
@@ -401,9 +401,11 @@ const battleMapReducer = (state = initialState, action) => {
             stateCopy.comp = {...state.comp}
             if (state.comp.game) {
                 stateCopy.comp.game = false
+                stateCopy.lookSecondUser = true
                 return stateCopy
             } else {
                 stateCopy.comp.game = true
+                stateCopy.lookSecondUser = false
                 return stateCopy
             }
         }
