@@ -1,14 +1,11 @@
 import React from "react";
-
 import s from "./Desk.module.css"
 import ReturnSector from "../ReturnSector/ReturnSector";
 
 
 const Desk = (props) => {
-
-
-
-
+    let horizonIndex=[0,1,2,3,4,5,6,7,8,9]
+    let verticalIndex=['A','B','C','D','E','F','G','H','I','J']
     return (
         <div className={
             props.yourShips?
@@ -20,29 +17,11 @@ const Desk = (props) => {
         }>
             <div className={s.display11}>
                 <div></div>
-                <div>A</div>
-                <div>B</div>
-                <div>C</div>
-                <div>D</div>
-                <div>E</div>
-                <div>F</div>
-                <div>G</div>
-                <div>H</div>
-                <div>I</div>
-                <div>J</div>
+                {verticalIndex.map(i=><div key={i}>{i}</div>)}
             </div>
             <div className={s.display2}>
                 <div className={s.display3}>
-                    <div>0</div>
-                    <div>1</div>
-                    <div>2</div>
-                    <div>3</div>
-                    <div>4</div>
-                    <div>5</div>
-                    <div>6</div>
-                    <div>7</div>
-                    <div>8</div>
-                    <div>9</div>
+                    {horizonIndex.map(i=><div key={i}>{i}</div>)}
                 </div>
                 <div className={s.displayMap}>
                     {props.userMap.map(a => a.map(b =>

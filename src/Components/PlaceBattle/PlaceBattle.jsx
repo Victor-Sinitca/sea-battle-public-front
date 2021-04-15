@@ -57,27 +57,29 @@ let PlaceBattle = (props) => {
     });
     useEffect(() => { //стрельба компьютера
         if (comp.game && !FUTurn.turn && !settingShipUser.secondUser) { //ход компьютера
-            if (comp.damaged) {
-                let IndexElemMass = 0
-                if (comp.sectorFire.length > 0) {
-                    IndexElemMass = getRandomInt(comp.sectorFire.length)
-                    props.setShotSecondUser(props.comp.sectorFire[IndexElemMass])
+                if (comp.damaged) {
+                    let IndexElemMass = 0
+                    if (comp.sectorFire.length > 0) {
+                        IndexElemMass = getRandomInt(comp.sectorFire.length)
+                        props.setShotSecondUser(props.comp.sectorFire[IndexElemMass])
+                    } else {
+                        props.setShotSecondUser(props.comp.sectorFire[IndexElemMass])
+                    }
+                    if (!comp.hit) {
+                        props.increaseSectorFire(IndexElemMass)
+                    }
                 } else {
-                    props.setShotSecondUser(props.comp.sectorFire[IndexElemMass])
+                    let shipFireState = checkForShipFireComp(firstUserMap,)
+                    props.setShotSecondUser(shipFireState[getRandomInt(shipFireState.length)])
                 }
-                if (!comp.hit) {
-                    props.increaseSectorFire(IndexElemMass)
+                if (FUShips.numberShips1 === 0 && FUShips.numberShips2 === 0 &&
+                    FUShips.numberShips3 === 0 && FUShips.numberShips4 === 0) {
+                    props.setCompGame(false)
                 }
-            } else {
-                let shipFireState = checkForShipFireComp(firstUserMap,)
-                props.setShotSecondUser(shipFireState[getRandomInt(shipFireState.length)])
-            }
-            if (FUShips.numberShips1 === 0 && FUShips.numberShips2 === 0 &&
-                FUShips.numberShips3 === 0 && FUShips.numberShips4 === 0) {
-                props.setCompGame(false)
-            }
         }
     });
+
+
 
     if (!firstUserMap || !secondUserMap) return <Preloader/>
 
@@ -99,16 +101,12 @@ let PlaceBattle = (props) => {
                   setHorizon={props.setHorizon}
                   toggleDeleteShip={props.toggleDeleteShip}
                   startGame={props.startGame}
-
-
                   settingShipUser={props.settingShipUser}
-
-
                   UserTurn={props.FUTurn}
                   toggleLookSecondUser={props.toggleLookSecondUser} setShipsRandom={props.setShipsRandom}
                   clearTheMap={props.clearTheMap} toggleGameWithComp={props.toggleGameWithComp}
                   comp={props.comp} startNewGame={props.startNewGame} />
-        {props.lookSecondUser ?
+        {props.lookSecondUser &&
             <DeskUser toggleSettingShip={props.toggleSettingShip} firstUser={false} firstUserMap={props.secondUserMap}
                       secondUserMap={props.firstUserMap}
                       setShipUser={props.deleteShipSU ? props.deleteShipSUonMap : props.setShipSecondUser}
@@ -122,7 +120,6 @@ let PlaceBattle = (props) => {
                       toggleLookSecondUser={props.toggleLookSecondUser} setShipsRandom={props.setShipsRandom}
                       clearTheMap={props.clearTheMap} toggleGameWithComp={props.toggleGameWithComp}
                       comp={props.comp} startNewGame={props.startNewGame} />
-            :null
         }
     </div>
 }

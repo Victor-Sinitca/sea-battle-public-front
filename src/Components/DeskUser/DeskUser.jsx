@@ -3,7 +3,6 @@ import s from "./DeskUser.module.css";
 import Desk from "./Desk/Desk";
 import ShipBar from "./ShipBar/ShipBar";
 import SetShipBar from "./SetShipBar/SetShipBar";
-import ship1 from "../../assets/img/1.png";
 import user from "../../assets/img/human-head.png";
 import user1 from "../../assets/img/human-head1.png";
 import comp from "../../assets/img/intelligence-brain.png";
@@ -65,12 +64,10 @@ const DeskUser = (props) => {
                             }
                           </div>
                         : <div>
-                            {!shipOpponent ?
-                                <button onClick={startNewGame} className={s.endGameWin}> you WIN start new
-                                    game </button> : null}
-                            {!yourShips ?
-                                <button onClick={startNewGame}className={s.endGameLose}> you are lose start new
-                                game </button> : null}
+                            {!shipOpponent &&
+                                <button onClick={startNewGame} className={s.endGameWin}> you WIN start new  game </button>}
+                            {!yourShips &&
+                                <button onClick={startNewGame}className={s.endGameLose}> you are lose start new game </button>}
                         </div>
                     }
                 </div>
@@ -114,7 +111,8 @@ const DeskUser = (props) => {
                                 }
                             </div>
                         </div>
-                        : <div className={s.header}> Waiting for the second user</div>
+                        :
+                        <div className={s.header}> Waiting for the second user</div>
                 }
             </div>
         </div>

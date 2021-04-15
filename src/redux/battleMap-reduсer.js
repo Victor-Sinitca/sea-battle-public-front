@@ -41,7 +41,7 @@ let initialState = {
     },
 
     comp: {
-        game: false,
+        game: true,
         damaged: false,
         hit: false,
         sectorFire: []
@@ -437,14 +437,14 @@ const battleMapReducer = (state = initialState, action) => {
             stateCopy.SUShips.numberShips3 = 2
             stateCopy.SUShips.numberShips4 = 1
 
-            stateCopy.comp.game = false
+            stateCopy.comp.game = true
             stateCopy.comp.damaged = false
             stateCopy.comp.hit = false
             stateCopy.comp.sectorFire = []
 
             stateCopy.FUTurn.turn = true
 
-            stateCopy.lookSecondUser = true
+            stateCopy.lookSecondUser = false
             stateCopy.whatSetShipFU = null
             stateCopy.whatSetShipSU = null
             stateCopy.horizonSetShipFU = null
