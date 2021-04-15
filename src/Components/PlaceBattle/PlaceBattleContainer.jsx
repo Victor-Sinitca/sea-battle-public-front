@@ -25,20 +25,16 @@ import {
     toggleLookSecondUser,
     toggleSettingShip,
     unlockForSetShip,
-
 } from "../../redux/battleMap-reduсer";
 
 
 class PlaceBattleContainer  extends React.Component{
-
-
     render() {
         return (
             <PlaceBattle {...this.props}/>
         )
     }
 }
-
 let mapStateToProps =(state)=>({
     firstUserMap: state.battleMap.FUMap,
     secondUserMap: state.battleMap.SUMap,
@@ -55,12 +51,7 @@ let mapStateToProps =(state)=>({
     FUTurn: state.battleMap.FUTurn.turn,
     comp: state.battleMap.comp,
     lookSecondUser: state.battleMap.lookSecondUser,
-
 })
-
-
-
-
 export default compose(connect(mapStateToProps,
     {setFirstUserMap,setSecondUserMap,
         setShipFirstUser,setShipSecondUser,setShotFirstUser,setShotSecondUser,toggleSettingShip,
