@@ -7,6 +7,7 @@ import {deleteShipFromTheMap} from "../commen/logics/deleteShipFromTheMap/delete
 import {fireAfterHitComp, killShip} from "../commen/logics/KillShip/KillShip";
 import {getRandomInt} from "../commen/logics/getRandom/getRandom";
 import {initializeTheMapFunction} from "../commen/logics/initializeTheMapFunction/initializeTheMapFunction";
+import {put, takeEvery} from 'redux-saga/effects'
 
 const SET_FIRST_USER_MAP = "SET_FIRST_USER_MAP"
 const SET_SECOND_USER_MAP = "SET_SECOND_USER_MAP"
@@ -27,6 +28,7 @@ const TOGGLE_LOOK_SECOND_USER = "TOGGLE_LOOK_SECOND_USER"
 const INITIALIZE_THE_MAP = "INITIALIZE_THE_MAP"
 const TOGGLE_GAME_WITH_COMP = "TOGGLE_GAME_WITH_COMP"
 const INITIAL_STATE_USERS = "INITIAL_STATE_USERS"
+const RANDOM_SAGA = "RANDOM_SAGA"
 
 
 let initialState = {
@@ -382,6 +384,7 @@ const battleMapReducer = (state = initialState, action) => {
             stateCopy.settingShipUser.firstUser=true
             return stateCopy
         }
+
         default:
             return state
     }
@@ -460,4 +463,34 @@ export const setShipsRandom = (firstUser, userMap) => {
         }
     }
 }
+
+export const RandomSaga = (firstUser, userMap) => {
+    return ({type: "RANDOM_SAGA",firstUser, userMap})
+};
+
+export function* watchSetShipsRandomSaga() {
+    debugger
+    yield takeEvery('RANDOM_SAGA', fetchSetShipsRandomSaga);
+}
+
+function* fetchSetShipsRandomSaga(action) {
+    try {
+        yield put({type: "INITIALIZE_THE_MAP", firstUser:action.firstUser});
+        let horizon = true;
+        let shipInputState;
+        for (let shipValue = 4; shipValue >= 1; shipValue--) {
+            for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
+                horizon = getRandomInt(2)
+                shipInputState = checkForShipInputComp(action.userMap, horizon, shipValue);
+                yield put({type: "SET_WHAT_SET_SHIP", shipValue:shipValue, firstUser:action.firstUser});
+                yield put({type: "SET_HORIZON", horizon:horizon, firstUser:action.firstUser});
+                yield put({type: "UNLOCK_FOR_SET_SHIP", shipValue:shipValue, horizon:horizon, firstUser:action.firstUser});
+                yield put({type: "SET_SHIP_USER", shipInputState:shipInputState[getRandomInt(shipInputState.length)],firstUser:action.firstUser});
+              }
+        }
+    } catch (error) {}
+}
+
+
+
 export default battleMapReducer;

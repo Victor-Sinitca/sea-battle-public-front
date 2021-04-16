@@ -6,7 +6,7 @@ import {checkForShipFireComp} from "../../commen/logics/CheckForShipInput/CheckF
 import {getRandomInt} from "../../commen/logics/getRandom/getRandom";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    increaseSectorFire, setCompGame,
+    increaseSectorFire, RandomSaga, setCompGame,
     setFirstUserMap,
     setSecondUserMap,
     setShipsRandom, setShotSecondUser,
@@ -58,7 +58,10 @@ let PlaceBattle = () => {
     });
     useEffect(() => { //расстановка кораблей компьютером
         if (comp.game && !settingShipUser.firstUser && settingShipUser.secondUser) { // заполнение поля компьютером
-            dispatch(setShipsRandom(false, secondUserMap))
+
+            dispatch(RandomSaga(false, secondUserMap))
+
+           /* dispatch(setShipsRandom(false, secondUserMap))*/
             dispatch(startGame(false)) //true - start game first user, false - start game second user
         }
     });
