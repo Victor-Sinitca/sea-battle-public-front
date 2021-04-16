@@ -5,33 +5,70 @@ import ShipBar from "./ShipBar/ShipBar";
 import SetShipBar from "./SetShipBar/SetShipBar";
 import user from "../../assets/img/human-head.png";
 import user1 from "../../assets/img/human-head1.png";
-import comp from "../../assets/img/intelligence-brain.png";
+import compPhoto from "../../assets/img/intelligence-brain.png";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    clearTheMap,
+    deleteShipOnMap, setShipFirstUser, setShipSecondUser,
+    setShipsRandom, setShotFirstUser, setShotSecondUser, startNewGame,
+    toggleDeleteShip, toggleGameWithComp,
+    toggleLookSecondUser
+} from "../../redux/battleMap-reduсer";
 
 
 const DeskUser = (props) => {
-    let shipOpponent = props.SUShips.numberShips1 > 0 || props.SUShips.numberShips2 > 0 ||
+    const comp = useSelector(state => state.battleMap.comp);
+    const settingShipUser = useSelector(state => state.battleMap.settingShipUser);
+
+    const dispatch = useDispatch()
+
+
+
+    const shipOpponent = props.SUShips.numberShips1 > 0 || props.SUShips.numberShips2 > 0 ||
         props.SUShips.numberShips3 > 0 || props.SUShips.numberShips4 > 0;
-    let yourShips = props.FUShips.numberShips1 > 0 || props.FUShips.numberShips2 > 0 ||
+    const yourShips = props.FUShips.numberShips1 > 0 || props.FUShips.numberShips2 > 0 ||
         props.FUShips.numberShips3 > 0 || props.FUShips.numberShips4 > 0;
 
 
-    const toggleDeleteShip = () => {
-        props.toggleDeleteShip(props.firstUser)
+
+
+
+
+
+    const returnToClick = (sector) => {
+        props.deleteShipUser?
+            dispatch(deleteShipOnMap(sector,props.firstUser))
+            :
+            props.firstUser?
+                dispatch(setShipFirstUser(sector))
+                :
+                dispatch(setShipSecondUser(sector))
     }
-    const lookSecondUser = () => {
-        props.toggleLookSecondUser()
+
+    const setShotUserDispatch = (sector) => {
+        props.firstUser?
+            dispatch(setShotFirstUser(sector))
+            :
+            dispatch(setShotSecondUser(sector))
     }
-    const setShipsRandom = () => {
-        props.setShipsRandom(props.firstUser, props.firstUserMap)
+
+    const toggleDeleteShipDispatch = () => {
+        dispatch(toggleDeleteShip(props.firstUser))
     }
-    const clearMap = () => {
-        props.clearTheMap(props.firstUser)
+    const lookSecondUserDispatch = () => {
+        dispatch(toggleLookSecondUser())
     }
-    const compGame = () => {
-        props.toggleGameWithComp()
+    const setShipsRandomDispatch = () => {
+        dispatch(setShipsRandom(props.firstUser, props.firstUserMap))
     }
-    const startNewGame = () => {
-        props.startNewGame();
+    const clearMapDispatch = () => {
+        dispatch(clearTheMap(props.firstUser))
+    }
+    const compGameDispatch = () => {
+        dispatch(toggleGameWithComp())
+    }
+    const startNewGameDispatch = () => {
+        dispatch(startNewGame());
     }
 
     return (
@@ -41,69 +78,66 @@ const DeskUser = (props) => {
                 <div className={s.displayUser}>
                     <Desk userMap={props.firstUserMap} firstDesk={true} shipOpponent={shipOpponent}
                           yourShips={yourShips}
-                          returnToClick={props.setShipUser} toClick={true}
+                          returnToClick={returnToClick} toClick={true}
                           deleteShipUser={props.deleteShipUser} UserTurn={props.UserTurn}/>
-                    {((props.firstUser && props.settingShipUser.firstUser) || (!props.firstUser && props.settingShipUser.secondUser))
+                    {((props.firstUser && settingShipUser.firstUser) || (!props.firstUser && settingShipUser.secondUser))
                         ? <SetShipBar FUShips={props.FUShips} whatSetShip={props.whatSetShip}
                                       firstUserMap={props.firstUserMap}
-                                      unlockForSetShip={props.unlockForSetShip} firstUser={props.firstUser}
-                                      setHorizon={props.setHorizon}
-                                      lockAllMap={props.lockAllMap} setWhatSetShip={props.setWhatSetShip}
-                                      startGame={props.startGame}/>
+                                      firstUser={props.firstUser}/>
                         : <ShipBar userShips={props.SUShips} firstUser={props.firstUser} UserTurn={props.UserTurn}/>
                     }
                     <div>
-                        <button className={s.toggleLook} onClick={lookSecondUser}>show second user</button>
+                        <button className={s.toggleLook} onClick={lookSecondUserDispatch}>show second user</button>
                     </div>
-                    {((props.firstUser && props.settingShipUser.firstUser) || (!props.firstUser && props.settingShipUser.secondUser))
+                    {((props.firstUser && settingShipUser.firstUser) || (!props.firstUser && settingShipUser.secondUser))
                         ? <div>
                             {props.deleteShipUser ?
-                                <button onClick={toggleDeleteShip} className={s.deleteShipButtonActive}>click to ship</button>
+                                <button onClick={toggleDeleteShipDispatch} className={s.deleteShipButtonActive}>click to ship</button>
                                 :
-                                <button onClick={toggleDeleteShip} className={s.deleteShipButtonDizActive}>delete ship</button>
+                                <button onClick={toggleDeleteShipDispatch} className={s.deleteShipButtonDizActive}>delete ship</button>
                             }
                           </div>
                         : <div>
                             {!shipOpponent &&
-                                <button onClick={startNewGame} className={s.endGameWin}> you WIN start new  game </button>}
+                                <button onClick={startNewGameDispatch} className={s.endGameWin}> you WIN start new  game </button>}
                             {!yourShips &&
-                                <button onClick={startNewGame}className={s.endGameLose}> you are lose start new game </button>}
+                                <button onClick={startNewGameDispatch}className={s.endGameLose}> you are lose start new game </button>}
                         </div>
                     }
                 </div>
             </div>
             <div className={s.displayDesk2}>
-                {(!props.settingShipUser.firstUser && !props.settingShipUser.secondUser) ?
+                {(!settingShipUser.firstUser && !settingShipUser.secondUser) ?
                     <div>
                         <div className={s.header}>Field two</div>
                         <div className={s.displayUser}>
                             <Desk userMap={props.secondUserMap} firstDesk={false} UserTurn={props.UserTurn}
-                                  returnToClick={props.setShotUser} toClick={shipOpponent ? props.UserTurn : false}
+                                  returnToClick={setShotUserDispatch} toClick={shipOpponent ? props.UserTurn : false}
                                   shipOpponent={shipOpponent} yourShips={yourShips}/>
                         </div>
                         <div>
-                            <button onClick={startNewGame} >reset the game</button>
+                            <button onClick={startNewGameDispatch} >reset the game</button>
                         </div>
                     </div>
                     :
-                    ((props.firstUser && props.settingShipUser.firstUser) || (!props.firstUser && props.settingShipUser.secondUser))
+                    ((props.firstUser && settingShipUser.firstUser) || (!props.firstUser && settingShipUser.secondUser))
                         ? <div className={s.buttonHeader}>
                             <div className={s.button1}>
-                                <button onClick={setShipsRandom}>set ships random</button>
+                                <button onClick={setShipsRandomDispatch}>set ships random</button>
                             </div>
                             <div className={s.button1}>
-                                <button onClick={clearMap}>clear map</button>
+                                <button onClick={clearMapDispatch}>clear map</button>
                             </div>
                             {}
                             <div className={s.button1}>
-                                {props.comp.game ?
-                                    <button className={s.button1} onClick={compGame}>
+                                {comp.game ?
+                                    <button className={s.button1} onClick={compGameDispatch}>
                                         <img className={s.userImg}  src={user} alt="no img"/>
                                         VS
-                                        <img className={s.userImg}  src={comp} alt="no img"/>
+                                        <img className={s.userImg}  src={compPhoto} alt="no img"/>
                                     </button>
                                     :
-                                    <button className={s.button1} onClick={compGame}>
+                                    <button className={s.button1} onClick={compGameDispatch}>
                                         <img className={s.userImg}  src={user} alt="no img"/>
                                         VS
                                         <img className={s.userImg}  src={user1} alt="no img"/>

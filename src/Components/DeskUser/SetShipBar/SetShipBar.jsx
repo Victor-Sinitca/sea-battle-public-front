@@ -5,29 +5,33 @@ import ship1 from "../../../assets/img/1.png"
 import ship2 from "../../../assets/img/20.png"
 import ship3 from "../../../assets/img/3.png"
 import ship4 from "../../../assets/img/40.png"
+import {useDispatch} from "react-redux";
+import {lockAllMap, setWhatSetShip, startGame} from "../../../redux/battleMap-reduсer";
 
 
 
 const SetShipBar = (props) => {
+    const dispatch = useDispatch()
+
     const SetShip1 = () => {
-        props.lockAllMap(props.firstUser)
-        props.setWhatSetShip(1, props.firstUser)
+        dispatch(lockAllMap(props.firstUser))
+        dispatch(setWhatSetShip(1, props.firstUser))
     }
     const SetShip2 = () => {
-        props.lockAllMap(props.firstUser)
-        props.setWhatSetShip(2, props.firstUser)
+        dispatch(lockAllMap(props.firstUser))
+        dispatch(setWhatSetShip(2, props.firstUser))
     }
     const SetShip3 = () => {
-        props.lockAllMap(props.firstUser)
-        props.setWhatSetShip(3, props.firstUser)
+        dispatch(lockAllMap(props.firstUser))
+        dispatch(setWhatSetShip(3, props.firstUser))
     }
     const SetShip4 = () => {
-        props.lockAllMap(props.firstUser)
-        props.setWhatSetShip(4, props.firstUser)
+        dispatch(lockAllMap(props.firstUser))
+        dispatch(setWhatSetShip(4, props.firstUser))
     }
 
-    const startGame = () => {
-        props.startGame(props.firstUser)
+    const startGameDispatch = () => {
+        dispatch(startGame(props.firstUser))
     }
 
 
@@ -74,12 +78,11 @@ const SetShipBar = (props) => {
         {(props.FUShips.ship1 || props.FUShips.ship2 || props.FUShips.ship3 || props.FUShips.ship4)
             ? <div>
                 <SetShip ship={props.whatSetShip} firstUserMap={props.firstUserMap}
-                         unlockForSetShip={props.unlockForSetShip} firstUser={props.firstUser}
-                         setHorizon={props.setHorizon}/>
+                         firstUser={props.firstUser}/>
             </div>
             :
             <div className={s.startGameButton}>
-                <button  onClick={startGame}> Start game</button>
+                <button  onClick={startGameDispatch}> Start game</button>
             </div>
         }
     </div>

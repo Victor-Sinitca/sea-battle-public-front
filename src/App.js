@@ -1,11 +1,8 @@
 import './App.css';
 import React from "react";
 import {Route} from "react-router-dom";
-
 import NavBar from "./Components/NavBar/NavBar";
-import PlaceBattleContainer from "./Components/PlaceBattle/PlaceBattleContainer";
-
-
+import PlaceBattle from "./Components/PlaceBattle/PlaceBattle";
 
 function App() {
     return (
@@ -13,10 +10,7 @@ function App() {
             <div className="displayHeader"> Header</div>
             <NavBar/>
             <div className="displayPlace">
-              {/*  <Route path='/placeBattleComputer' render={()=><PlaceBattleContainer/>}/>*/}
-                <Route path='/placeBattleMan' render={()=><PlaceBattleContainer/>}/>
-
-
+                <Route path='/placeBattleMan' render={()=><PlaceBattle/>}/>
             </div>
         </div>
     );

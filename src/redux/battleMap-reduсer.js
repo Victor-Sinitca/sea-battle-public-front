@@ -10,7 +10,7 @@ import {initializeTheMapFunction} from "../commen/logics/initializeTheMapFunctio
 
 const SET_FIRST_USER_MAP = "SET_FIRST_USER_MAP"
 const SET_SECOND_USER_MAP = "SET_SECOND_USER_MAP"
-const TOGGLE_FIRST_USER_TURN = "TOGGLE_FIRST_USER_TURN"
+const DELETE_SHIP = "DELETE_SHIP"
 const SET_SHIP_FIRST_USER = "SET_SHIP_FIRST_USER"
 const SET_SHIP_SECOND_USER = "SET_SHIP_SECOND_USER"
 const SET_SHOT_FIRST_USER = "SET_SHOT_FIRST_USER"
@@ -21,8 +21,6 @@ const LOCK_ALL_MAP = "LOCK_ALL_MAP"
 const SET_WHAT_SET_SHIP = "SET_WHAT_SET_SHIP"
 const SET_HORIZON = "SET_HORIZON"
 const TOGGLE_DELETE_SHIP = "TOGGLE_DELETE_SHIP"
-const DELETE_SHIP_FU = "DELETE_SHIP_FU"
-const DELETE_SHIP_SU = "DELETE_SHIP_SU"
 const START_GAME = "START_GAME"
 const INCREASE_SECTOR_FIRE = "INCREASE_SECTOR_FIRE"
 const SET_COMP_GAME = "SET_COMP_GAME"
@@ -39,7 +37,6 @@ let initialState = {
     FUTurn: {
         turn: true
     },
-
     comp: {
         game: true,
         damaged: false,
@@ -92,20 +89,20 @@ const battleMapReducer = (state = initialState, action) => {
             return {...state, FUMap: action.FUMap}
         case SET_SECOND_USER_MAP:
             return {...state, SUMap: action.SUMap}
-        case TOGGLE_FIRST_USER_TURN:
-            return {...state, FUMap: action.firstUserTurn}
-        case DELETE_SHIP_FU :
+        case DELETE_SHIP :
             stateCopy = {...state}
-            stateCopy.FUMap = [...state.FUMap];
-            stateCopy.FUMap = deleteShipFromTheMap(stateCopy.FUMap, action.sector, state.FUShips)
-            stateCopy.deleteShipFU = false
-            return stateCopy
-        case DELETE_SHIP_SU :
-            stateCopy = {...state}
-            stateCopy.SUMap = [...state.SUMap];
-            stateCopy.SUMap = deleteShipFromTheMap(stateCopy.SUMap, action.sector, state.SUShips)
-            stateCopy.deleteShipSU = false
-            return stateCopy
+            if(action.firstUser){
+                stateCopy.FUMap = [...state.FUMap];
+                stateCopy.FUMap = deleteShipFromTheMap(stateCopy.FUMap, action.sector, state.FUShips)
+                stateCopy.deleteShipFU = false
+                return stateCopy
+            }
+            else{
+                stateCopy.SUMap = [...state.SUMap];
+                stateCopy.SUMap = deleteShipFromTheMap(stateCopy.SUMap, action.sector, state.SUShips)
+                stateCopy.deleteShipSU = false
+                return stateCopy
+            }
         case SET_SHIP_FIRST_USER:
             stateCopy = {...state};
             stateCopy.FUMap = [...state.FUMap];
@@ -256,6 +253,7 @@ const battleMapReducer = (state = initialState, action) => {
                 stateCopy.SUMap = [...stateKillShip.map]
                 stateCopy.SUShips = {...stateKillShip.ships}
                 if (!stateKillShip.hit) {
+                    stateCopy.FUTurn={...state.FUTurn}
                     stateCopy.FUTurn.turn = !stateCopy.FUTurn.turn;
                 }
                 return stateCopy
@@ -279,7 +277,8 @@ const battleMapReducer = (state = initialState, action) => {
                     }
                 } else {
                     stateCopy.comp.hit = false
-                    stateCopy.FUTurn.turn = !stateCopy.FUTurn.turn;
+                    stateCopy.FUTurn={...state.FUTurn}
+                    stateCopy.FUTurn.turn = true;
                 }
                 return stateCopy
             } else return state
@@ -482,9 +481,6 @@ export const setShotFirstUser = (sector) => {
 export const setShotSecondUser = (sector) => {
     return ({type: "SET_SHOT_SECOND_USER", sector})
 };
-export const toggleSettingShip = (value, firstUser) => {
-    return ({type: "TOGGLE_SETTING_SHIP", value, firstUser})
-};
 export const toggleDeleteShip = (firstUser) => {
     return ({type: "TOGGLE_DELETE_SHIP", firstUser})
 };
@@ -497,11 +493,8 @@ export const lockAllMap = (firstUser) => {
 export const setHorizon = (horizon, firstUser) => {
     return ({type: "SET_HORIZON", horizon, firstUser})
 };
-export const deleteShipFUonMap = (sector) => {
-    return ({type: "DELETE_SHIP_FU", sector})
-};
-export const deleteShipSUonMap = (sector) => {
-    return ({type: "DELETE_SHIP_SU", sector})
+export const deleteShipOnMap = (sector,firstUser) => {
+    return ({type: "DELETE_SHIP", sector,firstUser})
 };
 export const startGame = (firstUser) => {
     return ({type: "START_GAME", firstUser})

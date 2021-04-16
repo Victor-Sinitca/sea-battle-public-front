@@ -7,15 +7,19 @@ import ship4 from "../../../../assets/img/40.png"
 import ship21 from "../../../../assets/img/201.png"
 import ship31 from "../../../../assets/img/301.png"
 import ship41 from "../../../../assets/img/401.png"
+import {useDispatch} from "react-redux";
+import {setHorizon, unlockForSetShip} from "../../../../redux/battleMap-reduсer";
 
 const SetShip = (props) => {
+    const dispatch = useDispatch()
+
     const setShipVertical = () => {
-        props.setHorizon(false, props.firstUser)
-        props.unlockForSetShip(props.ship, true, props.firstUser)
+        dispatch(setHorizon(false, props.firstUser))
+        dispatch(unlockForSetShip(props.ship, true, props.firstUser))
     }
     const setShipHorizontal = () => {
-        props.setHorizon(true, props.firstUser)
-        props.unlockForSetShip(props.ship, false, props.firstUser)
+        dispatch(setHorizon(true, props.firstUser))
+        dispatch(unlockForSetShip(props.ship, false, props.firstUser))
     }
 
 
