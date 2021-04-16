@@ -30,36 +30,26 @@ let PlaceBattle = () => {
     const dispatch = useDispatch()
 
 
-
-
-
-    useEffect(() => {
+    useEffect(() => { //инициализация карт первого и второго игрока
         if (!firstUserMap || !secondUserMap) {
+            const setSector=(i,j)=>{
+                return{sector: {
+                        ship: false,
+                        shot: false,
+                        x: j,
+                        y: i,
+                        unlock: false,
+                        img: null
+                    }
+                }
+            }
             let userMap1 = [], userMap2 = [], i, j
             for (i = 0; i < 10; i++) {
                 userMap1[i] = []
                 userMap2[i] = []
                 for (j = 0; j < 10; j++) {
-                    userMap1[i][j] = {
-                        sector: {
-                            ship: false,
-                            shot: false,
-                            x: j,
-                            y: i,
-                            unlock: false,
-                            img: null
-                        }
-                    }
-                    userMap2[i][j] = {
-                        sector: {
-                            ship: false,
-                            shot: false,
-                            x: j,
-                            y: i,
-                            unlock: false,
-                            img: null
-                        }
-                    }
+                    userMap1[i][j] =setSector(i,j)
+                    userMap2[i][j] =setSector(i,j)
                 }
             }
             dispatch(setFirstUserMap(userMap1))
@@ -74,7 +64,7 @@ let PlaceBattle = () => {
     });
     useEffect(() => { //стрельба компьютера
         if (comp.game && !FUTurn && !settingShipUser.secondUser) { //ход компьютера
-                if (comp.damaged) {
+                if (comp.damaged) { // если был поврежден корабль
                     let IndexElemMass = 0
                     if (comp.sectorFire.length > 0) {
                         IndexElemMass = getRandomInt(comp.sectorFire.length)
@@ -85,11 +75,11 @@ let PlaceBattle = () => {
                     if (!comp.hit) {
                         dispatch(increaseSectorFire(IndexElemMass))
                     }
-                } else {
-                    let shipFireState = checkForShipFireComp(firstUserMap,)
-                    dispatch(setShotSecondUser(shipFireState[getRandomInt(shipFireState.length)]))
+                } else { //если нет поврежденных кораблей - стельба по карте
+                    let shipFireState = checkForShipFireComp(firstUserMap,) //поиск секторов для стрельбы
+                    dispatch(setShotSecondUser(shipFireState[getRandomInt(shipFireState.length)])) //стрельба в случайный сектор из найденных
                 }
-                if (FUShips.numberShips1 === 0 && FUShips.numberShips2 === 0 &&
+                if (FUShips.numberShips1 === 0 && FUShips.numberShips2 === 0 && // если у первого игроканет все корабли убиты - прекращается стрельба
                     FUShips.numberShips3 === 0 && FUShips.numberShips4 === 0) {
                     dispatch(setCompGame(false))
                 }

@@ -19,22 +19,11 @@ import {
 const DeskUser = (props) => {
     const comp = useSelector(state => state.battleMap.comp);
     const settingShipUser = useSelector(state => state.battleMap.settingShipUser);
-
     const dispatch = useDispatch()
-
-
-
     const shipOpponent = props.SUShips.numberShips1 > 0 || props.SUShips.numberShips2 > 0 ||
         props.SUShips.numberShips3 > 0 || props.SUShips.numberShips4 > 0;
     const yourShips = props.FUShips.numberShips1 > 0 || props.FUShips.numberShips2 > 0 ||
         props.FUShips.numberShips3 > 0 || props.FUShips.numberShips4 > 0;
-
-
-
-
-
-
-
     const returnToClick = (sector) => {
         props.deleteShipUser?
             dispatch(deleteShipOnMap(sector,props.firstUser))

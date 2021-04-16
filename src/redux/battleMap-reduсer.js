@@ -216,7 +216,6 @@ const battleMapReducer = (state = initialState, action) => {
                 stateCopy.settingShipUser = {...state.settingShipUser}
                 stateCopy.settingShipUser.firstUser = action.value
             } else {
-                debugger
                 stateCopy = {...state}
                 stateCopy.settingShipUser = {...state.settingShipUser}
                 stateCopy.settingShipUser.secondUser = action.value
