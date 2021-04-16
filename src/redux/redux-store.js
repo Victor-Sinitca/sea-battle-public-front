@@ -5,21 +5,16 @@ import {reducer as formReducer} from "redux-form"
 import createSagaMiddleware from 'redux-saga'
 
 
-
 let reducers = combineReducers({
     battleMap:battleMapReducer,
     form: formReducer
 });
 
 const sagaMiddleware = createSagaMiddleware()
-let store= createStore(reducers, applyMiddleware(sagaMiddleware,thunkMiddleware));
+let store= createStore(reducers, applyMiddleware(sagaMiddleware,thunkMiddleware))
 
 sagaMiddleware.run(watchSetShipsRandomSaga)
-
 window.store=store;
-
-
-
 
 
 export default store;

@@ -28,7 +28,6 @@ const TOGGLE_LOOK_SECOND_USER = "TOGGLE_LOOK_SECOND_USER"
 const INITIALIZE_THE_MAP = "INITIALIZE_THE_MAP"
 const TOGGLE_GAME_WITH_COMP = "TOGGLE_GAME_WITH_COMP"
 const INITIAL_STATE_USERS = "INITIAL_STATE_USERS"
-const RANDOM_SAGA = "RANDOM_SAGA"
 
 
 let initialState = {
@@ -384,7 +383,6 @@ const battleMapReducer = (state = initialState, action) => {
             stateCopy.settingShipUser.firstUser=true
             return stateCopy
         }
-
         default:
             return state
     }
@@ -446,7 +444,7 @@ export const startNewGame = () => {
 };
 
 
-export const setShipsRandom = (firstUser, userMap) => {
+export const setShipsRandom = (firstUser, userMap) => { //санка (реализована расстановка по кнопке)
     return dispatch => {
         dispatch(clearTheMap(firstUser))
         let horizon = true;
@@ -464,16 +462,16 @@ export const setShipsRandom = (firstUser, userMap) => {
     }
 }
 
+
+
+
 export const RandomSaga = (firstUser, userMap) => {
     return ({type: "RANDOM_SAGA",firstUser, userMap})
 };
-
 export function* watchSetShipsRandomSaga() {
-    debugger
-    yield takeEvery('RANDOM_SAGA', fetchSetShipsRandomSaga);
+    yield takeEvery("RANDOM_SAGA", fetchSetShipsRandomSaga);
 }
-
-function* fetchSetShipsRandomSaga(action) {
+function* fetchSetShipsRandomSaga(action) {   //санка (реализована расстановка ИИ в useEffect)
     try {
         yield put({type: "INITIALIZE_THE_MAP", firstUser:action.firstUser});
         let horizon = true;
@@ -482,10 +480,10 @@ function* fetchSetShipsRandomSaga(action) {
             for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
                 horizon = getRandomInt(2)
                 shipInputState = checkForShipInputComp(action.userMap, horizon, shipValue);
-                yield put({type: "SET_WHAT_SET_SHIP", shipValue:shipValue, firstUser:action.firstUser});
+                yield put({type: "SET_WHAT_SET_SHIP", ship:shipValue, firstUser:action.firstUser});
                 yield put({type: "SET_HORIZON", horizon:horizon, firstUser:action.firstUser});
                 yield put({type: "UNLOCK_FOR_SET_SHIP", shipValue:shipValue, horizon:horizon, firstUser:action.firstUser});
-                yield put({type: "SET_SHIP_USER", shipInputState:shipInputState[getRandomInt(shipInputState.length)],firstUser:action.firstUser});
+                yield put({type: "SET_SHIP_USER", sector:shipInputState[getRandomInt(shipInputState.length)],firstUser:action.firstUser});
               }
         }
     } catch (error) {}

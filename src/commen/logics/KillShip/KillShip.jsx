@@ -217,7 +217,6 @@ export const fireAfterHitComp =(map1,sector,)=> {
     let map = map1;
     let i = sector.y, j = sector.x;
     let sectorFire=[]
-    debugger
         if (map[i - 1]?.[j].sector.ship && map[i - 1][j].sector.shot) { //Ищем части поврежденного корабля слева и запоминаем координаты следующих выстрелов
             if (map[i - 2]?.[j].sector.ship && map[i - 2][j].sector.shot) {
                 if ((i > 2) && !map[i - 3][j].sector.shot) {

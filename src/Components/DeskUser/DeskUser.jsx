@@ -9,7 +9,7 @@ import compPhoto from "../../assets/img/intelligence-brain.png";
 import {useDispatch, useSelector} from "react-redux";
 import {
     clearTheMap,
-    deleteShipOnMap, RandomSaga,
+    deleteShipOnMap,
     setShipsRandom, setShipUser, setShotFirstUser, setShotSecondUser, startNewGame,
     toggleDeleteShip, toggleGameWithComp,
     toggleLookSecondUser
