@@ -9,8 +9,8 @@ import compPhoto from "../../assets/img/intelligence-brain.png";
 import {useDispatch, useSelector} from "react-redux";
 import {
     clearTheMap,
-    deleteShipOnMap, setShipFirstUser, setShipSecondUser,
-    setShipsRandom, setShotFirstUser, setShotSecondUser, startNewGame,
+    deleteShipOnMap,
+    setShipsRandom, setShipUser, setShotFirstUser, setShotSecondUser, startNewGame,
     toggleDeleteShip, toggleGameWithComp,
     toggleLookSecondUser
 } from "../../redux/battleMap-reduсer";
@@ -39,10 +39,7 @@ const DeskUser = (props) => {
         props.deleteShipUser?
             dispatch(deleteShipOnMap(sector,props.firstUser))
             :
-            props.firstUser?
-                dispatch(setShipFirstUser(sector))
-                :
-                dispatch(setShipSecondUser(sector))
+            dispatch(setShipUser(sector,props.firstUser))
     }
 
     const setShotUserDispatch = (sector) => {
