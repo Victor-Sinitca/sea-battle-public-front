@@ -20,7 +20,7 @@ const DeskUser = (props) => {
     const comp = useSelector(state => state.battleMap.comp);
     const settingShipUser = useSelector(state => state.battleMap.settingShipUser);
     const dispatch = useDispatch()
-    const shipOpponent = props.SUShips.numberShips1 > 0 || props.SUShips.numberShips2 > 0 ||
+    const shipOpponent = props.SUShips.numberShips1 > 0 || props.FUShips.numberShips2 > 0 ||
         props.SUShips.numberShips3 > 0 || props.SUShips.numberShips4 > 0;
     const yourShips = props.FUShips.numberShips1 > 0 || props.FUShips.numberShips2 > 0 ||
         props.FUShips.numberShips3 > 0 || props.FUShips.numberShips4 > 0;
@@ -45,7 +45,7 @@ const DeskUser = (props) => {
         dispatch(toggleLookSecondUser())
     }
     const setShipsRandomDispatch = () => {
-        dispatch(setShipsRandom(props.firstUser, props.firstUserMap))
+        dispatch(setShipsRandom(props.firstUser, props.firstMap))
     }
     const clearMapDispatch = () => {
         dispatch(clearTheMap(props.firstUser))
@@ -62,14 +62,12 @@ const DeskUser = (props) => {
             <div className={s.displayDesk1}>
                 <div className={s.header}>Field one</div>
                 <div className={s.displayUser}>
-                    <Desk userMap={props.firstUserMap} firstDesk={true} shipOpponent={shipOpponent}
+                    <Desk userMap={props.firstMap} firstDesk={true} shipOpponent={shipOpponent}
                           yourShips={yourShips}
                           returnToClick={returnToClick} toClick={true}
                           deleteShipUser={props.deleteShipUser} UserTurn={props.UserTurn}/>
                     {((props.firstUser && settingShipUser.firstUser) || (!props.firstUser && settingShipUser.secondUser))
-                        ? <SetShipBar FUShips={props.FUShips} whatSetShip={props.whatSetShip}
-                                      firstUserMap={props.firstUserMap}
-                                      firstUser={props.firstUser}/>
+                        ? <SetShipBar FUShips={props.FUShips} whatSetShip={props.whatSetShip} firstUser={props.firstUser}/>
                         : <ShipBar userShips={props.SUShips} firstUser={props.firstUser} UserTurn={props.UserTurn}/>
                     }
                     <div>
@@ -97,7 +95,7 @@ const DeskUser = (props) => {
                     <div>
                         <div className={s.header}>Field two</div>
                         <div className={s.displayUser}>
-                            <Desk userMap={props.secondUserMap} firstDesk={false} UserTurn={props.UserTurn}
+                            <Desk userMap={props.secondMap} firstDesk={false} UserTurn={props.UserTurn}
                                   returnToClick={setShotUserDispatch} toClick={shipOpponent ? props.UserTurn : false}
                                   shipOpponent={shipOpponent} yourShips={yourShips}/>
                         </div>

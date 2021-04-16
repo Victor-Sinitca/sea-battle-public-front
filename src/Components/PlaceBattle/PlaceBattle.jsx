@@ -90,12 +90,12 @@ let PlaceBattle = () => {
 
     if (!firstUserMap || !secondUserMap) return <Preloader/>
     return <div className={s.displayMapBattle}>
-        <DeskUser firstUser={true} firstUserMap={firstUserMap} secondUserMap={secondUserMap}
+        <DeskUser firstUser={true} firstMap={firstUserMap} secondMap={secondUserMap}
                   SUShips={SUShips} FUShips={FUShips}
                   whatSetShip={whatSetShipFU} UserTurn={FUTurn}
                   deleteShipUser={deleteShipFU}/>
         {lookSecondUser &&
-            <DeskUser firstUser={false} firstUserMap={secondUserMap} secondUserMap={firstUserMap}
+            <DeskUser firstUser={false} firstMap={secondUserMap} secondMap={firstUserMap}
                       SUShips={FUShips} FUShips={SUShips}
                       whatSetShip={whatSetShipSU} UserTurn={!FUTurn}
                       deleteShipUser={deleteShipSU} />

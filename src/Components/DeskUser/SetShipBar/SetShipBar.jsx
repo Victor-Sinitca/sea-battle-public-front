@@ -77,8 +77,7 @@ const SetShipBar = (props) => {
         </div>
         {(props.FUShips.ship1 || props.FUShips.ship2 || props.FUShips.ship3 || props.FUShips.ship4)
             ? <div>
-                <SetShip ship={props.whatSetShip} firstUserMap={props.firstUserMap}
-                         firstUser={props.firstUser}/>
+                <SetShip ship={props.whatSetShip} firstUser={props.firstUser}/>
             </div>
             :
             <div className={s.startGameButton}>
