@@ -28,6 +28,7 @@ const TOGGLE_LOOK_SECOND_USER = "TOGGLE_LOOK_SECOND_USER"
 const INITIALIZE_THE_MAP = "INITIALIZE_THE_MAP"
 const TOGGLE_GAME_WITH_COMP = "TOGGLE_GAME_WITH_COMP"
 const INITIAL_STATE_USERS = "INITIAL_STATE_USERS"
+const RANDOM_SAGA = "RANDOM_SAGA"
 
 
 let initialState = {
@@ -389,58 +390,58 @@ const battleMapReducer = (state = initialState, action) => {
 }
 
 export const setWhatSetShip = (ship, firstUser) => {
-    return ({type: "SET_WHAT_SET_SHIP", ship, firstUser})
+    return ({type: SET_WHAT_SET_SHIP, ship, firstUser})
 };
 export const setFirstUserMap = (FUMap) => {
-    return ({type: "SET_FIRST_USER_MAP", FUMap})
+    return ({type: SET_FIRST_USER_MAP, FUMap})
 };
 export const setSecondUserMap = (SUMap) => {
-    return ({type: "SET_SECOND_USER_MAP", SUMap})
+    return ({type: SET_SECOND_USER_MAP, SUMap})
 };
 export const setShipUser = (sector, firstUser) => {
-    return ({type: "SET_SHIP_USER", sector, firstUser})
+    return ({type: SET_SHIP_USER, sector, firstUser})
 };
 export const setShotFirstUser = (sector) => {
-    return ({type: "SET_SHOT_FIRST_USER", sector})
+    return ({type: SET_SHOT_FIRST_USER, sector})
 };
 export const setShotSecondUser = (sector) => {
-    return ({type: "SET_SHOT_SECOND_USER", sector})
+    return ({type: SET_SHOT_SECOND_USER, sector})
 };
 export const toggleDeleteShip = (firstUser) => {
-    return ({type: "TOGGLE_DELETE_SHIP", firstUser})
+    return ({type: TOGGLE_DELETE_SHIP, firstUser})
 };
 export const unlockForSetShip = (shipValue, horizon, firstUser,) => {
-    return ({type: "UNLOCK_FOR_SET_SHIP", shipValue, horizon, firstUser,})
+    return ({type: UNLOCK_FOR_SET_SHIP, shipValue, horizon, firstUser,})
 };
 export const lockAllMap = (firstUser) => {
-    return ({type: "LOCK_ALL_MAP", firstUser})
+    return ({type: LOCK_ALL_MAP, firstUser})
 };
 export const setHorizon = (horizon, firstUser) => {
-    return ({type: "SET_HORIZON", horizon, firstUser})
+    return ({type: SET_HORIZON, horizon, firstUser})
 };
 export const deleteShipOnMap = (sector,firstUser) => {
-    return ({type: "DELETE_SHIP", sector,firstUser})
+    return ({type: DELETE_SHIP, sector,firstUser})
 };
 export const startGame = (firstUser) => {
-    return ({type: "START_GAME", firstUser})
+    return ({type: START_GAME, firstUser})
 };
 export const increaseSectorFire = (indexElement) => {
-    return ({type: "INCREASE_SECTOR_FIRE", indexElement})
+    return ({type: INCREASE_SECTOR_FIRE, indexElement})
 };
 export const setCompGame = (value) => {
-    return ({type: "SET_COMP_GAME", value})
+    return ({type: SET_COMP_GAME, value})
 };
 export const toggleLookSecondUser = (value) => {
-    return ({type: "TOGGLE_LOOK_SECOND_USER", value})
+    return ({type: TOGGLE_LOOK_SECOND_USER, value})
 };
 export const clearTheMap = (firstUser) => {
-    return ({type: "INITIALIZE_THE_MAP", firstUser})
+    return ({type: INITIALIZE_THE_MAP, firstUser})
 };
 export const toggleGameWithComp = () => {
-    return ({type: "TOGGLE_GAME_WITH_COMP",})
+    return ({type: TOGGLE_GAME_WITH_COMP})
 };
 export const startNewGame = () => {
-    return ({type: "INITIAL_STATE_USERS",})
+    return ({type: INITIAL_STATE_USERS})
 };
 
 
@@ -466,10 +467,10 @@ export const setShipsRandom = (firstUser, userMap) => { //санка (реали
 
 
 export const RandomSaga = (firstUser, userMap) => {
-    return ({type: "RANDOM_SAGA",firstUser, userMap})
+    return ({type: RANDOM_SAGA,firstUser, userMap})
 };
 export function* watchSetShipsRandomSaga() {
-    yield takeEvery("RANDOM_SAGA", fetchSetShipsRandomSaga);
+    yield takeEvery(RANDOM_SAGA, fetchSetShipsRandomSaga);
 }
 function* fetchSetShipsRandomSaga(action) {   //сага (реализована расстановка кораблей ИИ в useEffect)
     try {
