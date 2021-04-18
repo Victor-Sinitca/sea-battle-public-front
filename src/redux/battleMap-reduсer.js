@@ -444,7 +444,7 @@ export const startNewGame = () => {
 };
 
 
-export const setShipsRandom = (firstUser, userMap) => { //санка (реализована расстановка по кнопке)
+export const setShipsRandom = (firstUser, userMap) => { //санка (реализована расстановка кораблей по кнопке)
     return dispatch => {
         dispatch(clearTheMap(firstUser))
         let horizon = true;
@@ -471,19 +471,19 @@ export const RandomSaga = (firstUser, userMap) => {
 export function* watchSetShipsRandomSaga() {
     yield takeEvery("RANDOM_SAGA", fetchSetShipsRandomSaga);
 }
-function* fetchSetShipsRandomSaga(action) {   //санка (реализована расстановка ИИ в useEffect)
+function* fetchSetShipsRandomSaga(action) {   //сага (реализована расстановка кораблей ИИ в useEffect)
     try {
-        yield put({type: "INITIALIZE_THE_MAP", firstUser:action.firstUser});
+        yield put(clearTheMap(action.firstUser));
         let horizon = true;
         let shipInputState;
         for (let shipValue = 4; shipValue >= 1; shipValue--) {
             for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
                 horizon = getRandomInt(2)
                 shipInputState = checkForShipInputComp(action.userMap, horizon, shipValue);
-                yield put({type: "SET_WHAT_SET_SHIP", ship:shipValue, firstUser:action.firstUser});
-                yield put({type: "SET_HORIZON", horizon:horizon, firstUser:action.firstUser});
-                yield put({type: "UNLOCK_FOR_SET_SHIP", shipValue:shipValue, horizon:horizon, firstUser:action.firstUser});
-                yield put({type: "SET_SHIP_USER", sector:shipInputState[getRandomInt(shipInputState.length)],firstUser:action.firstUser});
+                yield put(setWhatSetShip(shipValue,action.firstUser));
+                yield put(setHorizon(horizon,action.firstUser));
+                yield put(unlockForSetShip(shipValue,horizon,action.firstUser));
+                yield put(setShipUser(shipInputState[getRandomInt(shipInputState.length)],action.firstUser));
               }
         }
     } catch (error) {}

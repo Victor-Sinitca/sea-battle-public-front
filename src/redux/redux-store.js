@@ -11,7 +11,7 @@ let reducers = combineReducers({
 });
 
 const sagaMiddleware = createSagaMiddleware()
-let store= createStore(reducers, applyMiddleware(sagaMiddleware,thunkMiddleware))
+const store= createStore(reducers, applyMiddleware(sagaMiddleware,thunkMiddleware))
 
 sagaMiddleware.run(watchSetShipsRandomSaga)
 window.store=store;
