@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     clearTheMap,
     deleteShipOnMap,
-    setShipsRandom, setShipUser, setShotFirstUser, setShotSecondUser, startNewGame,
+    setShipsRandom, setShipUser,setShotUser, startNewGame,
     toggleDeleteShip, toggleGameWithComp,
     toggleLookSecondUser
 } from "../../redux/battleMap-reduсer";
@@ -24,20 +24,14 @@ const DeskUser = (props) => {
         props.SUShips.numberShips3 > 0 || props.SUShips.numberShips4 > 0;
     const yourShips = props.FUShips.numberShips1 > 0 || props.FUShips.numberShips2 > 0 ||
         props.FUShips.numberShips3 > 0 || props.FUShips.numberShips4 > 0;
+
     const returnToClick = (sector) => {
         props.deleteShipUser?
             dispatch(deleteShipOnMap(sector,props.firstUser))
             :
             dispatch(setShipUser(sector,props.firstUser))
     }
-
-    const setShotUserDispatch = (sector) => {
-        props.firstUser?
-            dispatch(setShotFirstUser(sector))
-            :
-            dispatch(setShotSecondUser(sector))
-    }
-
+    const setShotUserDispatch = (sector) => {dispatch(setShotUser(sector,props.firstUser))}
     const toggleDeleteShipDispatch = () => {
         dispatch(toggleDeleteShip(props.firstUser))
     }

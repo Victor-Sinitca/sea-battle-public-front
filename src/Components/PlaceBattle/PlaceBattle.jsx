@@ -6,11 +6,10 @@ import {checkForShipFireComp} from "../../commen/logics/CheckForShipInput/CheckF
 import {getRandomInt} from "../../commen/logics/getRandom/getRandom";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    increaseSectorFire, RandomSaga, setCompGame,
+    reduceSectorFire, RandomSaga, setCompGame,
     setFirstUserMap,
     setSecondUserMap,
-    setShotSecondUser,
-    startGame,
+    startGame, setShotUser,
 } from "../../redux/battleMap-reduсer";
 
 
@@ -71,17 +70,17 @@ let PlaceBattle = () => {
                 let IndexElemMass = 0
                 if (comp.sectorFire.length > 0) {
                     IndexElemMass = getRandomInt(comp.sectorFire.length)
-                    dispatch(setShotSecondUser(comp.sectorFire[IndexElemMass]))
+                    dispatch(setShotUser(comp.sectorFire[IndexElemMass], false))
                 } else {
-                    dispatch(setShotSecondUser(comp.sectorFire[IndexElemMass]))
+                    dispatch(setShotUser(comp.sectorFire[IndexElemMass], false))
                 }
                 if (!comp.hit) {
-                    dispatch(increaseSectorFire(IndexElemMass))
+                    dispatch(reduceSectorFire(IndexElemMass))
                 }
             } else { //если нет поврежденных кораблей - стельба по карте
                 let shipFireState = checkForShipFireComp(firstUserMap,) //поиск секторов для стрельбы
-                dispatch(setShotSecondUser(shipFireState[getRandomInt(shipFireState.length)])) //стрельба в случайный сектор из найденных
-            }
+                dispatch(setShotUser(shipFireState[getRandomInt(shipFireState.length)], false))
+            } //стрельба в случайный сектор из найденных
             if (FUShips.numberShips1 === 0 && FUShips.numberShips2 === 0 && // если у первого игроканет все корабли убиты - прекращается стрельба
                 FUShips.numberShips3 === 0 && FUShips.numberShips4 === 0) {
                 dispatch(setCompGame(false))
