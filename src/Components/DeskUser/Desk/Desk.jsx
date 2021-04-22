@@ -4,8 +4,7 @@ import ReturnSector from "../ReturnSector/ReturnSector";
 
 
 const Desk = (props) => {
-    let horizonIndex=[0,1,2,3,4,5,6,7,8,9]
-    let verticalIndex=['A','B','C','D','E','F','G','H','I','J']
+    let index=[0,1,2,3,4,5,6,7,8,9]
     return (
         <div className={
             props.yourShips?
@@ -17,15 +16,15 @@ const Desk = (props) => {
         }>
             <div className={s.display11}>
                 <div></div>
-                {verticalIndex.map(i=><div key={i}>{i}</div>)}
+                {index.map(i=><div key={i}>{String.fromCharCode(65 + i)}</div>)}
             </div>
             <div className={s.display2}>
                 <div className={s.display3}>
-                    {horizonIndex.map(i=><div key={i}>{i}</div>)}
+                    {index.map(i=><div key={i}>{i}</div>)}
                 </div>
                 <div className={s.displayMap}>
                     {props.userMap.map(a => a.map(b =>
-                        <ReturnSector key={b.sector.x} firstDesk={props.firstDesk} sector={b.sector}
+                        <ReturnSector key={b.sector.x*10+b.sector.y} firstDesk={props.firstDesk} sector={b.sector}
                                       returnToClick={props.returnToClick}
                                       toClick={props.toClick} deleteShipUser={props.deleteShipUser}/>
                     ))}

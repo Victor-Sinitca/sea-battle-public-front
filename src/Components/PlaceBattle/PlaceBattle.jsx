@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import Preloader from "../../commen/Preloader/Preloader";
 import s from "./PlaceBattle.module.css"
 import DeskUser from "../DeskUser/DeskUser";
-import {checkForShipFireComp} from "../../commen/logics/CheckForShipInput/CheckForSingleShipInput";
+import {checkForShipFireComp} from "../../commen/logics/checkForShipInput/checkForSingleShipInput";
 import {getRandomInt} from "../../commen/logics/getRandom/getRandom";
 import {useDispatch, useSelector} from "react-redux";
 import {

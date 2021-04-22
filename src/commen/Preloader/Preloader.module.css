@@ -41,9 +41,8 @@
     border-bottom-color: rgb(17, 46, 187);
     border-radius: 100%;
     animation: spin 1000ms infinite linear;
-
     -moz-animation: spin 1000ms infinite linear;
     -o-animation: spin 1000ms infinite linear;
     -webkit-animation: spin 1000ms infinite linear;
-    -ms-animation: spin 1000ms infinite linear;
+
 }

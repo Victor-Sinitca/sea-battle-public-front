@@ -1,4 +1,4 @@
-import {fireAfterHitComp, killShip} from "../KillShip/KillShip";
+import {fireAfterHitComp, killShip} from "../killShip/killShip";
 export const setShot = (state,action) => {
     let uMap, uShips
     if (action.firstUser) {

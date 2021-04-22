@@ -1,4 +1,4 @@
-import {lockMap} from "../CheckForShipInput/CheckForSingleShipInput";
+import {lockMap} from "../checkForShipInput/checkForSingleShipInput";
 
 
 export const setShip=(state, action)=>{

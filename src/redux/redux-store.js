@@ -1,4 +1,4 @@
-import {applyMiddleware, combineReducers, createStore} from "redux";
+import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import thunkMiddleware from "redux-thunk";
 import battleMapReducer, {watchSetShipsRandomSaga} from "./battleMap-reduсer";
 import {reducer as formReducer} from "redux-form"
@@ -11,7 +11,11 @@ let reducers = combineReducers({
 });
 
 const sagaMiddleware = createSagaMiddleware()
-const store= createStore(reducers, applyMiddleware(sagaMiddleware,thunkMiddleware))
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducers, composeEnhancers(
+    applyMiddleware(sagaMiddleware,thunkMiddleware)
+));
+/*const store= createStore(reducers, applyMiddleware(sagaMiddleware,thunkMiddleware))*/
 
 sagaMiddleware.run(watchSetShipsRandomSaga)
 window.store=store;

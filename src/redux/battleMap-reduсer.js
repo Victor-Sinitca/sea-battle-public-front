@@ -2,7 +2,7 @@ import {
     checkForShipInput,
     checkForShipInputComp,
     lockMap
-} from "../commen/logics/CheckForShipInput/CheckForSingleShipInput";
+} from "../commen/logics/checkForShipInput/checkForSingleShipInput";
 import {deleteShipFromTheMap} from "../commen/logics/deleteShipFromTheMap/deleteShipFromTheMap";
 import {getRandomInt} from "../commen/logics/getRandom/getRandom";
 import {initializeTheMapFunction} from "../commen/logics/initializeTheMapFunction/initializeTheMapFunction";
@@ -135,12 +135,14 @@ const battleMapReducer = (state = initialState, action) => {
             if (action.firstUser) {
                 stateCopy = {...state}
                 stateCopy.FUMap = [...state.FUMap];
-                stateCopy.FUMap = checkForShipInput(stateCopy.FUMap, state.horizonSetShipFU, action.shipValue)
+/*                const shipInput =checkForShipInputComp(stateCopy.FUMap, state.horizonSetShipFU, action.shipValue)
+                stateCopy.FUMap = shipInput.*/
+                stateCopy.FUMap = checkForShipInput(stateCopy.FUMap, state.horizonSetShipFU, action.shipValue,true)
                 return stateCopy
             } else {
                 stateCopy = {...state}
                 stateCopy.SUMap = [...state.SUMap];
-                stateCopy.SUMap = checkForShipInput(stateCopy.SUMap, state.horizonSetShipSU, action.shipValue)
+                stateCopy.SUMap = checkForShipInput(stateCopy.SUMap, state.horizonSetShipSU, action.shipValue,true)
                 return stateCopy
             }
         }
@@ -302,7 +304,7 @@ export const setShipsRandom = (firstUser, userMap) => { //санка (реали
         for (let shipValue = 4; shipValue >= 1; shipValue--) {
             for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
                 horizon = getRandomInt(2)
-                shipInputState = checkForShipInputComp(userMap, horizon, shipValue);
+                shipInputState = checkForShipInput(userMap, horizon, shipValue,false);
                 dispatch(setWhatSetShip(shipValue, firstUser))
                 dispatch(setHorizon(horizon, firstUser))
                 dispatch(unlockForSetShip(shipValue, horizon, firstUser))
@@ -328,7 +330,7 @@ function* fetchSetShipsRandomSaga(action) {   //сага (реализована
         for (let shipValue = 4; shipValue >= 1; shipValue--) {
             for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
                 horizon = getRandomInt(2)
-                shipInputState = checkForShipInputComp(action.userMap, horizon, shipValue);
+                shipInputState = checkForShipInput(action.userMap, horizon, shipValue, false);
                 yield put(setWhatSetShip(shipValue, action.firstUser));
                 yield put(setHorizon(horizon, action.firstUser));
                 yield put(unlockForSetShip(shipValue, horizon, action.firstUser));

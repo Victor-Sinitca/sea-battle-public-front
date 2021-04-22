@@ -1,5 +1,5 @@
 import React from "react";
-import s from "./SetShip1.module.css"
+import s from "./SetShip.module.css"
 import ship1 from "../../../../assets/img/1.png"
 import ship2 from "../../../../assets/img/20.png"
 import ship3 from "../../../../assets/img/3.png"
