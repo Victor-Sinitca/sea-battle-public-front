@@ -9,7 +9,7 @@ import {
     reduceSectorFire, RandomSaga, setCompGame,
     setFirstUserMap,
     setSecondUserMap,
-    startGame, setShotUser,
+    startGame, setShotUser, saveState, loadState,
 } from "../../redux/battleMap-reduсer";
 
 
@@ -26,9 +26,20 @@ let PlaceBattle = () => {
     const deleteShipFU = useSelector(state => state.battleMap.deleteShipFU);
     const deleteShipSU = useSelector(state => state.battleMap.deleteShipSU);
     const lookSecondUser = useSelector(state => state.battleMap.lookSecondUser);
+    const history = useSelector(state => state.battleMap.history);
 
     const dispatch = useDispatch()
 
+
+    const buttonHistory=history.savedState.map(h=>
+        <button className={s.historyButton} key={history.savedState.indexOf(h)} onClick={()=>dispatch(loadState(history.savedState.indexOf(h)))}>
+            {history.savedState.indexOf(h)===0? "Начало игры"
+                :history.savedState.indexOf(h)=== history.savedState.length-1 ? "Текущий ход"
+                    : history.savedState.indexOf(h) === history.savedState.length-2 ? "Прошлый ход"
+                        :"Позапрошлый ход"
+            }
+        </button>
+    )
 
     useEffect(() => { //инициализация карт первого и второго игрока
         if (!firstUserMap || !secondUserMap) {
@@ -87,6 +98,11 @@ let PlaceBattle = () => {
             }
         }
     },);
+    useEffect(() => { //стрельба компьютера
+        if (FUTurn) { //ход 1 игрока
+            dispatch(saveState(history.idTurn))
+        }
+    },[FUTurn]);
 
 
     if (!firstUserMap || !secondUserMap) return <Preloader/>
@@ -101,6 +117,9 @@ let PlaceBattle = () => {
                   whatSetShip={whatSetShipSU} UserTurn={!FUTurn}
                   deleteShipUser={deleteShipSU}/>
         }
+        <div className={s.displayHistory}>
+            {comp.game && buttonHistory}
+        </div>
     </div>
 }
 export default PlaceBattle

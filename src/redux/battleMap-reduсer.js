@@ -8,7 +8,7 @@ import {getRandomInt} from "../commen/logics/getRandom/getRandom";
 import {initializeTheMapFunction} from "../commen/logics/initializeTheMapFunction/initializeTheMapFunction";
 import {put, takeEvery} from 'redux-saga/effects'
 import {setShot} from "../commen/logics/setShot/setShot";
-import {initialUserState} from "../commen/logics/initialState/initialState";
+import {initialUserState, loadUserState, saveUserState} from "../commen/logics/initialState/initialState";
 import {setShip} from "../commen/logics/setShip/setShip";
 
 const SET_FIRST_USER_MAP = "SET_FIRST_USER_MAP"
@@ -30,6 +30,8 @@ const TOGGLE_GAME_WITH_COMP = "TOGGLE_GAME_WITH_COMP"
 const INITIAL_STATE_USERS = "INITIAL_STATE_USERS"
 const SET_SHOT_USER = "SET_SHOT_USER"
 const RANDOM_SAGA = "RANDOM_SAGA"
+const SAVE_STATE = "SAVE_STATE"
+const LOAD_STATE = "LOAD_STATE"
 
 
 let initialState = {
@@ -79,6 +81,10 @@ let initialState = {
         numberShips3: 2,
         numberShips4: 1,
     },
+    history:{
+        savedState:[],
+        idTurn:0
+    }
 }
 
 const battleMapReducer = (state = initialState, action) => {
@@ -238,6 +244,13 @@ const battleMapReducer = (state = initialState, action) => {
         case INITIAL_STATE_USERS: {
             return initialUserState(state)
         }
+
+        case SAVE_STATE: {
+            return saveUserState(state,action.idTurn)
+        }
+        case LOAD_STATE: {
+            return loadUserState(state,action.id)
+        }
         default:
             return state
     }
@@ -294,6 +307,16 @@ export const toggleGameWithComp = () => {
 export const startNewGame = () => {
     return ({type: INITIAL_STATE_USERS})
 };
+export const saveState = (idTurn) => {
+    return ({type: SAVE_STATE,idTurn})
+};
+export const loadState = (id) => {
+    return ({type: LOAD_STATE,id})
+};
+
+
+
+
 
 
 export const setShipsRandom = (firstUser, userMap) => { //санка (реализована расстановка кораблей по кнопке)

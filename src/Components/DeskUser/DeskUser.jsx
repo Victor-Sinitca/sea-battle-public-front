@@ -95,7 +95,7 @@ const DeskUser = (props) => {
                                   shipOpponent={shipOpponent} yourShips={yourShips}/>
                         </div>
                         <div>
-                            <button onClick={startNewGameDispatch} >reset the game</button>
+                            {!comp.game&&<button onClick={startNewGameDispatch} >reset the game</button>}
                         </div>
                     </div>
                     :
