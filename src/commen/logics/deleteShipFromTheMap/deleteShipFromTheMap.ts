@@ -1,11 +1,9 @@
-export const deleteShipFromTheMap=(map1, sector, ships)=>{
+import {MapsType, SectorType, ShipsType} from "../../../../Types/Types";
+
+export const deleteShipFromTheMap=(map1:MapsType, sector:SectorType, ships:ShipsType):MapsType=>{
     let map=map1;
     let i =sector.y, j=sector.x;
-    let iMax = null, iMin = null, jMax = null, jMin = null
-    iMin = i;
-    iMax = i;
-    jMin = j;
-    jMax = j;
+    let iMax = i, iMin = i, jMax = j, jMin = j
     if (map[i][j].sector.ship){
         //проверка по вертикали
         if (map[i - 1]?.[j].sector.ship) { //есть ли корабль слева на -1

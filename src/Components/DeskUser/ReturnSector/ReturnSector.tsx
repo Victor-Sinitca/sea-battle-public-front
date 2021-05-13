@@ -20,16 +20,9 @@ import ship421 from "../../../assets/img/421.png"
 import ship431 from "../../../assets/img/431.png"
 import ship441 from "../../../assets/img/441.png"
 import fire1 from "../../../assets/img/fire1.png"
+import {SectorType} from "../../../../Types/Types";
 
 
-type SectorType = {
-    ship: boolean,
-    shot: boolean,
-    x: number,
-    y: number,
-    unlock: boolean,
-    img: null | number
-}
 type PropsType = {
     firstDesk: boolean
     sector: SectorType

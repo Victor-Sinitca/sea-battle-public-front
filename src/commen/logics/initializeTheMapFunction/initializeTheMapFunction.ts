@@ -1,5 +1,13 @@
-export const initializeTheMapFunction=(userMap)=>{
-    let map = userMap, i, j
+import {MapsType} from "../../../../Types/Types";
+
+export const initializeTheMapFunction=(userMap:MapsType | null):MapsType=>{
+    let map:MapsType ,
+        i:number ,
+        j:number
+    if(userMap){
+        map=userMap
+    } else  map=[[]]
+
     for (i = 0; i < 10; i++) {
         for (j = 0; j < 10; j++) {
             map[i][j] = {

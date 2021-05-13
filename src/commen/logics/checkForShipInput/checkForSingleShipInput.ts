@@ -1,8 +1,10 @@
-function getRandomInt(max) {
+import {MapsType, SectorType} from "../../../../Types/Types";
+
+function getRandomInt(max:number):number {
     return Math.floor(Math.random() * Math.floor(max));
 }
-
-const lookAroundNoProperty = (i, j, userMap, property) => { //проверка клеток вокруг сектора на наличие свойства fire ли ship
+type propertyType= "ship" | "shot"
+const lookAroundNoProperty = (i:number, j:number, userMap:MapsType, property:propertyType):boolean => { //проверка клеток вокруг сектора на наличие свойства fire ли ship
     return (!userMap[i + 1]?.[j].sector[property]) &&
         (!userMap[i + 1]?.[j + 1]?.sector[property]) &&
         (!userMap[i + 1]?.[j - 1]?.sector[property]) &&
@@ -13,20 +15,20 @@ const lookAroundNoProperty = (i, j, userMap, property) => { //проверка �
         (!userMap[i][j + 1]?.sector[property]) &&
         (!userMap[i][j - 1]?.sector[property]);
 }
-const lookRightNoShip = (i, j, x, userMap) => { //проверка нет ля справа корабля
+const lookRightNoShip = (i:number, j:number, x:number, userMap:MapsType):boolean => { //проверка нет ля справа корабля
     return (
         (!userMap[i + 1]?.[j + x]?.sector.ship) &&
         (!userMap[i - 1]?.[j + x]?.sector.ship) &&
         (!userMap[i][j + x]?.sector.ship));
 }
-const lookDownNoShip = (i, j, x, userMap) => { //проверка нет ли внизу корабля
+const lookDownNoShip = (i:number, j:number, x:number, userMap:MapsType):boolean => { //проверка нет ли внизу корабля
     return (
         (!userMap[i + x]?.[j].sector.ship) &&
         (!userMap[i + x]?.[j + 1]?.sector.ship) &&
         (!userMap[i + x]?.[j - 1]?.sector.ship)
     )
 }
-export const lockMap = (map) => { // заблокировать карту
+export const lockMap = (map:MapsType):MapsType => { // заблокировать карту
     let userMap = map
     for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {
@@ -36,10 +38,14 @@ export const lockMap = (map) => { // заблокировать карту
     return userMap
 }
 
-
-export const checkForShipInput = (map, horizon, shipValue, human) => { //разблокировка клеток, куда можно установить корабль
+type checkForShipInputReturn={
+    userMap:MapsType
+    shipInputState:SectorType[] | []
+}
+export const checkForShipInput = (map:MapsType, horizon:boolean,   shipValue:number,
+                                  human:boolean): checkForShipInputReturn => { //разблокировка клеток, куда можно установить корабль
     let userMap = map
-    let shipInputState = [] //массив для запоминания
+    let shipInputState = []  //массив для запоминания
     for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) { //проверка клетки
             if (horizon) { //если корабль горизонтальный
@@ -66,18 +72,27 @@ export const checkForShipInput = (map, horizon, shipValue, human) => { //раз�
             }
         }
     }
-    if(human){
+/*    if(human){
         return userMap //вернуть карту если человек
     }else{
         return shipInputState //вернуть массив для случайной расстановки если ИИ
+    }*/
+    return {
+        userMap,
+        shipInputState
     }
 }
 
-const fire2Cells = (i, j, userMap) => { // огонь в полосу 2
-    return (!userMap[i][j].sector.shot) &&
-        (!userMap[i + 1]?.[j].sector.shot || !userMap[i][j + 1]?.sector.shot)
+const fire2Cells = (i:number, j:number, userMap:MapsType, horizon:boolean):boolean => { // огонь в полосу 2
+    if (horizon) {
+        return (!userMap[i][j].sector.shot) &&
+            (!userMap[i ][j+ 1]?.sector.shot || !userMap[i][j - 1]?.sector.shot)
+    } else {
+        return (!userMap[i][j].sector.shot) &&
+            (!userMap[i + 1]?.[j].sector.shot || !userMap[i-1]?.[j].sector.shot)
+    }
 }
-const fireCenter3Cells = (i, j, userMap, horizon) => { //огонь в центр полосы 3
+const fireCenter3Cells = (i:number, j:number, userMap:MapsType, horizon:boolean):boolean => { //огонь в центр полосы 3
     if (horizon) {
         return (!userMap[i][j].sector.shot) &&
             (!userMap[i][j + 1]?.sector.shot) &&
@@ -88,7 +103,7 @@ const fireCenter3Cells = (i, j, userMap, horizon) => { //огонь в цент�
             (!userMap[i][j].sector.shot)
     }
 }
-const fireCenter5Cells = (i, j, userMap, horizon) => {//огонь в центр полосы 5
+const fireCenter5Cells = (i:number, j:number, userMap:MapsType, horizon:boolean):boolean => {//огонь в центр полосы 5
     if (horizon) {
         return (!userMap[i][j].sector.shot) &&
             (!userMap[i][j + 1]?.sector.shot) &&
@@ -105,7 +120,7 @@ const fireCenter5Cells = (i, j, userMap, horizon) => {//огонь в центр
 }
 
 
-export const checkForShipFireComp = (map,) => {
+export const checkForShipFireComp = (map:MapsType): SectorType[] => {
     let userMap = map
     let shipInputState = []
     let turn = true

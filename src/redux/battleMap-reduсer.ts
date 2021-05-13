@@ -1,6 +1,5 @@
 import {
     checkForShipInput,
-    checkForShipInputComp,
     lockMap
 } from "../commen/logics/checkForShipInput/checkForSingleShipInput";
 import {deleteShipFromTheMap} from "../commen/logics/deleteShipFromTheMap/deleteShipFromTheMap";
@@ -10,12 +9,13 @@ import {put, takeEvery} from 'redux-saga/effects'
 import {setShot} from "../commen/logics/setShot/setShot";
 import {initialUserState, loadUserState, saveUserState} from "../commen/logics/initialState/initialState";
 import {setShip} from "../commen/logics/setShip/setShip";
+import {SectorType, ShipsType} from "../../Types/Types";
+import {Dispatch} from "redux";
 
 const SET_FIRST_USER_MAP = "SET_FIRST_USER_MAP"
 const SET_SECOND_USER_MAP = "SET_SECOND_USER_MAP"
 const DELETE_SHIP = "DELETE_SHIP"
 const SET_SHIP_USER = "SET_SHIP_USER"
-const TOGGLE_SETTING_SHIP = "TOGGLE_SETTING_SHIP"
 const UNLOCK_FOR_SET_SHIP = "UNLOCK_FOR_SET_SHIP"
 const LOCK_ALL_MAP = "LOCK_ALL_MAP"
 const SET_WHAT_SET_SHIP = "SET_WHAT_SET_SHIP"
@@ -33,32 +33,31 @@ const RANDOM_SAGA = "RANDOM_SAGA"
 const SAVE_STATE = "SAVE_STATE"
 const LOAD_STATE = "LOAD_STATE"
 
-
-let initialState = {
-    FUMap: null,
-    SUMap: null,
+const initialState = {
+    FUMap: null as null | Array<Array<{sector:SectorType}>> ,
+    SUMap: null as null | Array<Array<{sector:SectorType}>>,
 
     FUTurn: {
-        turn: true
+        turn: true as boolean
     },
     comp: {
-        game: true,
-        damaged: false,
-        hit: false,
-        sectorFire: []
+        game: true as boolean,
+        damaged: false as boolean,
+        hit: false as boolean,
+        sectorFire: [] as [] | Array<SectorType>
     },
 
-    lookSecondUser: false,
-    whatSetShipFU: null,
-    whatSetShipSU: null,
-    horizonSetShipFU: null,
-    horizonSetShipSU: null,
-    deleteShipFU: false,
-    deleteShipSU: false,
+    lookSecondUser: false as boolean,
+    whatSetShipFU: null as null|number,
+    whatSetShipSU: null as null|number,
+    horizonSetShipFU: null as null|boolean,
+    horizonSetShipSU: null as null|boolean,
+    deleteShipFU: false as boolean,
+    deleteShipSU: false as boolean,
 
     settingShipUser: {
-        firstUser: true,
-        secondUser: true,
+        firstUser: true as boolean,
+        secondUser: true as boolean,
     },
 
     FUShips: {
@@ -70,7 +69,7 @@ let initialState = {
         numberShips2: 3,
         numberShips3: 2,
         numberShips4: 1,
-    },
+    } as ShipsType,
     SUShips: {
         ship1: 4,
         ship2: 3,
@@ -80,14 +79,15 @@ let initialState = {
         numberShips2: 3,
         numberShips3: 2,
         numberShips4: 1,
-    },
+    }as ShipsType ,
     history:{
-        savedState:[],
-        idTurn:0
+        savedState:[]  as any, // перепроверить
+        idTurn:0 as number
     }
 }
 
-const battleMapReducer = (state = initialState, action) => {
+type initialStateType= typeof initialState
+const battleMapReducer = (state = initialState as initialStateType, action:ActionType) => {
     let stateCopy = null
     switch (action.type) {
         case SET_WHAT_SET_SHIP:
@@ -99,33 +99,24 @@ const battleMapReducer = (state = initialState, action) => {
             return {...state, SUMap: action.SUMap}
         case DELETE_SHIP :
             stateCopy = {...state}
-            if (action.firstUser) {
+            if (action.firstUser && state.FUMap ) {
                 stateCopy.FUMap = [...state.FUMap];
                 stateCopy.FUMap = deleteShipFromTheMap(stateCopy.FUMap, action.sector, state.FUShips)
                 stateCopy.deleteShipFU = false
                 return stateCopy
-            } else {
+            } else if (state.SUMap) {
                 stateCopy.SUMap = [...state.SUMap];
                 stateCopy.SUMap = deleteShipFromTheMap(stateCopy.SUMap, action.sector, state.SUShips)
                 stateCopy.deleteShipSU = false
+                return stateCopy
+            } else {
+                console.log(`Error DELETE_SHIP. First User is ${action.firstUser}`)
                 return stateCopy
             }
         case SET_SHIP_USER:
             return setShip(state, action)
         case SET_SHOT_USER:
             return setShot(state, action)
-        case TOGGLE_SETTING_SHIP : {
-            if (action.firstUser) {
-                stateCopy = {...state}
-                stateCopy.settingShipUser = {...state.settingShipUser}
-                stateCopy.settingShipUser.firstUser = action.value
-            } else {
-                stateCopy = {...state}
-                stateCopy.settingShipUser = {...state.settingShipUser}
-                stateCopy.settingShipUser.secondUser = action.value
-            }
-            return stateCopy
-        }
         case TOGGLE_DELETE_SHIP: {
             if (action.firstUser) {
                 if (state.deleteShipFU) {
@@ -138,30 +129,35 @@ const battleMapReducer = (state = initialState, action) => {
             }
         }
         case UNLOCK_FOR_SET_SHIP : {
-            if (action.firstUser) {
+            if (action.firstUser && state.FUMap && (typeof(state.horizonSetShipFU) === "boolean")) {
                 stateCopy = {...state}
                 stateCopy.FUMap = [...state.FUMap];
-/*                const shipInput =checkForShipInputComp(stateCopy.FUMap, state.horizonSetShipFU, action.shipValue)
-                stateCopy.FUMap = shipInput.*/
-                stateCopy.FUMap = checkForShipInput(stateCopy.FUMap, state.horizonSetShipFU, action.shipValue,true)
+
+                stateCopy.FUMap = checkForShipInput(stateCopy.FUMap, state.horizonSetShipFU, action.shipValue,true).userMap
                 return stateCopy
-            } else {
+            } else if (state.SUMap && (typeof(state.horizonSetShipSU) === "boolean")) {
                 stateCopy = {...state}
                 stateCopy.SUMap = [...state.SUMap];
-                stateCopy.SUMap = checkForShipInput(stateCopy.SUMap, state.horizonSetShipSU, action.shipValue,true)
+                stateCopy.SUMap = checkForShipInput(stateCopy.SUMap, state.horizonSetShipSU, action.shipValue,true).userMap
+                return stateCopy
+            }else {
+                console.log(`Error UNLOCK_FOR_SET_SHIP. First User is ${action.firstUser}`)
                 return stateCopy
             }
         }
         case LOCK_ALL_MAP: {
-            if (action.firstUser) {
+            if (action.firstUser && state.FUMap) {
                 stateCopy = {...state}
                 stateCopy.FUMap = [...state.FUMap];
                 stateCopy.FUMap = lockMap(stateCopy.FUMap)
                 return stateCopy
-            } else {
+            } else if (state.SUMap) {
                 stateCopy = {...state}
                 stateCopy.SUMap = [...state.SUMap];
                 stateCopy.SUMap = lockMap(stateCopy.SUMap)
+                return stateCopy
+            }else {
+                console.log(`Error LOCK_ALL_MAP. First User is ${action.firstUser}`)
                 return stateCopy
             }
         }
@@ -199,7 +195,7 @@ const battleMapReducer = (state = initialState, action) => {
         case SET_COMP_GAME : {
             stateCopy = {...state}
             stateCopy.comp = {...state.comp}
-            stateCopy.comp.game = false
+            stateCopy.comp.game = action.value
             return stateCopy
         }
         case TOGGLE_LOOK_SECOND_USER: {
@@ -256,78 +252,161 @@ const battleMapReducer = (state = initialState, action) => {
     }
 }
 
-export const setWhatSetShip = (ship, firstUser) => {
+
+
+type DispatchType=Dispatch<ActionType>
+type ActionType=setWhatSetShipType | setFirstUserMapType | setSecondUserMapType | setShipUserType |setShotUserType | toggleDeleteShipType |
+    unlockForSetShipType | lockAllMapType | setHorizonType | deleteShipOnMapType | startGameType | reduceSectorFireType |
+    setCompGameType | toggleLookSecondUserType | clearTheMapType | toggleGameWithCompType | startNewGameType |
+    saveStateType | loadStateType
+
+type setWhatSetShipType={
+    type: typeof SET_WHAT_SET_SHIP
+    ship:number
+    firstUser:boolean
+}
+export const setWhatSetShip = (ship:number, firstUser:boolean):setWhatSetShipType => {
     return ({type: SET_WHAT_SET_SHIP, ship, firstUser})
 };
-export const setFirstUserMap = (FUMap) => {
+type setFirstUserMapType={
+    type: typeof SET_FIRST_USER_MAP
+    FUMap:Array<Array<{sector:SectorType}>>
+}
+export const setFirstUserMap = (FUMap:Array<Array<{sector:SectorType}>>):setFirstUserMapType => {
     return ({type: SET_FIRST_USER_MAP, FUMap})
 };
-export const setSecondUserMap = (SUMap) => {
+type setSecondUserMapType={
+    type: typeof SET_SECOND_USER_MAP
+    SUMap:Array<Array<{sector:SectorType}>>
+}
+export const setSecondUserMap = (SUMap:Array<Array<{sector:SectorType}>>):setSecondUserMapType => {
     return ({type: SET_SECOND_USER_MAP, SUMap})
 };
-export const setShipUser = (sector, firstUser) => {
+type setShipUserType={
+    type: typeof SET_SHIP_USER
+    sector:SectorType
+    firstUser:boolean
+}
+export const setShipUser = (sector:SectorType, firstUser:boolean):setShipUserType => {
     return ({type: SET_SHIP_USER, sector, firstUser})
 };
-export const setShotUser = (sector, firstUser) => {
+type setShotUserType={
+    type: typeof SET_SHOT_USER
+    sector:SectorType
+    firstUser:boolean
+}
+export const setShotUser = (sector:SectorType, firstUser:boolean):setShotUserType => {
     return ({type: SET_SHOT_USER, sector, firstUser})
 };
-export const toggleDeleteShip = (firstUser) => {
+type toggleDeleteShipType={
+    type: typeof TOGGLE_DELETE_SHIP
+    firstUser:boolean
+}
+export const toggleDeleteShip = (firstUser:boolean):toggleDeleteShipType => {
     return ({type: TOGGLE_DELETE_SHIP, firstUser})
 };
-export const unlockForSetShip = (shipValue, horizon, firstUser,) => {
+type unlockForSetShipType={
+    type: typeof UNLOCK_FOR_SET_SHIP
+    shipValue:number
+    horizon:boolean
+    firstUser:boolean
+}
+export const unlockForSetShip = (shipValue:number, horizon:boolean, firstUser:boolean,):unlockForSetShipType => {
     return ({type: UNLOCK_FOR_SET_SHIP, shipValue, horizon, firstUser,})
 };
-export const lockAllMap = (firstUser) => {
+type lockAllMapType={
+    type: typeof LOCK_ALL_MAP
+    firstUser:boolean
+}
+export const lockAllMap = (firstUser:boolean):lockAllMapType => {
     return ({type: LOCK_ALL_MAP, firstUser})
 };
-export const setHorizon = (horizon, firstUser) => {
+type setHorizonType={
+    type: typeof SET_HORIZON
+    horizon:boolean
+    firstUser:boolean
+}
+export const setHorizon = (horizon:boolean, firstUser:boolean):setHorizonType => {
     return ({type: SET_HORIZON, horizon, firstUser})
 };
-export const deleteShipOnMap = (sector, firstUser) => {
+type deleteShipOnMapType={
+    type: typeof DELETE_SHIP
+    sector:SectorType
+    firstUser:boolean
+}
+export const deleteShipOnMap = (sector:SectorType, firstUser:boolean):deleteShipOnMapType => {
     return ({type: DELETE_SHIP, sector, firstUser})
 };
-export const startGame = (firstUser) => {
+type startGameType={
+    type: typeof START_GAME
+    firstUser:boolean
+}
+export const startGame = (firstUser:boolean):startGameType => {
     return ({type: START_GAME, firstUser})
 };
-export const reduceSectorFire = (indexElement) => {
+type reduceSectorFireType={
+    type: typeof INCREASE_SECTOR_FIRE
+    indexElement:number
+}
+export const reduceSectorFire = (indexElement:number):reduceSectorFireType => {
     return ({type: INCREASE_SECTOR_FIRE, indexElement})
 };
-export const setCompGame = (value) => {
+type setCompGameType={
+    type: typeof SET_COMP_GAME
+    value:boolean
+}
+export const setCompGame = (value:boolean):setCompGameType => {
     return ({type: SET_COMP_GAME, value})
 };
-export const toggleLookSecondUser = (value) => {
+type toggleLookSecondUserType={
+    type: typeof TOGGLE_LOOK_SECOND_USER
+    value:boolean
+}
+export const toggleLookSecondUser = (value:boolean):toggleLookSecondUserType => {
     return ({type: TOGGLE_LOOK_SECOND_USER, value})
 };
-export const clearTheMap = (firstUser) => {
+type clearTheMapType={
+    type: typeof INITIALIZE_THE_MAP
+    firstUser:boolean
+}
+export const clearTheMap = (firstUser:boolean):clearTheMapType => {
     return ({type: INITIALIZE_THE_MAP, firstUser})
 };
-export const toggleGameWithComp = () => {
+type toggleGameWithCompType={type: typeof TOGGLE_GAME_WITH_COMP}
+export const toggleGameWithComp = ():toggleGameWithCompType => {
     return ({type: TOGGLE_GAME_WITH_COMP})
 };
-export const startNewGame = () => {
+type startNewGameType={type: typeof INITIAL_STATE_USERS}
+export const startNewGame = ():startNewGameType => {
     return ({type: INITIAL_STATE_USERS})
 };
-export const saveState = (idTurn) => {
+type saveStateType={
+    type: typeof SAVE_STATE
+    idTurn:number
+}
+export const saveState = (idTurn:number):saveStateType => {
     return ({type: SAVE_STATE,idTurn})
 };
-export const loadState = (id) => {
+type loadStateType={
+    type: typeof LOAD_STATE
+    id:number
+}
+export const loadState = (id:number):loadStateType => {
     return ({type: LOAD_STATE,id})
 };
 
 
 
 
-
-
-export const setShipsRandom = (firstUser, userMap) => { //санка (реализована расстановка кораблей по кнопке)
-    return dispatch => {
+export const setShipsRandom = (firstUser:boolean, userMap:Array<Array<{sector:SectorType}>>) => { //санка (реализована расстановка кораблей по кнопке)
+    return (dispatch:DispatchType) => {
         dispatch(clearTheMap(firstUser))
         let horizon = true;
-        let shipInputState;
+        let shipInputState=[];
         for (let shipValue = 4; shipValue >= 1; shipValue--) {
             for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
-                horizon = getRandomInt(2)
-                shipInputState = checkForShipInput(userMap, horizon, shipValue,false);
+                horizon = Boolean(getRandomInt(2))
+                shipInputState = checkForShipInput(userMap, horizon, shipValue,false).shipInputState;
                 dispatch(setWhatSetShip(shipValue, firstUser))
                 dispatch(setHorizon(horizon, firstUser))
                 dispatch(unlockForSetShip(shipValue, horizon, firstUser))
@@ -337,7 +416,12 @@ export const setShipsRandom = (firstUser, userMap) => { //санка (реали
     }
 }
 
-export const RandomSaga = (firstUser, userMap) => {
+type RandomSagaType={
+    type: typeof RANDOM_SAGA
+    firstUser:boolean
+    userMap:Array<Array<{sector:SectorType}>>
+}
+export const RandomSaga = (firstUser:boolean, userMap:Array<Array<{sector:SectorType}>>):RandomSagaType => {
     return ({type: RANDOM_SAGA, firstUser, userMap})
 };
 
@@ -345,15 +429,15 @@ export function* watchSetShipsRandomSaga() {
     yield takeEvery(RANDOM_SAGA, fetchSetShipsRandomSaga);
 }
 
-function* fetchSetShipsRandomSaga(action) {   //сага (реализована расстановка кораблей ИИ в useEffect)
+function* fetchSetShipsRandomSaga(action:RandomSagaType) {   //сага (реализована расстановка кораблей ИИ в useEffect (для примера))
     try {
         yield put(clearTheMap(action.firstUser));
         let horizon = true;
-        let shipInputState;
+        let shipInputState=[] as [] | Array<SectorType>;
         for (let shipValue = 4; shipValue >= 1; shipValue--) {
             for (let numberOfShips = shipValue; numberOfShips <= 4; numberOfShips++) {
-                horizon = getRandomInt(2)
-                shipInputState = checkForShipInput(action.userMap, horizon, shipValue, false);
+                horizon = Boolean(getRandomInt(2))
+                shipInputState = checkForShipInput(action.userMap, horizon, shipValue, false).shipInputState;
                 yield put(setWhatSetShip(shipValue, action.firstUser));
                 yield put(setHorizon(horizon, action.firstUser));
                 yield put(unlockForSetShip(shipValue, horizon, action.firstUser));
