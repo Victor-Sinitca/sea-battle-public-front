@@ -9,35 +9,43 @@ import {
     reduceSectorFire, RandomSaga, setCompGame,
     setFirstUserMap,
     setSecondUserMap,
-    startGame, setShotUser, saveState, loadState,
+    startGame, setShotUser, saveState, loadState, increaseIdTurn, loadState1,
 } from "../../redux/battleMap-reduсer";
+import {getSaveList} from "../../redux/saveBattleMap-selectors";
+import {
+    getComp, getDeleteShipFU, getDeleteShipSU,
+    getFirstUserMap, getFUShips,
+    getFUTurn, getHistory, getLookSecondUser,
+    getSecondUserMap,
+    getSettingShipUser, getStateBattleMap, getSUShips, getWhatSetShipFU, getWhatSetShipSU
+} from "../../redux/battleMap-selectors";
+import {saveBattleMap} from "../../redux/saveBattleMap-reduсer";
 
 
 let PlaceBattle = () => {
-    const firstUserMap = useSelector(state => state.battleMap.FUMap);
-    const secondUserMap = useSelector(state => state.battleMap.SUMap);
-    const comp = useSelector(state => state.battleMap.comp);
-    const settingShipUser = useSelector(state => state.battleMap.settingShipUser);
-    const FUTurn = useSelector(state => state.battleMap.FUTurn.turn);
-    const FUShips = useSelector(state => state.battleMap.FUShips);
-    const SUShips = useSelector(state => state.battleMap.SUShips);
-    const whatSetShipFU = useSelector(state => state.battleMap.whatSetShipFU);
-    const whatSetShipSU = useSelector(state => state.battleMap.whatSetShipSU);
-    const deleteShipFU = useSelector(state => state.battleMap.deleteShipFU);
-    const deleteShipSU = useSelector(state => state.battleMap.deleteShipSU);
-    const lookSecondUser = useSelector(state => state.battleMap.lookSecondUser);
-    const history = useSelector(state => state.battleMap.history);
+    const stateBattleMap = useSelector(getStateBattleMap);
+    const firstUserMap = useSelector(getFirstUserMap);
+    const secondUserMap = useSelector(getSecondUserMap);
+    const comp = useSelector(getComp);
+    const settingShipUser = useSelector(getSettingShipUser);
+    const FUTurn = useSelector(getFUTurn);
+    const FUShips = useSelector(getFUShips);
+    const SUShips = useSelector(getSUShips);
+    const whatSetShipFU = useSelector(getWhatSetShipFU);
+    const whatSetShipSU = useSelector(getWhatSetShipSU);
+    const deleteShipFU = useSelector(getDeleteShipFU);
+    const deleteShipSU = useSelector(getDeleteShipSU);
+    const lookSecondUser = useSelector(getLookSecondUser);
+    const saveList = useSelector(getSaveList) ;
 
     const dispatch = useDispatch()
 
 
-    const buttonHistory=history.savedState.map(h=>
-        <button className={s.historyButton} key={history.savedState.indexOf(h)} onClick={()=>dispatch(loadState(history.savedState.indexOf(h)))}>
-            {history.savedState.indexOf(h)===0? "Начало игры"
-                :history.savedState.indexOf(h)=== history.savedState.length-1 ? "Текущий ход"
-                    : history.savedState.indexOf(h) === history.savedState.length-2 ? "Прошлый ход"
-                        :"Позапрошлый ход"
-            }
+
+
+    const buttonHistory2=saveList.map(S=>
+        <button className={s.historyButton} key={S.idTurn} onClick={()=>dispatch(loadState(S))}>
+            {S.idTurn}
         </button>
     )
 
@@ -100,7 +108,9 @@ let PlaceBattle = () => {
     },);
     useEffect(() => { //стрельба компьютера
         if (FUTurn) { //ход 1 игрока
-            dispatch(saveState(history.idTurn))
+            debugger
+            dispatch(increaseIdTurn())
+            dispatch(saveBattleMap(stateBattleMap))
         }
     },[FUTurn]);
 
@@ -117,8 +127,8 @@ let PlaceBattle = () => {
                   whatSetShip={whatSetShipSU} UserTurn={!FUTurn}
                   deleteShipUser={deleteShipSU}/>
         }
-        <div className={s.displayHistory}>
-            {comp.game && buttonHistory}
+        <div>
+            {buttonHistory2}
         </div>
     </div>
 }

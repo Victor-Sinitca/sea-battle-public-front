@@ -7,9 +7,9 @@ import {getRandomInt} from "../commen/logics/getRandom/getRandom";
 import {initializeTheMapFunction} from "../commen/logics/initializeTheMapFunction/initializeTheMapFunction";
 import {put, takeEvery} from 'redux-saga/effects'
 import {setShot} from "../commen/logics/setShot/setShot";
-import {initialUserState, loadUserState, saveUserState} from "../commen/logics/initialState/initialState";
+import {initialUserState,} from "../commen/logics/initialState/initialState";
 import {setShip} from "../commen/logics/setShip/setShip";
-import {SectorType, ShipsType} from "../../Types/Types";
+import {compType, SectorType, ShipsType} from "../../Types/Types";
 import {Dispatch} from "redux";
 
 const SET_FIRST_USER_MAP = "SET_FIRST_USER_MAP"
@@ -30,23 +30,21 @@ const TOGGLE_GAME_WITH_COMP = "TOGGLE_GAME_WITH_COMP"
 const INITIAL_STATE_USERS = "INITIAL_STATE_USERS"
 const SET_SHOT_USER = "SET_SHOT_USER"
 const RANDOM_SAGA = "RANDOM_SAGA"
-const SAVE_STATE = "SAVE_STATE"
 const LOAD_STATE = "LOAD_STATE"
+const INCREASE_ID_TURN = "INCREASE_ID_TURN"
 
 const initialState = {
-    FUMap: null as null | Array<Array<{sector:SectorType}>> ,
+    FUMap: null as null | Array<Array<{sector:SectorType}>>,
     SUMap: null as null | Array<Array<{sector:SectorType}>>,
-
     FUTurn: {
         turn: true as boolean
     },
     comp: {
-        game: true as boolean,
-        damaged: false as boolean,
-        hit: false as boolean,
-        sectorFire: [] as [] | Array<SectorType>
-    },
-
+        game: true,
+        damaged: false,
+        hit: false,
+        sectorFire: []
+    } as compType,
     lookSecondUser: false as boolean,
     whatSetShipFU: null as null|number,
     whatSetShipSU: null as null|number,
@@ -80,15 +78,12 @@ const initialState = {
         numberShips3: 2,
         numberShips4: 1,
     }as ShipsType ,
-    history:{
-        savedState:[]  as any, // перепроверить
-        idTurn:0 as number
-    }
+    idTurn:0 as number,
 }
 
-type initialStateType= typeof initialState
-const battleMapReducer = (state = initialState as initialStateType, action:ActionType) => {
-    let stateCopy = null
+export type initialStateBattleMapType= typeof initialState
+const battleMapReducer = (state = initialState as initialStateBattleMapType, action:ActionType) => {
+    let stateCopy:initialStateBattleMapType
     switch (action.type) {
         case SET_WHAT_SET_SHIP:
             if (action.firstUser) return {...state, whatSetShipFU: action.ship}
@@ -142,7 +137,7 @@ const battleMapReducer = (state = initialState as initialStateType, action:Actio
                 return stateCopy
             }else {
                 console.log(`Error UNLOCK_FOR_SET_SHIP. First User is ${action.firstUser}`)
-                return stateCopy
+                return state
             }
         }
         case LOCK_ALL_MAP: {
@@ -158,7 +153,7 @@ const battleMapReducer = (state = initialState as initialStateType, action:Actio
                 return stateCopy
             }else {
                 console.log(`Error LOCK_ALL_MAP. First User is ${action.firstUser}`)
-                return stateCopy
+                return state
             }
         }
         case SET_HORIZON: {
@@ -240,12 +235,16 @@ const battleMapReducer = (state = initialState as initialStateType, action:Actio
         case INITIAL_STATE_USERS: {
             return initialUserState(state)
         }
-
-        case SAVE_STATE: {
-            return saveUserState(state,action.idTurn)
-        }
         case LOAD_STATE: {
-            return loadUserState(state,action.id)
+            stateCopy=JSON.parse(JSON.stringify(action.state))
+            stateCopy.idTurn =action.state.idTurn+1
+            return stateCopy
+        }
+        case INCREASE_ID_TURN: {
+            return{
+                ...state,
+                idTurn:state.idTurn+1
+            }
         }
         default:
             return state
@@ -258,7 +257,7 @@ type DispatchType=Dispatch<ActionType>
 type ActionType=setWhatSetShipType | setFirstUserMapType | setSecondUserMapType | setShipUserType |setShotUserType | toggleDeleteShipType |
     unlockForSetShipType | lockAllMapType | setHorizonType | deleteShipOnMapType | startGameType | reduceSectorFireType |
     setCompGameType | toggleLookSecondUserType | clearTheMapType | toggleGameWithCompType | startNewGameType |
-    saveStateType | loadStateType
+    loadStateType | increaseIdTurnType
 
 type setWhatSetShipType={
     type: typeof SET_WHAT_SET_SHIP
@@ -380,22 +379,20 @@ type startNewGameType={type: typeof INITIAL_STATE_USERS}
 export const startNewGame = ():startNewGameType => {
     return ({type: INITIAL_STATE_USERS})
 };
-type saveStateType={
-    type: typeof SAVE_STATE
-    idTurn:number
-}
-export const saveState = (idTurn:number):saveStateType => {
-    return ({type: SAVE_STATE,idTurn})
-};
 type loadStateType={
     type: typeof LOAD_STATE
-    id:number
+    state: initialStateBattleMapType
 }
-export const loadState = (id:number):loadStateType => {
-    return ({type: LOAD_STATE,id})
+export const loadState = (state: initialStateBattleMapType):loadStateType => {
+    debugger
+    return ({type: LOAD_STATE,state})
 };
-
-
+type increaseIdTurnType={
+    type: typeof INCREASE_ID_TURN
+}
+export const increaseIdTurn = ():increaseIdTurnType => {
+    return ({type: INCREASE_ID_TURN})
+};
 
 
 export const setShipsRandom = (firstUser:boolean, userMap:Array<Array<{sector:SectorType}>>) => { //санка (реализована расстановка кораблей по кнопке)

@@ -2,6 +2,7 @@ import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import thunkMiddleware from "redux-thunk";
 import battleMapReducer, {watchSetShipsRandomSaga} from "./battleMap-reduсer";
 import createSagaMiddleware from 'redux-saga'
+import saveBattleMapReducer from "./saveBattleMap-reduсer";
 
 declare global {
     interface Window {
@@ -11,6 +12,7 @@ declare global {
 
 const rootReducers = combineReducers({
     battleMap:battleMapReducer,
+    saveBattleMap:saveBattleMapReducer
 });
 
 type RootReducerType=typeof rootReducers

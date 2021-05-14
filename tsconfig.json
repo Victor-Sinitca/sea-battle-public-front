@@ -1,14 +1,3 @@
-/*{
-  "compilerOptions": {
-    "module": "commonjs",
-    "sourceMap": true,
-    "jsx": "react"
-  },
-  "exclude": [
-    "node_modules"
-  ]
-}*/
-
 {
   "compilerOptions": {
     "target": "es5",
@@ -29,11 +18,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react-jsx"
   },
   "include": [
     "src",
     "./src/declaration.d.ts"
   ]
 }
-
