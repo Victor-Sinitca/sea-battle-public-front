@@ -384,7 +384,6 @@ type loadStateType={
     state: initialStateBattleMapType
 }
 export const loadState = (state: initialStateBattleMapType):loadStateType => {
-    debugger
     return ({type: LOAD_STATE,state})
 };
 type increaseIdTurnType={

@@ -30,7 +30,6 @@ type SaveBattleMapType = {
     battleMap: initialStateBattleMapType
 }
 export const saveBattleMap = (battleMap: initialStateBattleMapType): SaveBattleMapType => {
-    debugger
     return ({type: SAVE_BATTLE_MAP, battleMap})
 };
 export default saveBattleMapReducer;

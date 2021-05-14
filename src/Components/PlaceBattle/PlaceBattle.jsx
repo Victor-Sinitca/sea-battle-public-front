@@ -9,13 +9,13 @@ import {
     reduceSectorFire, RandomSaga, setCompGame,
     setFirstUserMap,
     setSecondUserMap,
-    startGame, setShotUser, saveState, loadState, increaseIdTurn, loadState1,
+    startGame, setShotUser, loadState, increaseIdTurn,
 } from "../../redux/battleMap-reduсer";
 import {getSaveList} from "../../redux/saveBattleMap-selectors";
 import {
     getComp, getDeleteShipFU, getDeleteShipSU,
     getFirstUserMap, getFUShips,
-    getFUTurn, getHistory, getLookSecondUser,
+    getFUTurn, getIdTurn, getLookSecondUser,
     getSecondUserMap,
     getSettingShipUser, getStateBattleMap, getSUShips, getWhatSetShipFU, getWhatSetShipSU
 } from "../../redux/battleMap-selectors";
@@ -36,18 +36,19 @@ let PlaceBattle = () => {
     const deleteShipFU = useSelector(getDeleteShipFU);
     const deleteShipSU = useSelector(getDeleteShipSU);
     const lookSecondUser = useSelector(getLookSecondUser);
-    const saveList = useSelector(getSaveList) ;
+    const saveList = useSelector(getSaveList);
+    const IdTurn = useSelector(getIdTurn);
 
     const dispatch = useDispatch()
 
 
-
-
-    const buttonHistory2=saveList.map(S=>
-        <button className={s.historyButton} key={S.idTurn} onClick={()=>dispatch(loadState(S))}>
-            {S.idTurn}
-        </button>
+    const buttonHistory = saveList.map(S =>
+            <button className={S.idTurn=== IdTurn-1?  s.historyButton1 :s.historyButton}  key={S.idTurn} onClick={() => dispatch(loadState(S))}>
+                {S.idTurn ? S.idTurn : "to start"}
+            </button>
     )
+
+
 
     useEffect(() => { //инициализация карт первого и второго игрока
         if (!firstUserMap || !secondUserMap) {
@@ -108,11 +109,10 @@ let PlaceBattle = () => {
     },);
     useEffect(() => { //стрельба компьютера
         if (FUTurn) { //ход 1 игрока
-            debugger
             dispatch(increaseIdTurn())
             dispatch(saveBattleMap(stateBattleMap))
         }
-    },[FUTurn]);
+    }, [FUTurn]);
 
 
     if (!firstUserMap || !secondUserMap) return <Preloader/>
@@ -128,7 +128,7 @@ let PlaceBattle = () => {
                   deleteShipUser={deleteShipSU}/>
         }
         <div>
-            {buttonHistory2}
+            {saveList.length>1? buttonHistory :null}
         </div>
     </div>
 }

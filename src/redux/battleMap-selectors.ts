@@ -41,10 +41,9 @@ export const getDeleteShipSU =(state:AppStateType):boolean=>{
 export const getLookSecondUser =(state:AppStateType):boolean=>{
     return state.battleMap.lookSecondUser
 }
-export const getHistory = (state:AppStateType)=>{
-    return state.battleMap.history
+export const getIdTurn = (state:AppStateType):number=>{
+    return state.battleMap.idTurn
 }
-
 
 
 
