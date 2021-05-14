@@ -34,8 +34,8 @@ const LOAD_STATE = "LOAD_STATE"
 const INCREASE_ID_TURN = "INCREASE_ID_TURN"
 
 const initialState = {
-    FUMap: null as null | Array<Array<{sector:SectorType}>>,
-    SUMap: null as null | Array<Array<{sector:SectorType}>>,
+    FUMap: [] as  Array<Array<{sector:SectorType}>>,
+    SUMap: [] as  Array<Array<{sector:SectorType}>>,
     FUTurn: {
         turn: true as boolean
     },
@@ -46,8 +46,8 @@ const initialState = {
         sectorFire: []
     } as compType,
     lookSecondUser: false as boolean,
-    whatSetShipFU: null as null|number,
-    whatSetShipSU: null as null|number,
+    whatSetShipFU: 0 as number,
+    whatSetShipSU: 0 as number,
     horizonSetShipFU: null as null|boolean,
     horizonSetShipSU: null as null|boolean,
     deleteShipFU: false as boolean,
@@ -82,7 +82,7 @@ const initialState = {
 }
 
 export type initialStateBattleMapType= typeof initialState
-const battleMapReducer = (state = initialState as initialStateBattleMapType, action:ActionType) => {
+const battleMapReducer = (state = initialState as initialStateBattleMapType, action:ActionStateBattleMapType) => {
     let stateCopy:initialStateBattleMapType
     switch (action.type) {
         case SET_WHAT_SET_SHIP:
@@ -253,8 +253,8 @@ const battleMapReducer = (state = initialState as initialStateBattleMapType, act
 
 
 
-type DispatchType=Dispatch<ActionType>
-type ActionType=setWhatSetShipType | setFirstUserMapType | setSecondUserMapType | setShipUserType |setShotUserType | toggleDeleteShipType |
+type DispatchType=Dispatch<ActionStateBattleMapType>
+export type ActionStateBattleMapType=setWhatSetShipType | setFirstUserMapType | setSecondUserMapType | setShipUserType |setShotUserType | toggleDeleteShipType |
     unlockForSetShipType | lockAllMapType | setHorizonType | deleteShipOnMapType | startGameType | reduceSectorFireType |
     setCompGameType | toggleLookSecondUserType | clearTheMapType | toggleGameWithCompType | startNewGameType |
     loadStateType | increaseIdTurnType
@@ -281,7 +281,7 @@ type setSecondUserMapType={
 export const setSecondUserMap = (SUMap:Array<Array<{sector:SectorType}>>):setSecondUserMapType => {
     return ({type: SET_SECOND_USER_MAP, SUMap})
 };
-type setShipUserType={
+export type setShipUserType={
     type: typeof SET_SHIP_USER
     sector:SectorType
     firstUser:boolean

@@ -51,7 +51,7 @@ let PlaceBattle = () => {
 
 
     useEffect(() => { //инициализация карт первого и второго игрока
-        if (!firstUserMap || !secondUserMap) {
+        if (!firstUserMap.length || !secondUserMap.length) {
             const setSector = (i, j) => {
                 return {
                     sector: {
@@ -115,7 +115,7 @@ let PlaceBattle = () => {
     }, [FUTurn]);
 
 
-    if (!firstUserMap || !secondUserMap) return <Preloader/>
+    if (!firstUserMap.length || !secondUserMap.length) return <Preloader/>
     return <div className={s.displayMapBattle}>
         <DeskUser firstUser={true} firstMap={firstUserMap} secondMap={secondUserMap}
                   SUShips={SUShips} FUShips={FUShips}

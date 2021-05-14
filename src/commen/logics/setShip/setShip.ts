@@ -1,20 +1,22 @@
 import {lockMap} from "../checkForShipInput/checkForSingleShipInput";
+import { initialStateBattleMapType, setShipUserType} from "../../../redux/battleMap-reduсer";
 
 
-export const setShip=(state, action)=>{
-    let map, horizonSetShip, whatSetShip, ships
+
+export const setShip=(state:initialStateBattleMapType, action:setShipUserType):initialStateBattleMapType=>{
+    let stateCopy:initialStateBattleMapType
+    let map="SUMap" as "SUMap"|"FUMap", horizonSetShip= "horizonSetShipSU" as "horizonSetShipSU"|"horizonSetShipFU",
+        whatSetShip="whatSetShipSU" as "whatSetShipSU" | "whatSetShipFU" ,
+        ships= "SUShips" as "SUShips" | "FUShips"
+
     if (action.firstUser) {
         map = "FUMap"
         horizonSetShip = "horizonSetShipFU"
         whatSetShip = "whatSetShipFU"
         ships = "FUShips"
-    } else {
-        map = "SUMap"
-        horizonSetShip = "horizonSetShipSU"
-        whatSetShip = "whatSetShipSU"
-        ships = "SUShips"
     }
-    let stateCopy = {...state};
+
+    stateCopy = {...state};
     stateCopy[map] = [...state[map]];
     if (state[horizonSetShip]) {
         stateCopy[map][action.sector.y][action.sector.x].sector.ship = true
@@ -77,7 +79,7 @@ export const setShip=(state, action)=>{
     if (state[whatSetShip] === 4) {
         stateCopy[ships].ship4 -= 1
     }
-    stateCopy[whatSetShip] = null
+    stateCopy[whatSetShip] = 0
     return stateCopy
 
 }

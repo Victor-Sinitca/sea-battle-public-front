@@ -1,13 +1,16 @@
-export const killShip = (sector, map1, shipsState) => {
+import {MapsType, SectorType, ShipsType} from "../../../../Types/Types";
+
+
+export const killShip = (sector:SectorType, map1:MapsType, shipsState:ShipsType):typeof stateKillShip => {
     let stateKillShip = {
-        map: null,
+        map: [] as MapsType,
         kill: false,
         hit: false,
-        ships: shipsState,
+        ships: shipsState as ShipsType,
     }
     let map = map1;
     let i = sector.y, j = sector.x;
-    let kill = false, iMax = null, iMin = null, jMax = null, jMin = null
+    let kill = false as boolean, iMax:number, iMin:number, jMax:number, jMin:number
     if (map[i][j].sector.ship) {
         iMin = i - 1;
         iMax = i + 1;
@@ -213,10 +216,10 @@ export const killShip = (sector, map1, shipsState) => {
 }
 
 
-export const fireAfterHitComp =(map1,sector,)=> {
+export const fireAfterHitComp =(map1:MapsType,sector:SectorType,):Array<SectorType>=> {
     let map = map1;
     let i = sector.y, j = sector.x;
-    let sectorFire=[]
+    let sectorFire=[] as Array<SectorType>
         if (map[i - 1]?.[j].sector.ship && map[i - 1][j].sector.shot) { //Ищем части поврежденного корабля слева и запоминаем координаты следующих выстрелов
             if (map[i - 2]?.[j].sector.ship && map[i - 2][j].sector.shot) {
                 if ((i > 2) && !map[i - 3][j].sector.shot) {

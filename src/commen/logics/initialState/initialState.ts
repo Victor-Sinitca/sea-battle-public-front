@@ -7,7 +7,7 @@ import {stateReturnType} from "../../../../Types/Types";
 
 
 
-const stateReturn=(state:initialStateBattleMapType):stateReturnType=>{
+export const initialUserState=(state:initialStateBattleMapType):stateReturnType=>{
     return {
         FUMap: initializeTheMapFunction(state.FUMap),
         SUMap: initializeTheMapFunction(state.SUMap),
@@ -23,8 +23,8 @@ const stateReturn=(state:initialStateBattleMapType):stateReturnType=>{
             turn:true
         },
         lookSecondUser : false,
-        whatSetShipFU : null,
-        whatSetShipSU : null,
+        whatSetShipFU : 0,
+        whatSetShipSU : 0,
         horizonSetShipFU : null,
         horizonSetShipSU : null,
         deleteShipFU : false,
@@ -37,8 +37,8 @@ const stateReturn=(state:initialStateBattleMapType):stateReturnType=>{
     }
 }
 
-export const initialUserState = (state:initialStateBattleMapType):initialStateBattleMapType => {
+/*export const initialUserState = (state:initialStateBattleMapType):initialStateBattleMapType => {
     return {
         ...stateReturn(state),
     }
-}
+}*/
