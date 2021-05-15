@@ -25,7 +25,7 @@ export  type ShipsType = {
     numberShips3: number,
     numberShips4: number,
 }
-export  type settingShipUser ={
+export  type settingShipUserType ={
     secondUser : boolean,
     firstUser : boolean,
 }
@@ -41,13 +41,13 @@ export type stateReturnType={
         turn:boolean
     },
     lookSecondUser : boolean,
-    whatSetShipFU :  null|number,
-    whatSetShipSU :  null|number,
+    whatSetShipFU : number,
+    whatSetShipSU :  number,
     horizonSetShipFU : null|boolean,
     horizonSetShipSU : null|boolean,
     deleteShipFU : boolean,
     deleteShipSU : boolean,
-    settingShipUser:settingShipUser,
+    settingShipUser:settingShipUserType,
     idTurn:number,
 }
 

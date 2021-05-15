@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {FC, useEffect} from "react";
 import Preloader from "../../commen/Preloader/Preloader";
 import s from "./PlaceBattle.module.css"
 import DeskUser from "../DeskUser/DeskUser";
@@ -20,9 +20,10 @@ import {
     getSettingShipUser, getStateBattleMap, getSUShips, getWhatSetShipFU, getWhatSetShipSU
 } from "../../redux/battleMap-selectors";
 import {saveBattleMap} from "../../redux/saveBattleMap-reduсer";
+import {initializeTheMapFunction} from "../../commen/logics/initializeTheMapFunction/initializeTheMapFunction";
 
 
-let PlaceBattle = () => {
+let PlaceBattle:FC = ()  => {
     const stateBattleMap = useSelector(getStateBattleMap);
     const firstUserMap = useSelector(getFirstUserMap);
     const secondUserMap = useSelector(getSecondUserMap);
@@ -48,33 +49,10 @@ let PlaceBattle = () => {
             </button>
     )
 
-
-
     useEffect(() => { //инициализация карт первого и второго игрока
         if (!firstUserMap.length || !secondUserMap.length) {
-            const setSector = (i, j) => {
-                return {
-                    sector: {
-                        ship: false,
-                        shot: false,
-                        x: j,
-                        y: i,
-                        unlock: false,
-                        img: null
-                    }
-                }
-            }
-            let userMap1 = [], userMap2 = [], i, j
-            for (i = 0; i < 10; i++) {
-                userMap1[i] = []
-                userMap2[i] = []
-                for (j = 0; j < 10; j++) {
-                    userMap1[i][j] = setSector(i, j)
-                    userMap2[i][j] = setSector(i, j)
-                }
-            }
-            dispatch(setFirstUserMap(userMap1))
-            dispatch(setSecondUserMap(userMap2))
+            dispatch(setFirstUserMap(initializeTheMapFunction(null)))
+            dispatch(setSecondUserMap(initializeTheMapFunction(null)))
         }
     });
     useEffect(() => { //расстановка кораблей компьютером
@@ -107,7 +85,7 @@ let PlaceBattle = () => {
             }
         }
     },);
-    useEffect(() => { //стрельба компьютера
+    useEffect(() => { // сохранение хода перед выстрелом
         if (FUTurn) { //ход 1 игрока
             dispatch(increaseIdTurn())
             dispatch(saveBattleMap(stateBattleMap))
@@ -120,12 +98,12 @@ let PlaceBattle = () => {
         <DeskUser firstUser={true} firstMap={firstUserMap} secondMap={secondUserMap}
                   SUShips={SUShips} FUShips={FUShips}
                   whatSetShip={whatSetShipFU} UserTurn={FUTurn}
-                  deleteShipUser={deleteShipFU}/>
+                  deleteShipUser={deleteShipFU} comp={comp} settingShipUser={settingShipUser}/>
         {lookSecondUser &&
         <DeskUser firstUser={false} firstMap={secondUserMap} secondMap={firstUserMap}
                   SUShips={FUShips} FUShips={SUShips}
                   whatSetShip={whatSetShipSU} UserTurn={!FUTurn}
-                  deleteShipUser={deleteShipSU}/>
+                  deleteShipUser={deleteShipSU} comp={comp} settingShipUser={settingShipUser}/>
         }
         <div>
             {saveList.length>1? buttonHistory :null}

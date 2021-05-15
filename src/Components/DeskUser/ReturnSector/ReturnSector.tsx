@@ -27,9 +27,8 @@ type PropsType = {
     firstDesk: boolean
     sector: SectorType
     toClick: boolean
-    deleteShipUser: () => void
+    deleteShipUser: boolean
     returnToClick: (sector: SectorType) => void
-
 }
 const ReturnSector: FC<PropsType> = ({
                                          toClick, firstDesk,

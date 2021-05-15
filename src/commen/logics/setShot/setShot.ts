@@ -1,12 +1,13 @@
 import {fireAfterHitComp, killShip} from "../killShip/killShip";
-export const setShot = (state,action) => {
-    let uMap, uShips
+import {initialStateBattleMapType, setShotUserType} from "../../../redux/battleMap-reduсer";
+
+
+export const setShot = (state:initialStateBattleMapType,action:setShotUserType):initialStateBattleMapType => {
+    let uMap = "FUMap" as "FUMap" | "SUMap",
+        uShips = "FUShips" as "FUShips" |"SUShips"
     if (action.firstUser) {
         uMap = "SUMap"
         uShips = "SUShips"
-    } else {
-        uMap = "FUMap"
-        uShips = "FUShips"
     }
     if (!state[uMap][action.sector.y][action.sector.x].sector.shot) { // если не стреляли по сектору, то среляем и выполняем проверку на убит/не убит
         let stateCopy = {...state}

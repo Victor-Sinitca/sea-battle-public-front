@@ -1,9 +1,11 @@
 import {MapsType, ShipsType} from "../../../../Types/Types";
 
 export const initializeTheMapFunction = (userMap: MapsType | null): MapsType => {
-    let map: MapsType = [[]]
+    let map: MapsType
     if (userMap) {
         map = userMap
+    } else{
+        map =Array.from(Array(10), () => new Array(10))
     }
     for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {

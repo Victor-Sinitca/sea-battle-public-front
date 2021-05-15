@@ -1,5 +1,5 @@
 import {AppStateType} from "./redux-store";
-import {compType, SectorType, settingShipUser, ShipsType} from "../../Types/Types";
+import {compType, SectorType, settingShipUserType, ShipsType} from "../../Types/Types";
 import {initialStateBattleMapType} from "./battleMap-reduсer";
 
 export const getStateBattleMap = (state:AppStateType):initialStateBattleMapType =>{
@@ -14,7 +14,7 @@ export const getSecondUserMap =(state:AppStateType):Array<Array<{sector:SectorTy
 export const getComp =(state:AppStateType):compType=>{
     return state.battleMap.comp
 }
-export const getSettingShipUser =(state:AppStateType):settingShipUser=>{
+export const getSettingShipUser =(state:AppStateType):settingShipUserType=>{
     return state.battleMap.settingShipUser
 }
 export const getFUTurn =(state:AppStateType):boolean=>{

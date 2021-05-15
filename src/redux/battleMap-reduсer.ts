@@ -289,7 +289,7 @@ export type setShipUserType={
 export const setShipUser = (sector:SectorType, firstUser:boolean):setShipUserType => {
     return ({type: SET_SHIP_USER, sector, firstUser})
 };
-type setShotUserType={
+export type setShotUserType={
     type: typeof SET_SHOT_USER
     sector:SectorType
     firstUser:boolean
@@ -328,7 +328,7 @@ type setHorizonType={
 export const setHorizon = (horizon:boolean, firstUser:boolean):setHorizonType => {
     return ({type: SET_HORIZON, horizon, firstUser})
 };
-type deleteShipOnMapType={
+export type deleteShipOnMapType={
     type: typeof DELETE_SHIP
     sector:SectorType
     firstUser:boolean
@@ -359,10 +359,10 @@ export const setCompGame = (value:boolean):setCompGameType => {
 };
 type toggleLookSecondUserType={
     type: typeof TOGGLE_LOOK_SECOND_USER
-    value:boolean
+
 }
-export const toggleLookSecondUser = (value:boolean):toggleLookSecondUserType => {
-    return ({type: TOGGLE_LOOK_SECOND_USER, value})
+export const toggleLookSecondUser = ():toggleLookSecondUserType => {
+    return ({type: TOGGLE_LOOK_SECOND_USER})
 };
 type clearTheMapType={
     type: typeof INITIALIZE_THE_MAP
