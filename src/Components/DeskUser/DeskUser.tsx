@@ -116,7 +116,7 @@ const DeskUser: FC<PropsType> = ({
                                   deleteShipUser={deleteShipUser} UserTurn={UserTurn} />
                         </div>
                         <div>
-                            {!comp.game && <button onClick={startNewGameDispatch}>reset the game</button>}
+                            {comp.game && <button onClick={startNewGameDispatch}>reset the game</button>}
                         </div>
                     </div>
                     :
