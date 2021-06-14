@@ -8,6 +8,7 @@ const NavBar=()=>{
         <div className={s.displayNavBar}>
             <div>
                 <NavLink to='/placeBattleMan' className={s.navLink}>Sea battle</NavLink>
+                <NavLink to='/authorization' className={s.navLink}>authorization</NavLink>
             </div>
         </div>
     )

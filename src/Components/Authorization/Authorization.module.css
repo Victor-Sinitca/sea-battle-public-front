@@ -1,0 +1,9 @@
+.displayAuth{
+    height: 1500px;
+}
+
+.checkbox {
+    display: grid;
+    grid-template-columns: 100px 50px;
+;
+}
