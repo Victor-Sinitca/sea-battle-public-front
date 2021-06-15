@@ -1,14 +1,23 @@
 import React from "react";
 import s from "./NavBar.module.css"
 import {NavLink} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {getAuthorization} from "../../redux/auth-selectors";
 
 
-const NavBar=()=>{
-    return(
+const NavBar = () => {
+    const authorization = useSelector(getAuthorization)
+    return (
         <div className={s.displayNavBar}>
             <div>
-                <NavLink to='/placeBattleMan' className={s.navLink}>Sea battle</NavLink>
-                <NavLink to='/authorization' className={s.navLink}>authorization</NavLink>
+                {authorization &&
+                <div>
+                    <NavLink to='/placeBattleMan' className={s.navLink}>Sea battle</NavLink>
+                </div>
+                }
+                <div>
+                    <NavLink to='/authorization' className={s.navLink}>authorization</NavLink>
+                </div>
             </div>
         </div>
     )

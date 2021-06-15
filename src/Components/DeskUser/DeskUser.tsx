@@ -7,13 +7,7 @@ import user from "../../assets/img/human-head.png";
 import user1 from "../../assets/img/human-head1.png";
 import compPhoto from "../../assets/img/intelligence-brain.png";
 import {useDispatch} from "react-redux";
-import {
-    clearTheMap,
-    deleteShipOnMap,
-    setShipsRandom, setShipUser, setShotUser, startNewGame,
-    toggleDeleteShip, toggleGameWithComp,
-    toggleLookSecondUser
-} from "../../redux/battleMap-reduсer";
+import {actionBattleMap, setShipsRandom,} from "../../redux/battleMap-reduсer";
 import {compType, MapsType, SectorType, settingShipUserType, ShipsType} from "../../../Types/Types";
 
 type PropsType = {
@@ -40,31 +34,31 @@ const DeskUser: FC<PropsType> = ({
 
     const returnToClick = (sector:SectorType):void => {
         deleteShipUser ?
-            dispatch(deleteShipOnMap(sector, firstUser))
+            dispatch(actionBattleMap.deleteShipOnMap(sector, firstUser))
             :
-            dispatch(setShipUser(sector, firstUser))
+            dispatch(actionBattleMap.setShipUser(sector, firstUser))
     }
     const setShotUserDispatch = (sector:SectorType):void => {
-        dispatch(setShotUser(sector, firstUser))
+        dispatch(actionBattleMap.setShotUser(sector, firstUser))
     }
     const toggleDeleteShipDispatch = ():void => {
-        dispatch(toggleDeleteShip(firstUser))
+        dispatch(actionBattleMap.toggleDeleteShip(firstUser))
     }
     const lookSecondUserDispatch = ():void => {
-        dispatch(toggleLookSecondUser())
+        dispatch(actionBattleMap.toggleLookSecondUser())
     }
     const setShipsRandomDispatch = ():void => {
         dispatch(setShipsRandom(firstUser, firstMap))
         /* dispatch(RandomSaga(props.firstUser, props.firstMap))*/
     }
     const clearMapDispatch = ():void => {
-        dispatch(clearTheMap(firstUser))
+        dispatch(actionBattleMap.clearTheMap(firstUser))
     }
     const compGameDispatch = ():void => {
-        dispatch(toggleGameWithComp())
+        dispatch(actionBattleMap.toggleGameWithComp())
     }
     const startNewGameDispatch = ():void => {
-        dispatch(startNewGame());
+        dispatch(actionBattleMap.startNewGame());
     }
 
     return (

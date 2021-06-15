@@ -1,9 +1,10 @@
 import {lockMap} from "../checkForShipInput/checkForSingleShipInput";
-import { initialStateBattleMapType, setShipUserType} from "../../../redux/battleMap-reduсer";
+import { initialStateBattleMapType, } from "../../../redux/battleMap-reduсer";
+import {SectorType} from "../../../../Types/Types";
 
 
 
-export const setShip=(state:initialStateBattleMapType, action:setShipUserType):initialStateBattleMapType=>{
+export const setShip=(state:initialStateBattleMapType, action:{sector: SectorType, firstUser: boolean}):initialStateBattleMapType=>{
     let stateCopy:initialStateBattleMapType
     let map="SUMap" as "SUMap"|"FUMap", horizonSetShip= "horizonSetShipSU" as "horizonSetShipSU"|"horizonSetShipFU",
         whatSetShip="whatSetShipSU" as "whatSetShipSU" | "whatSetShipFU" ,

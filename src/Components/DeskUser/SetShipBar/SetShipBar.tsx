@@ -6,7 +6,7 @@ import ship2 from "../../../assets/img/20.png"
 import ship3 from "../../../assets/img/3.png"
 import ship4 from "../../../assets/img/40.png"
 import {useDispatch} from "react-redux";
-import {lockAllMap, setWhatSetShip, startGame} from "../../../redux/battleMap-reduсer";
+import {actionBattleMap} from "../../../redux/battleMap-reduсer";
 import {ShipsType} from "../../../../Types/Types";
 
 
@@ -19,24 +19,24 @@ const SetShipBar : FC<PropsType> = ({FUShips,firstUser,whatSetShip}) => {
     const dispatch = useDispatch()
 
     const SetShip1 = ():void => {
-        dispatch(lockAllMap(firstUser))
-        dispatch(setWhatSetShip(1, firstUser))
+        dispatch(actionBattleMap.lockAllMap(firstUser))
+        dispatch(actionBattleMap.setWhatSetShip(1, firstUser))
     }
     const SetShip2 = ():void => {
-        dispatch(lockAllMap(firstUser))
-        dispatch(setWhatSetShip(2, firstUser))
+        dispatch(actionBattleMap.lockAllMap(firstUser))
+        dispatch(actionBattleMap.setWhatSetShip(2, firstUser))
     }
     const SetShip3 = ():void => {
-        dispatch(lockAllMap(firstUser))
-        dispatch(setWhatSetShip(3, firstUser))
+        dispatch(actionBattleMap.lockAllMap(firstUser))
+        dispatch(actionBattleMap.setWhatSetShip(3, firstUser))
     }
     const SetShip4 = ():void => {
-        dispatch(lockAllMap(firstUser))
-        dispatch(setWhatSetShip(4, firstUser))
+        dispatch(actionBattleMap.lockAllMap(firstUser))
+        dispatch(actionBattleMap.setWhatSetShip(4, firstUser))
     }
 
     const startGameDispatch = ():void => {
-        dispatch(startGame(firstUser))
+        dispatch(actionBattleMap.startGame(firstUser))
     }
 
 

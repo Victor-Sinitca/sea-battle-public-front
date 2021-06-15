@@ -8,8 +8,8 @@ import ship21 from "../../../../assets/img/201.png"
 import ship31 from "../../../../assets/img/301.png"
 import ship41 from "../../../../assets/img/401.png"
 import {useDispatch} from "react-redux";
-import {setHorizon, unlockForSetShip} from "../../../../redux/battleMap-reduсer";
-import {ShipsType} from "../../../../../Types/Types";
+import {actionBattleMap} from "../../../../redux/battleMap-reduсer";
+
 type PropsType = {
     firstUser: boolean
     ship: number
@@ -18,12 +18,12 @@ const SetShip: FC<PropsType> = ({ship,firstUser}) => {
     const dispatch = useDispatch()
 
     const setShipVertical = ():void => {
-        dispatch(setHorizon(false, firstUser))
-        dispatch(unlockForSetShip(ship, true, firstUser))
+        dispatch(actionBattleMap.setHorizon(false, firstUser))
+        dispatch(actionBattleMap.unlockForSetShip(ship, true, firstUser))
     }
     const setShipHorizontal = ():void => {
-        dispatch(setHorizon(true, firstUser))
-        dispatch(unlockForSetShip(ship, false, firstUser))
+        dispatch(actionBattleMap.setHorizon(true, firstUser))
+        dispatch(actionBattleMap.unlockForSetShip(ship, false, firstUser))
     }
 
 

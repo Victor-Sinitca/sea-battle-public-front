@@ -2,9 +2,9 @@ import React, {FC,} from "react";
 import {useDispatch} from "react-redux";
 import {Form, Formik, FormikHelpers} from "formik";
 import {createFieldFormik} from "../../commen/FormikControls/FormikControls";
-import s from "./Authorization.module.css"
-import {useHistory } from "react-router-dom";
-import {login} from "../../redux/auth-reducer";
+import s from "./FirstAuthorization.module.css"
+import {useHistory} from "react-router-dom";
+import {authorization} from "../../redux/auth-reducer";
 
 
 type InitialValuesType = {
@@ -28,7 +28,7 @@ const userSearchFormValidate = (values: InitialValuesType) => {
 }
 
 
-export const Authorization: FC = () => {
+export const FirstAuthorization: FC = () => {
     let history = useHistory();
     const dispatch = useDispatch()
     const initialProfile = {
@@ -38,14 +38,15 @@ export const Authorization: FC = () => {
     type  InitialValuesType = typeof initialProfile
     const submitForm = (values: InitialValuesType,
                         {setSubmitting}: FormikHelpers<InitialValuesType>,) => {
-        dispatch(login(values.email, values.password))
+        debugger
+        dispatch(authorization(values.email, values.password))
         setSubmitting(false)
+        history.push("/placeBattleMan")
     }
 
-    const handlerAuthorization =()=>{
-        history.push('/firstAuthorization')
-    }
+
     return <div>
+        <div>Заполните форму для авторизации</div>
         <Formik
             initialValues={initialProfile as InitialValuesType}
             validate={userSearchFormValidate}
@@ -64,7 +65,6 @@ export const Authorization: FC = () => {
                 </Form>
             )}
         </Formik>
-        <button onClick={handlerAuthorization}>authorization</button>
     </div>
 }
 

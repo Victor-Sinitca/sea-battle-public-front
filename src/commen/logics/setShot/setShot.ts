@@ -1,8 +1,9 @@
 import {fireAfterHitComp, killShip} from "../killShip/killShip";
-import {initialStateBattleMapType, setShotUserType} from "../../../redux/battleMap-reduсer";
+import {initialStateBattleMapType, } from "../../../redux/battleMap-reduсer";
+import {SectorType} from "../../../../Types/Types";
 
 
-export const setShot = (state:initialStateBattleMapType,action:setShotUserType):initialStateBattleMapType => {
+export const setShot = (state:initialStateBattleMapType,action:{sector: SectorType, firstUser: boolean}):initialStateBattleMapType => {
     let uMap = "FUMap" as "FUMap" | "SUMap",
         uShips = "FUShips" as "FUShips" |"SUShips"
     if (action.firstUser) {
