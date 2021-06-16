@@ -7,6 +7,7 @@ let subscribers = {
 
 
 let ws: WebSocket | null = null
+let tokenDate : string
 
 const closeHandler = () => {
     notifySubscribersAboutStatus("pending")
@@ -38,9 +39,12 @@ const cleanUp = () => {
 }
 
 function createChanel(token:string) {
+    if(token){
+        tokenDate = token
+    }
     cleanUp()
     debugger
-    ws = new WebSocket(`ws://localhost:8000/?id=${token}`);
+    ws = new WebSocket(`ws://localhost:8000/?id=${tokenDate}`);
     notifySubscribersAboutStatus("pending")
     ws?.addEventListener("close", closeHandler)
     ws?.addEventListener("message", messageHandler)
