@@ -1,7 +1,10 @@
 .displayNavBar{
+    display: grid;
+    grid-template-rows: min-content;
+    align-content:start;
+    grid-gap: 10px;
     padding-left: 10px;
 }
-
 
 .navLink{
     font-weight: bold;

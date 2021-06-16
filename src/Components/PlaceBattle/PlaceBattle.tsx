@@ -98,12 +98,12 @@ const PlaceBattle:FC = ()  => {
         <DeskUser firstUser={true} firstMap={firstUserMap} secondMap={secondUserMap}
                   SUShips={SUShips} FUShips={FUShips}
                   whatSetShip={whatSetShipFU} UserTurn={FUTurn}
-                  deleteShipUser={deleteShipFU} comp={comp} settingShipUser={settingShipUser}/>
+                  deleteShipUser={deleteShipFU} comp={comp} settingShipUser={settingShipUser} isCompGame={true}/>
         {lookSecondUser &&
         <DeskUser firstUser={false} firstMap={secondUserMap} secondMap={firstUserMap}
                   SUShips={FUShips} FUShips={SUShips}
                   whatSetShip={whatSetShipSU} UserTurn={!FUTurn}
-                  deleteShipUser={deleteShipSU} comp={comp} settingShipUser={settingShipUser}/>
+                  deleteShipUser={deleteShipSU} comp={comp} settingShipUser={settingShipUser} isCompGame={true}/>
         }
         <div>
             {saveList.length>1? buttonHistory :null}

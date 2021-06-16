@@ -8,24 +8,23 @@ import ship21 from "../../../../assets/img/201.png"
 import ship31 from "../../../../assets/img/301.png"
 import ship41 from "../../../../assets/img/401.png"
 import {useDispatch} from "react-redux";
-import {actionBattleMap} from "../../../../redux/battleMap-reduсer";
 
 type PropsType = {
     firstUser: boolean
     ship: number
+    setHorizon:(horizon: boolean, firstUser: boolean)=>void
+    unlockForSetShip:(shipValue: number, horizon: boolean, firstUser: boolean)=>void
 }
-const SetShip: FC<PropsType> = ({ship,firstUser}) => {
+const SetShip: FC<PropsType> = ({ship,firstUser,setHorizon, unlockForSetShip}) => {
     const dispatch = useDispatch()
-
     const setShipVertical = ():void => {
-        dispatch(actionBattleMap.setHorizon(false, firstUser))
-        dispatch(actionBattleMap.unlockForSetShip(ship, true, firstUser))
+        dispatch(setHorizon(false, firstUser))
+        dispatch(unlockForSetShip(ship, true, firstUser))
     }
     const setShipHorizontal = ():void => {
-        dispatch(actionBattleMap.setHorizon(true, firstUser))
-        dispatch(actionBattleMap.unlockForSetShip(ship, false, firstUser))
+        dispatch(setHorizon(true, firstUser))
+        dispatch(unlockForSetShip(ship, false, firstUser))
     }
-
 
     return <div className={s.displaySetShip}>
         {ship ?

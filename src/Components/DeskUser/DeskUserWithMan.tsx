@@ -3,11 +3,8 @@ import s from "./DeskUser.module.css";
 import Desk from "./Desk/Desk";
 import ShipBar from "./ShipBar/ShipBar";
 import SetShipBar from "./SetShipBar/SetShipBar";
-import user from "../../assets/img/human-head.png";
-import user1 from "../../assets/img/human-head1.png";
-import compPhoto from "../../assets/img/intelligence-brain.png";
 import {useDispatch} from "react-redux";
-import {actionBattleMap, setShipsRandom,} from "../../redux/battleMap-reduсer";
+import {actionBattleMap, setShipsRandom,} from "../../redux/battleWithMan-reduсer";
 import {compType, MapsType, SectorType, settingShipUserType, ShipsType} from "../../../Types/Types";
 
 type PropsType = {
@@ -19,13 +16,12 @@ type PropsType = {
     whatSetShip: number
     UserTurn: boolean
     deleteShipUser: boolean
-    comp: compType
-    isCompGame: boolean
+
     settingShipUser: settingShipUserType
 }
-const DeskUser: FC<PropsType> = ({
+const DeskUserWithMan: FC<PropsType> = ({
                                      firstUser, firstMap, secondMap, SUShips, FUShips, whatSetShip,
-                                     UserTurn, deleteShipUser, comp, settingShipUser, isCompGame
+                                     UserTurn, deleteShipUser,  settingShipUser,
                                  }) => {
     const dispatch = useDispatch()
     const shipOpponent = SUShips.numberShips1 > 0 || SUShips.numberShips2 > 0 ||
@@ -45,9 +41,7 @@ const DeskUser: FC<PropsType> = ({
     const toggleDeleteShipDispatch = (): void => {
         dispatch(actionBattleMap.toggleDeleteShip(firstUser))
     }
-    const lookSecondUserDispatch = (): void => {
-        dispatch(actionBattleMap.toggleLookSecondUser())
-    }
+
     const setShipsRandomDispatch = (): void => {
         dispatch(setShipsRandom(firstUser, firstMap))
         /* dispatch(RandomSaga(props.firstUser, props.firstMap))*/
@@ -55,13 +49,9 @@ const DeskUser: FC<PropsType> = ({
     const clearMapDispatch = (): void => {
         dispatch(actionBattleMap.clearTheMap(firstUser))
     }
-    const compGameDispatch = (): void => {
-        dispatch(actionBattleMap.toggleGameWithComp())
-    }
     const startNewGameDispatch = (): void => {
         dispatch(actionBattleMap.startNewGame());
     }
-
     return (
         <div className={yourShips ? !shipOpponent ? s.displayDeskWinn : s.displayDesk : s.displayDeskLoss}>
             <div className={s.displayDesk1}>
@@ -78,14 +68,8 @@ const DeskUser: FC<PropsType> = ({
                                       setWhatSetShip={actionBattleMap.setWhatSetShip}
                                       startGame={actionBattleMap.startGame}
                                       setHorizon={actionBattleMap.setHorizon}
-                                      unlockForSetShip={actionBattleMap.unlockForSetShip}
-                        />
+                                      unlockForSetShip={actionBattleMap.unlockForSetShip}/>
                         : <ShipBar userShips={SUShips} UserTurn={UserTurn}/>
-                    }
-                    {isCompGame&&
-                    <div>
-                        <button className={s.toggleLook} onClick={lookSecondUserDispatch}>show second user</button>
-                    </div>
                     }
                     {((firstUser && settingShipUser.firstUser) || (!firstUser && settingShipUser.secondUser))
                         ? <div>
@@ -118,9 +102,6 @@ const DeskUser: FC<PropsType> = ({
                                   returnToClick={setShotUserDispatch} toClick={shipOpponent ? UserTurn : false}
                                   deleteShipUser={deleteShipUser} UserTurn={UserTurn}/>
                         </div>
-                        <div>
-                            {comp.game && <button onClick={startNewGameDispatch}>reset the game</button>}
-                        </div>
                     </div>
                     :
                     ((firstUser && settingShipUser.firstUser) || (!firstUser && settingShipUser.secondUser))
@@ -131,23 +112,6 @@ const DeskUser: FC<PropsType> = ({
                             <div className={s.button1}>
                                 <button onClick={clearMapDispatch}>clear map</button>
                             </div>
-                            {isCompGame &&
-                                <div className={s.button1}>
-                                    {comp.game ?
-                                        <button className={s.button1} onClick={compGameDispatch}>
-                                            <img className={s.userImg} src={user} alt="no img"/>
-                                            VS
-                                            <img className={s.userImg} src={compPhoto} alt="no img"/>
-                                        </button>
-                                        :
-                                        <button className={s.button1} onClick={compGameDispatch}>
-                                            <img className={s.userImg} src={user} alt="no img"/>
-                                            VS
-                                            <img className={s.userImg} src={user1} alt="no img"/>
-                                        </button>
-                                    }
-                                </div>
-                            }
                         </div>
                         :
                         <div className={s.header}> Waiting for the second user</div>
@@ -156,4 +120,4 @@ const DeskUser: FC<PropsType> = ({
         </div>
     )
 }
-export default DeskUser
+export default DeskUserWithMan

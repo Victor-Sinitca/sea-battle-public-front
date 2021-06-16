@@ -10,14 +10,18 @@ const NavBar = () => {
     return (
         <div className={s.displayNavBar}>
             <div>
-                {authorization &&
+                <NavLink to='/placeBattleMan' className={s.navLink}>Sea battle</NavLink>
+            </div>
+            {authorization && <>
                 <div>
-                    <NavLink to='/placeBattleMan' className={s.navLink}>Sea battle</NavLink>
+                    <NavLink to='/battleRoom' className={s.navLink}>battle room</NavLink>
                 </div>
-                }
                 <div>
-                    <NavLink to='/authorization' className={s.navLink}>authorization</NavLink>
+                    <NavLink to='/chat' className={s.navLink}>chat</NavLink>
                 </div>
+            </>}
+            <div>
+                <NavLink to='/authorization' className={s.navLink}>authorization</NavLink>
             </div>
         </div>
     )

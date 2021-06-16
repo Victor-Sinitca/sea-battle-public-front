@@ -13,7 +13,7 @@ import {compType, SectorType, ShipsType} from "../../Types/Types";
 import {Dispatch} from "redux";
 import {InferActionsTypes} from "./redux-store";
 
-const RANDOM_SAGA = "RANDOM_SAGA"
+const RANDOM_SAGA = "battleMapWithMan_RANDOM_SAGA"
 
 const initialState = {
     FUMap: [] as Array<Array<{ sector: SectorType }>>,
@@ -22,7 +22,7 @@ const initialState = {
         turn: true as boolean
     },
     comp: {
-        game: true,
+        game: false,
         damaged: false,
         hit: false,
         sectorFire: []
@@ -64,17 +64,17 @@ const initialState = {
 }
 
 export type initialStateBattleMapType = typeof initialState
-const battleMapReducer = (state = initialState as initialStateBattleMapType, action: BattleMapActionType ) => {
+const battleMapWithManReducer = (state = initialState as initialStateBattleMapType, action: BattleMapActionType ) => {
     let stateCopy: initialStateBattleMapType
     switch (action.type) {
-        case "SET_WHAT_SET_SHIP":
+        case "battleMapWithMan_SET_WHAT_SET_SHIP":
             if (action.firstUser) return {...state, whatSetShipFU: action.ship}
             else return {...state, whatSetShipSU: action.ship}
-        case "SET_FIRST_USER_MAP":
+        case "battleMapWithMan_SET_FIRST_USER_MAP":
             return {...state, FUMap: action.FUMap}
-        case "SET_SECOND_USER_MAP":
+        case "battleMapWithMan_SET_SECOND_USER_MAP":
             return {...state, SUMap: action.SUMap}
-        case "DELETE_SHIP" :
+        case "battleMapWithMan_DELETE_SHIP" :
             stateCopy = {...state}
             if (action.firstUser && state.FUMap) {
                 stateCopy.FUMap = [...state.FUMap];
@@ -90,11 +90,11 @@ const battleMapReducer = (state = initialState as initialStateBattleMapType, act
                 console.log(`Error DELETE_SHIP. First User is ${action.firstUser}`)
                 return stateCopy
             }
-        case "SET_SHIP_USER":
+        case "battleMapWithMan_SET_SHIP_USER":
             return setShip(state, action)
-        case "SET_SHOT_USER":
+        case "battleMapWithMan_SET_SHOT_USER":
             return setShot(state, action)
-        case "TOGGLE_DELETE_SHIP": {
+        case "battleMapWithMan_TOGGLE_DELETE_SHIP": {
             if (action.firstUser) {
                 if (state.deleteShipFU) {
                     return {...state, deleteShipFU: false}
@@ -105,7 +105,7 @@ const battleMapReducer = (state = initialState as initialStateBattleMapType, act
                 } else return {...state, deleteShipSU: true}
             }
         }
-        case "UNLOCK_FOR_SET_SHIP" : {
+        case "battleMapWithMan_UNLOCK_FOR_SET_SHIP" : {
             if (action.firstUser && state.FUMap && (typeof (state.horizonSetShipFU) === "boolean")) {
                 stateCopy = {...state}
                 stateCopy.FUMap = [...state.FUMap];
@@ -122,7 +122,7 @@ const battleMapReducer = (state = initialState as initialStateBattleMapType, act
                 return state
             }
         }
-        case "LOCK_ALL_MAP": {
+        case "battleMapWithMan_LOCK_ALL_MAP": {
             if (action.firstUser && state.FUMap) {
                 stateCopy = {...state}
                 stateCopy.FUMap = [...state.FUMap];
@@ -138,7 +138,7 @@ const battleMapReducer = (state = initialState as initialStateBattleMapType, act
                 return state
             }
         }
-        case "SET_HORIZON": {
+        case "battleMapWithMan_SET_HORIZON": {
             if (action.firstUser) {
                 stateCopy = {...state}
                 stateCopy.horizonSetShipFU = action.horizon
@@ -149,7 +149,7 @@ const battleMapReducer = (state = initialState as initialStateBattleMapType, act
                 return stateCopy
             }
         }
-        case "START_GAME": {
+        case "battleMapWithMan_START_GAME": {
             if (action.firstUser) {
                 stateCopy = {...state}
                 stateCopy.settingShipUser = {...state.settingShipUser}
@@ -162,25 +162,25 @@ const battleMapReducer = (state = initialState as initialStateBattleMapType, act
                 return stateCopy
             }
         }
-        case "INCREASE_SECTOR_FIRE" : {
+        case "battleMapWithMan_INCREASE_SECTOR_FIRE" : {
             stateCopy = {...state}
             stateCopy.comp = {...state.comp}
             stateCopy.comp.sectorFire = [...state.comp.sectorFire]
             stateCopy.comp.sectorFire.splice(action.indexElement, 1)
             return stateCopy
         }
-        case "SET_COMP_GAME" : {
+        case "battleMapWithMan_SET_COMP_GAME" : {
             stateCopy = {...state}
             stateCopy.comp = {...state.comp}
             stateCopy.comp.game = action.value
             return stateCopy
         }
-        case "TOGGLE_LOOK_SECOND_USER": {
+        case "battleMapWithMan_TOGGLE_LOOK_SECOND_USER": {
             stateCopy = {...state}
             stateCopy.lookSecondUser = !stateCopy.lookSecondUser
             return stateCopy
         }
-        case "INITIALIZE_THE_MAP": {
+        case "battleMapWithMan_INITIALIZE_THE_MAP": {
             if (action.firstUser) {
                 stateCopy = {...state}
                 stateCopy.FUMap = initializeTheMapFunction(stateCopy.FUMap)
@@ -201,7 +201,7 @@ const battleMapReducer = (state = initialState as initialStateBattleMapType, act
                 return stateCopy
             }
         }
-        case "TOGGLE_GAME_WITH_COMP": {
+        case "battleMapWithMan_TOGGLE_GAME_WITH_COMP": {
             stateCopy = {...state}
             stateCopy.comp = {...state.comp}
             if (state.comp.game) {
@@ -214,15 +214,15 @@ const battleMapReducer = (state = initialState as initialStateBattleMapType, act
                 return stateCopy
             }
         }
-        case "INITIAL_STATE_USERS": {
+        case "battleMapWithMan_INITIAL_STATE_USERS": {
             return initialUserState(state)
         }
-        case "LOAD_STATE": {
+        case "battleMapWithMan_LOAD_STATE": {
             stateCopy = JSON.parse(JSON.stringify(action.state))
             stateCopy.idTurn = action.state.idTurn + 1
             return stateCopy
         }
-        case "INCREASE_ID_TURN": {
+        case "battleMapWithMan_INCREASE_ID_TURN": {
             return {
                 ...state,
                 idTurn: state.idTurn + 1
@@ -236,63 +236,62 @@ const battleMapReducer = (state = initialState as initialStateBattleMapType, act
 
 type DispatchType = Dispatch<BattleMapActionType>
 type BattleMapActionType = InferActionsTypes<typeof actionBattleMap>
-
 export const actionBattleMap = {
     setWhatSetShip: (ship: number, firstUser: boolean) => {
-        return ({type: "SET_WHAT_SET_SHIP", ship, firstUser} as const)
+        return ({type: "battleMapWithMan_SET_WHAT_SET_SHIP", ship, firstUser} as const)
     },
     setFirstUserMap: (FUMap: Array<Array<{ sector: SectorType }>>) => {
-        return ({type: "SET_FIRST_USER_MAP", FUMap} as const)
+        return ({type: "battleMapWithMan_SET_FIRST_USER_MAP", FUMap} as const)
     },
     setSecondUserMap: (SUMap: Array<Array<{ sector: SectorType }>>) => {
-        return ({type: "SET_SECOND_USER_MAP", SUMap} as const)
+        return ({type: "battleMapWithMan_SET_SECOND_USER_MAP", SUMap} as const)
     },
     setShipUser: (sector: SectorType, firstUser: boolean) => {
-        return ({type: "SET_SHIP_USER", sector, firstUser} as const)
+        return ({type: "battleMapWithMan_SET_SHIP_USER", sector, firstUser} as const)
     },
     setShotUser: (sector: SectorType, firstUser: boolean) => {
-        return ({type: "SET_SHOT_USER", sector, firstUser} as const)
+        return ({type: "battleMapWithMan_SET_SHOT_USER", sector, firstUser} as const)
     },
     toggleDeleteShip: (firstUser: boolean) => {
-        return ({type: "TOGGLE_DELETE_SHIP", firstUser} as const)
+        return ({type: "battleMapWithMan_TOGGLE_DELETE_SHIP", firstUser} as const)
     },
     unlockForSetShip: (shipValue: number, horizon: boolean, firstUser: boolean,) => {
-        return ({type: "UNLOCK_FOR_SET_SHIP", shipValue, horizon, firstUser,} as const)
+        return ({type: "battleMapWithMan_UNLOCK_FOR_SET_SHIP", shipValue, horizon, firstUser,} as const)
     },
     lockAllMap: (firstUser: boolean) => {
-        return ({type: "LOCK_ALL_MAP", firstUser} as const)
+        return ({type: "battleMapWithMan_LOCK_ALL_MAP", firstUser} as const)
     },
     setHorizon: (horizon: boolean, firstUser: boolean) => {
-        return ({type: "SET_HORIZON", horizon, firstUser} as const)
+        return ({type: "battleMapWithMan_SET_HORIZON", horizon, firstUser} as const)
     },
     deleteShipOnMap: (sector: SectorType, firstUser: boolean) => {
-        return ({type: "DELETE_SHIP", sector, firstUser} as const)
+        return ({type: "battleMapWithMan_DELETE_SHIP", sector, firstUser} as const)
     },
     startGame: (firstUser: boolean) => {
-        return ({type: "START_GAME", firstUser} as const)
+        return ({type: "battleMapWithMan_START_GAME", firstUser} as const)
     },
     reduceSectorFire: (indexElement: number) => {
-        return ({type: "INCREASE_SECTOR_FIRE", indexElement} as const)
+        return ({type: "battleMapWithMan_INCREASE_SECTOR_FIRE", indexElement} as const)
     },
     setCompGame: (value: boolean) => {
-        return ({type: "SET_COMP_GAME", value} as const)
+        return ({type: "battleMapWithMan_SET_COMP_GAME", value} as const)
     },
     toggleLookSecondUser: () => {
-        return ({type: "TOGGLE_LOOK_SECOND_USER"} as const)
+        return ({type: "battleMapWithMan_TOGGLE_LOOK_SECOND_USER"} as const)
     },
     clearTheMap: (firstUser: boolean) => {
-        return ({type: "INITIALIZE_THE_MAP", firstUser} as const)
+        return ({type: "battleMapWithMan_INITIALIZE_THE_MAP", firstUser} as const)
     },
     toggleGameWithComp: () => {
-        return ({type: "TOGGLE_GAME_WITH_COMP"} as const)
+        return ({type: "battleMapWithMan_TOGGLE_GAME_WITH_COMP"} as const)
     },
     startNewGame: () => {
-        return ({type: "INITIAL_STATE_USERS"} as const)
+        return ({type: "battleMapWithMan_INITIAL_STATE_USERS"} as const)
     },
     loadState: (state: initialStateBattleMapType) => {
-        return ({type: "LOAD_STATE", state} as const)
+        return ({type: "battleMapWithMan_LOAD_STATE", state} as const)
     },
-    increaseIdTurn: () => { return ({type: "INCREASE_ID_TURN"} as const)},
+    increaseIdTurn: () => { return ({type: "battleMapWithMan_INCREASE_ID_TURN"} as const)},
 }
 
 
@@ -350,4 +349,4 @@ function* fetchSetShipsRandomSaga(action: RandomSagaType) {   //сага (реа
 }
 
 
-export default battleMapReducer;
+export default battleMapWithManReducer;
