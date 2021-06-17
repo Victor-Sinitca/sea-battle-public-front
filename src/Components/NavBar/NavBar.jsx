@@ -20,9 +20,9 @@ const NavBar = () => {
                     <NavLink to='/chat' className={s.navLink}>chat</NavLink>
                 </div>
             </>}
-            <div>
-                <NavLink to='/authorization' className={s.navLink}>authorization</NavLink>
-            </div>
+            {/*<div>
+                <NavLink to='/authorization' className={s.navLink}>login</NavLink>
+            </div>*/}
         </div>
     )
 }

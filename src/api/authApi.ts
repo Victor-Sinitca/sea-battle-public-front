@@ -5,7 +5,8 @@ type MeType = {
     user: {
         _id: string,
         email: string,
-        token: string
+        token: string,
+        name: string,
     }
 }
 
@@ -26,16 +27,14 @@ export const authAPI = {
         }).then(response => response.data)
     },
 
-    getAuthorization(email: string, password: string,) {
+    getAuthorization(email: string, password: string, name:string) {
         debugger
         return instance.post<MeType>(`/users/`, {
             user: {
+                name:name,
                 email: email,
                 password: password
             }
-        })
-            .then(response => {
-                return response.data
-            });
+        }).then(response => response.data);
     },
 }

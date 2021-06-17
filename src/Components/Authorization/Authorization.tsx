@@ -38,7 +38,7 @@ export const Authorization: FC = () => {
     type  InitialValuesType = typeof initialProfile
     const submitForm = (values: InitialValuesType,
                         {setSubmitting}: FormikHelpers<InitialValuesType>,) => {
-        dispatch(login(values.email, values.password))
+        dispatch(login(values.email, values.password,))
         setSubmitting(false)
     }
 

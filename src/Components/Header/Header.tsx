@@ -12,9 +12,12 @@ export const Header: FC = () => {
     const userId = useSelector(getAuthUserId)
     const email = useSelector(getEmail)
     const authorization = useSelector(getAuthorization)
-    const token = useSelector(getToken)
 
     const handlerLogout =()=>{
+        dispatch(toLogout())
+        history.push('/authorization')
+    }
+    const handlerLogin =()=>{
         dispatch(toLogout())
         history.push('/authorization')
     }
@@ -32,9 +35,18 @@ export const Header: FC = () => {
                         <button onClick={handlerLogout}>выйти</button>
                     </div>
                 </div>
-                {/*<div>token :{token}</div>*/}
             </>
-            : <div>Вы не авторизованы</div>
+            : <>
+                <div className={s.displayHeader}>
+                    <div>Вы не авторизованы</div>
+                    <div></div>
+                    <div>
+                        <button onClick={handlerLogin}>Login</button>
+                    </div>
+                </div>
+
+
+            </>
         }
     </div>
 }

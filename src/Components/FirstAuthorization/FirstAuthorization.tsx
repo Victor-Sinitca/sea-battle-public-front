@@ -8,6 +8,7 @@ import {authorization} from "../../redux/auth-reducer";
 
 
 type InitialValuesType = {
+    name:string,
     email: string,
     password: string,
 }
@@ -19,6 +20,12 @@ const userSearchFormValidate = (values: InitialValuesType) => {
     } else if (values.email.length > 40) {
         errors.email = 'fullName very long';
     }
+    if (!values.name) {
+        errors.name = 'Required';
+    } else if (values.email.length > 40) {
+        errors.name = 'fullName very long';
+    }
+
     if (!values.password) {
         errors.password = 'Required';
     } else if (values.password.length > 40) {
@@ -32,14 +39,14 @@ export const FirstAuthorization: FC = () => {
     let history = useHistory();
     const dispatch = useDispatch()
     const initialProfile = {
+        name:"",
         email: "",
         password: "",
     }
     type  InitialValuesType = typeof initialProfile
     const submitForm = (values: InitialValuesType,
                         {setSubmitting}: FormikHelpers<InitialValuesType>,) => {
-        debugger
-        dispatch(authorization(values.email, values.password))
+        dispatch(authorization(values.email, values.password , values.name))
         setSubmitting(false)
         history.push("/placeBattleMan")
     }
@@ -54,6 +61,8 @@ export const FirstAuthorization: FC = () => {
         >
             {({errors, isSubmitting, isValidating}) => (
                 <Form className={s.displayForm}>
+                    <div className={s.field}>{createFieldFormik<InitialValuesType>("enter your name",
+                        "name", "name")}</div>
                     <div className={s.field}>{createFieldFormik<InitialValuesType>("enter your email",
                         "email", "email")}</div>
                     <div>{createFieldFormik<InitialValuesType>("enter your password",

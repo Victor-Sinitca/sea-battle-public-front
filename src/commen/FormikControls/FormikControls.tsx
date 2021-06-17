@@ -3,8 +3,6 @@ import {Field} from "formik";
 import {FieldAttributes} from "formik/dist/Field";
 import s from "./FormikControls.module.css"
 
-/*import {Input} from "antd";*/
-
 
 export function createFieldFormik<FieldTypes>(
     placeholder: string | undefined,

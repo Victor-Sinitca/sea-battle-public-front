@@ -7,7 +7,7 @@ let subscribers = {
 
 
 let ws: WebSocket | null = null
-let tokenDate : string
+let tokenDate: string
 
 const closeHandler = () => {
     notifySubscribersAboutStatus("pending")
@@ -26,11 +26,10 @@ const errorHandler = () => {
     notifySubscribersAboutStatus("error")
     console.error("RESTART PAGE")
 }
-const notifySubscribersAboutStatus=(status:statusType)=>{
+const notifySubscribersAboutStatus = (status: statusType) => {
     subscribers["statusChanged"].forEach(s => s(status))
 }
 const cleanUp = () => {
-
     ws?.removeEventListener("close", closeHandler)
     ws?.removeEventListener("message", messageHandler)
     ws?.removeEventListener("open", openHandler)
@@ -38,8 +37,8 @@ const cleanUp = () => {
     ws?.close()
 }
 
-function createChanel(token:string) {
-    if(token){
+function createChanel(token: string) {
+    if (token) {
         tokenDate = token
     }
     cleanUp()
@@ -53,7 +52,7 @@ function createChanel(token:string) {
 }
 
 export const chatApi = {
-    start(token:string) {
+    start(token: string) {
         createChanel(token)
     },
     stop() {
@@ -69,7 +68,7 @@ export const chatApi = {
             subscribers[eventName] = subscribers[eventName].filter(s => s != callback)
         }
     },
-    unSubscribe(eventName: eventName,callback: messagesReceivedSubscribersType | statusReceivedSubscribersType) {
+    unSubscribe(eventName: eventName, callback: messagesReceivedSubscribersType | statusReceivedSubscribersType) {
         // @ts-ignore
         subscribers[eventName] = subscribers[eventName].filter(s => s != callback)
     },
