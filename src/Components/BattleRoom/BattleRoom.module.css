@@ -1,32 +1,31 @@
-.displayMapBattle {
+.displayWindow{
     display: grid;
-    grid-template-rows: 360px 360px 100px;
-    grid-gap: 20px;
+    grid-template-columns: 1fr 2fr;
+    height: 400px;
+
 }
 
-.displayHistory {
+.window1{
     display: grid;
-    grid-template-columns: repeat(4, 180px);
+    grid-gap: 10px;
+    grid-template-rows: 5fr 1fr;
+    border: solid 4px red;
+    background-color: #2807e7;
+    padding: 10px;
 }
-
-.historyButton {
-    height: 30px;
-    width: auto;
-    font-weight: bold;
-    background-color: #01a121;
-    color: black;
-    font-size: 18px;
-    border-radius: 5px;
-
+.window2{
+    border: solid 4px #25bf1a;
+    background-color: #345080;
 }
-.historyButton1 {
-    height: 30px;
-    width: auto;
-    font-weight: bold;
-    background-color: #025315;
-    color: black;
-
-    font-size: 18px;
-    border-radius: 5px;
-
+.window3{
+    border: solid 4px #7c8743;
+    background-color: #756ab6;
+}
+.displayGame{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.displayGame div{
+    border: solid 4px #b47e7e;
+    background-color: #534b7f;
 }

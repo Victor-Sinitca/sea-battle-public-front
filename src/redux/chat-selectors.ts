@@ -6,3 +6,6 @@ export const getMessages =(state:AppStateType)=>{
 export const getStatus =(state:AppStateType)=>{
     return state.chat.status
 }
+export const getListGames =(state:AppStateType)=>{
+    return state.chat.games
+}

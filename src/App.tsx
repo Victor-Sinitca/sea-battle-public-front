@@ -9,8 +9,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {authMe} from "./redux/auth-reducer";
 import {FirstAuthorization} from "./Components/FirstAuthorization/FirstAuthorization";
 import {getAuthorization} from "./redux/auth-selectors";
-import BattleRoom from "./Components/BattleRoom/BattleRoom";
+import Battle from "./Components/Battle/Battle";
 import {ChatPage} from "./Components/pages/Chat/ChatPage";
+import BattleRoom from "./Components/BattleRoom/BattleRoom";
+
 
 function App() {
     const authorization = useSelector(getAuthorization)
@@ -28,6 +30,7 @@ function App() {
             <div className="displayPlace">
                 <Route path='/' render={() => <Redirect to={"/placeBattleMan"}/>}/>
                 <Route path='/placeBattleMan' render={() => <PlaceBattle/>}/>
+                {authorization && <Route path='/battle' render={() => <Battle/>}/>}
                 {authorization && <Route path='/battleRoom' render={() => <BattleRoom/>}/>}
                 {authorization && <Route path='/chat' render={() => <ChatPage/>}/>}
                 <Route path='/authorization' render={() => <Authorization/>}/>

@@ -1,13 +1,15 @@
 import {BaseActionType, InferActionsTypes} from "./redux-store";
-import {chatApi, MessageApiType, statusType} from "../api/chatApi";
+import {chatApi, GameApiType, MessageApiType, statusType} from "../api/chatApi";
 import {Dispatch} from "redux";
 import {v1} from "uuid"
 
 
 type MessageType = MessageApiType & { id: string }
+type GamesType = GameApiType & { id: string }
 
 let initialState = {
     messages: [] as MessageType[],
+    games: [] as GamesType[],
     status: "pending" as statusType,
 }
 
@@ -25,6 +27,16 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
                 ...state,
                 messages: []
             }
+        case "CHAT_DELETE_GAMES":
+            return {
+                ...state,
+                games: []
+            }
+        case "SET_GAMES":
+            return {
+                ...state,
+                games: [...state.games, ...action.games.map(m => ({...m, id: v1()}))]
+            }
         case "CHAT_SET_STATUS":
             return {
                 ...state,
@@ -39,8 +51,10 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
 type ActionType = InferActionsTypes<typeof actionChat>
 export const actionChat = {
     deleteMessages: () => ({type: "CHAT_DELETE_MESSAGES"} as const),
+    deleteGames: () => ({type: "CHAT_DELETE_GAMES"} as const),
     setMessages: (messages: MessageApiType[]) => ({type: "CHAT_SET_MESSAGES", messages} as const),
     setStatus: (status: statusType) => ({type: "CHAT_SET_STATUS", status} as const),
+    setGames: (games: GameApiType[]) => ({type: "SET_GAMES", games} as const),
 }
 
 
@@ -56,6 +70,18 @@ const newMessageHandlerCreator = (dispatch: Dispatch) => {
         }
     }
     return _newMessageHandler
+
+}
+export type gamesReceivedSubscribersType = (games: GameApiType[]) => void
+let _newGameHandler: gamesReceivedSubscribersType| null = null
+const newGameHandlerCreator = (dispatch: Dispatch) => {
+    if (_newGameHandler === null) {
+        _newGameHandler = (games: GameApiType[]) => {
+            debugger
+            dispatch(actionChat.setGames(games))
+        }
+    }
+    return _newGameHandler
 
 }
 
@@ -76,22 +102,36 @@ export const startMessagesListening = ():ThunkActionType => async (dispatch,getS
     if(token){
         chatApi.start(token)
         chatApi.subscribe("messagesReceived", newMessageHandlerCreator(dispatch))
+        chatApi.subscribe("gameListReceived", newGameHandlerCreator(dispatch))
         chatApi.subscribe("statusChanged", newStatusChangedCreator(dispatch))
     }
-
 }
 export const stopMessagesListening = (): ThunkActionType => async (dispatch) => {
     chatApi.unSubscribe("messagesReceived", newMessageHandlerCreator(dispatch))
+    chatApi.unSubscribe("gameListReceived", newGameHandlerCreator(dispatch))
     chatApi.unSubscribe("statusChanged", newStatusChangedCreator(dispatch))
     chatApi.stop()
     dispatch(actionChat.deleteMessages())
+    dispatch(actionChat.deleteGames())
 }
-export const sendMessage = (message: string): ThunkActionType => async (dispatch,getState) => {
-    const newMessage={
-        token:getState().auth.token,
-        message:message
-    }
-    chatApi.sendMessage(message)
+
+
+
+export const sendMessage = (message: string): ThunkActionType => async () => {
+        chatApi.sendMessage({
+            eventName: "message",
+            date: {
+                messages: message
+            }
+        })
+}
+export const sendGame = (game: string): ThunkActionType => async () => {
+        chatApi.sendMessage({
+            eventName: "listGame",
+            date: {
+                nameGame: game
+            }
+        })
 }
 
 

@@ -1,50 +1,59 @@
 import React, {FC, useEffect} from "react";
-import Preloader from "../../commen/Preloader/Preloader";
 import s from "./BattleRoom.module.css"
 import {useDispatch, useSelector} from "react-redux";
-import {actionBattleMap} from "../../redux/battleWithMan-reduсer";
-import {
-    getComp,
-    getDeleteShipFU,
-    getFirstUserMap,
-    getFUShips,
-    getFUTurn,
-    getSecondUserMap,
-    getSettingShipUser,
-    getSUShips,
-    getWhatSetShipFU
-} from "../../redux/battleWithMan-selectors";
-import {initializeTheMapFunction} from "../../commen/logics/initializeTheMapFunction/initializeTheMapFunction";
-import DeskUserWithMan from "../DeskUser/DeskUserWithMan";
+import {getListGames} from "../../redux/chat-selectors";
+import {sendGame, startMessagesListening, stopMessagesListening} from "../../redux/chat-reducer";
 
 
-const PlaceBattle:FC = ()  => {
-    const firstUserMap = useSelector(getFirstUserMap);
-    const secondUserMap = useSelector(getSecondUserMap);
-    const settingShipUser = useSelector(getSettingShipUser);
-    const FUTurn = useSelector(getFUTurn);
-    const FUShips = useSelector(getFUShips);
-    const SUShips = useSelector(getSUShips);
-    const whatSetShipFU = useSelector(getWhatSetShipFU);
-    const deleteShipFU = useSelector(getDeleteShipFU);
-
+const BattleRoom: FC = () => {
+    const listGame = useSelector(getListGames)
     const dispatch = useDispatch()
 
-
-    useEffect(() => { //инициализация карт первого и второго игрока
-        if (!firstUserMap.length || !secondUserMap.length) {
-            dispatch(actionBattleMap.setFirstUserMap(initializeTheMapFunction(null)))
-            dispatch(actionBattleMap.setSecondUserMap(initializeTheMapFunction(null)))
+    const handleSendGame = () => {
+        dispatch(sendGame("просто название"))
+    }
+    useEffect(() => {
+        dispatch(startMessagesListening())
+        return () => {
+            dispatch(stopMessagesListening())
         }
-    });
+    }, [])
 
-    if (!firstUserMap.length || !secondUserMap.length) return <Preloader/>
-    return <div className={s.displayMapBattle}>
-        <DeskUserWithMan firstUser={true} firstMap={firstUserMap} secondMap={secondUserMap}
-                  SUShips={SUShips} FUShips={FUShips}
-                  whatSetShip={whatSetShipFU} UserTurn={FUTurn}
-                  deleteShipUser={deleteShipFU} settingShipUser={settingShipUser}/>
+
+    return <div>
+        <div className={s.displayWindow}>
+            <div className={s.window1}>
+                <div className={s.window3}>
+                    <div>Список игр</div>
+                    {listGame.map(g =>
+                        <div className={s.displayGame}>
+                            <div>{g.userName}</div>
+                            <div>{g.nameGame}</div>
+                            <div>
+                                <button>принять игру</button>
+                            </div>
+                        </div>)
+                    }
+                </div>
+                <div className={s.window3}>
+                    <div>Название</div>
+                    <textarea></textarea>
+                    <button onClick={handleSendGame}>создать игру</button>
+
+                </div>
+
+
+            </div>
+            <div className={s.window2}>
+
+
+                22
+
+
+            </div>
+        </div>
+
 
     </div>
 }
-export default PlaceBattle
+export default BattleRoom

@@ -1,7 +1,12 @@
-import {messagesReceivedSubscribersType, statusReceivedSubscribersType} from "../redux/chat-reducer";
+import {
+    gamesReceivedSubscribersType,
+    messagesReceivedSubscribersType,
+    statusReceivedSubscribersType
+} from "../redux/chat-reducer";
 
 let subscribers = {
     "messagesReceived": [] as messagesReceivedSubscribersType[],
+    "gameListReceived": [] as messagesReceivedSubscribersType[],
     "statusChanged": [] as statusReceivedSubscribersType[]
 }
 
@@ -17,7 +22,16 @@ const closeHandler = () => {
 
 const messageHandler = (e: MessageEvent) => {
     let newMessages = JSON.parse(e.data)
-    subscribers["messagesReceived"].forEach(s => s(newMessages))
+    if (newMessages.eventName === "allDate") {
+        subscribers["gameListReceived"].forEach(s => s(newMessages.date.games))
+        subscribers["messagesReceived"].forEach(s => s(newMessages.date.messages))
+    }
+    if (newMessages.eventName === "listGame") {
+        subscribers["gameListReceived"].forEach(s => s(newMessages.date.games))
+    }
+    if (newMessages.eventName === "message") {
+        subscribers["messagesReceived"].forEach(s => s(newMessages.date.messages))
+    }
 }
 const openHandler = () => {
     notifySubscribersAboutStatus("ready")
@@ -60,7 +74,8 @@ export const chatApi = {
         subscribers["statusChanged"] = []
         subscribers["messagesReceived"] = []
     },
-    subscribe(eventName: eventName, callback: messagesReceivedSubscribersType | statusReceivedSubscribersType) {
+    subscribe(eventName: eventName,
+              callback: messagesReceivedSubscribersType | statusReceivedSubscribersType | gamesReceivedSubscribersType) {
         // @ts-ignore
         subscribers[eventName].push(callback)
         return () => {
@@ -68,12 +83,13 @@ export const chatApi = {
             subscribers[eventName] = subscribers[eventName].filter(s => s != callback)
         }
     },
-    unSubscribe(eventName: eventName, callback: messagesReceivedSubscribersType | statusReceivedSubscribersType) {
+    unSubscribe(eventName: eventName,
+                callback: messagesReceivedSubscribersType | statusReceivedSubscribersType | gamesReceivedSubscribersType) {
         // @ts-ignore
         subscribers[eventName] = subscribers[eventName].filter(s => s != callback)
     },
-    sendMessage(message: string) {
-        ws?.send(message)
+    sendMessage(message: any) {
+        ws?.send(JSON.stringify(message))
     }
 }
 
@@ -83,5 +99,10 @@ export type MessageApiType = {
     userId: number,
     userName: string
 }
+export type GameApiType = {
+    nameGame:string,
+    userId: string,
+    userName: string,
+}
 export type statusType = "pending" | "ready" | "error"
-export type eventName = "messagesReceived" | "statusChanged"
+export type eventName = "messagesReceived" | "statusChanged" | "gameListReceived"

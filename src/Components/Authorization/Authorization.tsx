@@ -1,10 +1,11 @@
 import React, {FC,} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Form, Formik, FormikHelpers} from "formik";
 import {createFieldFormik} from "../../commen/FormikControls/FormikControls";
 import s from "./Authorization.module.css"
-import {useHistory } from "react-router-dom";
+import {Redirect, useHistory} from "react-router-dom";
 import {login} from "../../redux/auth-reducer";
+import {getAuthorization} from "../../redux/auth-selectors";
 
 
 type InitialValuesType = {
@@ -31,6 +32,7 @@ const userSearchFormValidate = (values: InitialValuesType) => {
 export const Authorization: FC = () => {
     let history = useHistory();
     const dispatch = useDispatch()
+    const isAuthorization = useSelector(getAuthorization)
     const initialProfile = {
         email: "",
         password: "",
@@ -45,6 +47,12 @@ export const Authorization: FC = () => {
     const handlerAuthorization =()=>{
         history.push('/firstAuthorization')
     }
+
+    if(isAuthorization){
+        return <Redirect to={'/placeBattleMan'}/>
+    }
+
+
     return <div>
         <Formik
             initialValues={initialProfile as InitialValuesType}
