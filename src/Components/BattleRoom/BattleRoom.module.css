@@ -1,8 +1,7 @@
 .displayWindow{
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 3fr 1fr;
     height: 400px;
-
 }
 
 .window1{
@@ -14,6 +13,8 @@
     padding: 10px;
 }
 .window2{
+    display: grid;
+    grid-template-rows: 3fr 1fr;
     border: solid 4px #25bf1a;
     background-color: #345080;
 }
@@ -23,9 +24,19 @@
 }
 .displayGame{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 .displayGame div{
     border: solid 4px #b47e7e;
     background-color: #534b7f;
+}
+.window4 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height:120px;
+}
+.window4 div {
+    border: solid 4px #b47e7e;
+    background-color: #534b7f;
+    align-items:stretch;
 }

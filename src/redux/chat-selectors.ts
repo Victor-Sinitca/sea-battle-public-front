@@ -9,3 +9,6 @@ export const getStatus =(state:AppStateType)=>{
 export const getListGames =(state:AppStateType)=>{
     return state.chat.games
 }
+export const getListGamesRoom =(state:AppStateType)=>{
+    return state.chat.gameRoom
+}

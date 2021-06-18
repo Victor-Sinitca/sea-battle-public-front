@@ -1,4 +1,5 @@
 import {
+    deleteGameReceivedSubscribersType, gameRoomReceivedSubscribersType,
     gamesReceivedSubscribersType,
     messagesReceivedSubscribersType,
     statusReceivedSubscribersType
@@ -6,8 +7,10 @@ import {
 
 let subscribers = {
     "messagesReceived": [] as messagesReceivedSubscribersType[],
-    "gameListReceived": [] as messagesReceivedSubscribersType[],
-    "statusChanged": [] as statusReceivedSubscribersType[]
+    "gameListReceived": [] as gamesReceivedSubscribersType[],
+    "deleteGameListReceived": [] as deleteGameReceivedSubscribersType[],
+    "statusChanged": [] as statusReceivedSubscribersType[],
+    "acceptGame": [] as gameRoomReceivedSubscribersType[]
 }
 
 
@@ -25,12 +28,20 @@ const messageHandler = (e: MessageEvent) => {
     if (newMessages.eventName === "allDate") {
         subscribers["gameListReceived"].forEach(s => s(newMessages.date.games))
         subscribers["messagesReceived"].forEach(s => s(newMessages.date.messages))
+        subscribers["messagesReceived"].forEach(s => s(newMessages.date.messages))
+
     }
     if (newMessages.eventName === "listGame") {
         subscribers["gameListReceived"].forEach(s => s(newMessages.date.games))
     }
     if (newMessages.eventName === "message") {
         subscribers["messagesReceived"].forEach(s => s(newMessages.date.messages))
+    }
+    if (newMessages.eventName === "deleteGameOfId") {
+        subscribers["deleteGameListReceived"].forEach(s => s(newMessages))
+    }
+    if (newMessages.eventName === "acceptGameOfId") {
+        subscribers["acceptGame"].forEach(s => s(newMessages.date))
     }
 }
 const openHandler = () => {
@@ -73,9 +84,11 @@ export const chatApi = {
         cleanUp()
         subscribers["statusChanged"] = []
         subscribers["messagesReceived"] = []
+        subscribers["deleteGameListReceived"] = []
+        subscribers["gameListReceived"] = []
+        subscribers["acceptGame"] = []
     },
-    subscribe(eventName: eventName,
-              callback: messagesReceivedSubscribersType | statusReceivedSubscribersType | gamesReceivedSubscribersType) {
+    subscribe(eventName: eventName, callback: callbackType) {
         // @ts-ignore
         subscribers[eventName].push(callback)
         return () => {
@@ -83,8 +96,7 @@ export const chatApi = {
             subscribers[eventName] = subscribers[eventName].filter(s => s != callback)
         }
     },
-    unSubscribe(eventName: eventName,
-                callback: messagesReceivedSubscribersType | statusReceivedSubscribersType | gamesReceivedSubscribersType) {
+    unSubscribe(eventName: eventName, callback: callbackType) {
         // @ts-ignore
         subscribers[eventName] = subscribers[eventName].filter(s => s != callback)
     },
@@ -100,9 +112,37 @@ export type MessageApiType = {
     userName: string
 }
 export type GameApiType = {
-    nameGame:string,
+    nameGame: string,
     userId: string,
     userName: string,
+    id: string
 }
+export type deleteGameApiType = {
+    eventName: "deleteGameOfId",
+    date: {
+        message: string,
+        idGameDelete: string
+    }
+}
+export type gameRoomApiType = {
+    eventName: "acceptGameOfId",
+    date: gameRoomType[]
+}
+
+export type gameRoomType = {
+    firstUser: {
+        id: string,
+        name: string
+    },
+    secondUser: {
+        id: string,
+        name: string
+    },
+    gamesRoomId: string,
+}
+
+
 export type statusType = "pending" | "ready" | "error"
-export type eventName = "messagesReceived" | "statusChanged" | "gameListReceived"
+export type eventName = "messagesReceived" | "statusChanged" | "gameListReceived" | "deleteGameListReceived" | "acceptGame"
+export type callbackType = messagesReceivedSubscribersType | statusReceivedSubscribersType
+    | gamesReceivedSubscribersType | deleteGameReceivedSubscribersType | gameRoomReceivedSubscribersType

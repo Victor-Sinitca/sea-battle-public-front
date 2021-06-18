@@ -3,42 +3,50 @@ import {Form, Formik, FormikHelpers} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {createFieldFormikTextarea} from "../../../commen/FormikControls/FormikControls";
 import {getMessages, getStatus} from "../../../redux/chat-selectors";
-import {sendMessage, startMessagesListening, stopMessagesListening} from "../../../redux/chat-reducer";
-import {MessageApiType} from "../../../api/chatApi";
+import {MessageType, sendMessage, startMessagesListening, stopMessagesListening} from "../../../redux/chat-reducer";
+import {MessageApiType, statusType} from "../../../api/chatApi";
 import UserAvatar from "../../../commen/UserAvatar/UserAvatar";
 
 
 export const ChatPage: FC = () => {
-    return <div>
-        <Chat/>
-    </div>
-}
-
-
-const Chat: FC = () => {
     const dispatch = useDispatch()
     const statusWS = useSelector(getStatus)
+    const messages = useSelector(getMessages)
+
+    const sendMessageForm = (term: string) => {
+        dispatch(sendMessage(term))
+    }
+
     useEffect(() => {
         dispatch(startMessagesListening())
         return () => {
             dispatch(stopMessagesListening())
         }
     }, [])
-
     return <div>
-        {statusWS === "error" && <div>Some error occurred. Please refresh the page</div>}
-        <Messages/>
-        <AddMessagesForm/>
+        <Chat statusWS={statusWS} messages={messages} sendMessageForm={sendMessageForm} />
     </div>
 }
 
+type ChatType = {
+    statusWS: statusType
+    messages: MessageType[]
+    sendMessageForm: (values: string) => void
+}
+export const Chat: FC<ChatType> = ({statusWS,messages,sendMessageForm}) => {
+    return <div>
+        {statusWS === "error" && <div>Some error occurred. Please refresh the page</div>}
+        <Messages messages={messages}/>
+        <AddMessagesForm statusWS={statusWS} sendMessageForm={sendMessageForm}/>
+    </div>
+}
 
-const Messages: FC = () => {
-    const messages = useSelector(getMessages)
+type MessagesType = {
+    messages: MessageType[]
+}
+export const Messages: FC<MessagesType> = ({messages}) => {
     const messagesAnchorRef = useRef<HTMLDivElement>(null)
-
     const [isAutoScroll, setIsAutoScroll] = useState(true)
-
     const scrollHandler = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
         const element = e.currentTarget
 
@@ -70,30 +78,29 @@ const Messages: FC = () => {
 const validateTerm = (values: any) => {
     const errors = {} as { term: string };
     if (values.term.length > 100) {
-        errors.term = 'сообщение долее 100 символов';
+        errors.term = 'сообщение более 100 символов';
     }
     return errors;
 }
 
-const AddMessagesForm: FC = () => {
-    const statusWS = useSelector(getStatus)
-    const dispatch = useDispatch()
-    const refButton= useRef<HTMLButtonElement>(null)
 
-
+type AddMessagesFormType = {
+    statusWS: statusType
+    sendMessageForm: (values: string) => void
+}
+export const AddMessagesForm: FC<AddMessagesFormType> = ({statusWS, sendMessageForm}) => {
+    const refButton = useRef<HTMLButtonElement>(null)
     const submitForm = (values: { term: string },
                         {setSubmitting, resetForm}: FormikHelpers<{ term: string }>,) => {
-        dispatch(sendMessage(values.term))
+        sendMessageForm(values.term)
         resetForm()
         setSubmitting(false)
     }
-
     const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.ctrlKey && e.key === "Enter") {
             refButton.current?.click()
         }
     }
-
     return <div style={{paddingTop: "20px"}}>
         <Formik
             enableReinitialize
@@ -101,13 +108,14 @@ const AddMessagesForm: FC = () => {
             validate={validateTerm}
             onSubmit={submitForm}
         >
-            {({errors,  touched, isSubmitting}) => (
-                <Form >
-                    <div style={{width: 300}}>
+            {({errors, touched, isSubmitting, values}) => (
+                <Form>
+                    <div style={{width: "auto"}}>
                         {createFieldFormikTextarea<{ term: string }>("твое сообщение",
                             "term", undefined, "text", {onKeyDown})}
                     </div>
-                    <button ref={refButton} type="submit" disabled={statusWS !== "ready" || isSubmitting}>
+                    <button ref={refButton} type="submit"
+                            disabled={statusWS !== "ready" || isSubmitting || !values.term}>
                         send
                     </button>
                 </Form>
