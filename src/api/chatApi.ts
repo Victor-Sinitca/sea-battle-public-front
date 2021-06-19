@@ -28,7 +28,6 @@ const messageHandler = (e: MessageEvent) => {
     if (newMessages.eventName === "allDate") {
         subscribers["gameListReceived"].forEach(s => s(newMessages.date.games))
         subscribers["messagesReceived"].forEach(s => s(newMessages.date.messages))
-        subscribers["messagesReceived"].forEach(s => s(newMessages.date.messages))
 
     }
     if (newMessages.eventName === "listGame") {
