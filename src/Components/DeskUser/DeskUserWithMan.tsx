@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useState} from "react";
 import s from "./DeskUser.module.css";
 import Desk from "./Desk/Desk";
 import ShipBar from "./ShipBar/ShipBar";
@@ -13,16 +13,17 @@ type PropsType = {
     secondMap: MapsType
     SUShips: ShipsType
     FUShips: ShipsType
-    whatSetShip: number
     UserTurn: boolean
-    deleteShipUser: boolean
-
-    settingShipUser: settingShipUserType
 }
 const DeskUserWithMan: FC<PropsType> = ({
-                                     firstUser, firstMap, secondMap, SUShips, FUShips, whatSetShip,
-                                     UserTurn, deleteShipUser,  settingShipUser,
+                                     firstUser, firstMap, secondMap, SUShips, FUShips,
+                                     UserTurn,
                                  }) => {
+    const [deleteShipUser,setDeleteShipUser] =useState(false)
+    const [whatSetShip,setWhatSetShip] =useState(0)
+    const [horizonSetShip,setHorizonSetShip] =useState(false)
+
+
     const dispatch = useDispatch()
     const shipOpponent = SUShips.numberShips1 > 0 || SUShips.numberShips2 > 0 ||
         SUShips.numberShips3 > 0 || SUShips.numberShips4 > 0;
@@ -39,22 +40,21 @@ const DeskUserWithMan: FC<PropsType> = ({
         dispatch(actionBattleMap.setShotUser(sector, firstUser))
     }
     const toggleDeleteShipDispatch = (): void => {
-        dispatch(actionBattleMap.toggleDeleteShip(firstUser))
+        setDeleteShipUser(!deleteShipUser)
     }
 
     const setShipsRandomDispatch = (): void => {
-        dispatch(setShipsRandom(firstUser, firstMap))
-        /* dispatch(RandomSaga(props.firstUser, props.firstMap))*/
+
     }
     const clearMapDispatch = (): void => {
-        dispatch(actionBattleMap.clearTheMap(firstUser))
+
     }
     const startNewGameDispatch = (): void => {
-        dispatch(actionBattleMap.startNewGame());
+
     }
     return (
         <div className={yourShips ? !shipOpponent ? s.displayDeskWinn : s.displayDesk : s.displayDeskLoss}>
-            <div className={s.displayDesk1}>
+           {/* <div className={s.displayDesk1}>
                 <div className={s.header}>Field one</div>
                 <div className={s.displayUser}>
                     <Desk userMap={firstMap} firstDesk={true} shipOpponent={shipOpponent}
@@ -116,7 +116,7 @@ const DeskUserWithMan: FC<PropsType> = ({
                         :
                         <div className={s.header}> Waiting for the second user</div>
                 }
-            </div>
+            </div>*/}
         </div>
     )
 }

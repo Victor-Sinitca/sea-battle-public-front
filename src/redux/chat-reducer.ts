@@ -5,7 +5,7 @@ import {
     GameApiType,
     gameRoomApiType,
     gameRoomType,
-    MessageApiType,
+    MessageApiType, StartGameType,
     statusType
 } from "../api/chatApi";
 import {Dispatch} from "redux";
@@ -17,9 +17,10 @@ export type GamesType = GameApiType & { id: string }
 
 let initialState = {
     messages: [] as MessageType[],
-    games: [] as GamesType[],
+    listGames: [] as GamesType[],
     status: "pending" as statusType,
     gameRoom:[] as gameRoomType[],
+    startGame:{} as StartGameType
 }
 
 type initialStateType = typeof initialState
@@ -39,7 +40,7 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
         case "CHAT_DELETE_GAMES":
             return {
                 ...state,
-                games: []
+                listGames: []
             }
         case "CHAT_DELETE_ROOMS":
             return {
@@ -49,7 +50,7 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
         case "SET_GAMES":
             return {
                 ...state,
-                games: [...state.games, ...action.games]
+                listGames: [...state.listGames, ...action.listGames]
             }
         case "SET_GAME_ROOM":
             return {
@@ -59,12 +60,17 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
         case "DELETE_GAME":
             return {
                 ...state,
-                games: [...state.games.filter(game=> game.id !== action.gameDeleteDate.date.idGameDelete)]
+                listGames: [...state.listGames.filter(game=> game.id !== action.gameDeleteDate.date.idGameDelete)]
             }
         case "CHAT_SET_STATUS":
             return {
                 ...state,
                 status: action.status
+            }
+        case "SET_START_GAME":
+            return {
+                ...state,
+                startGame: action.game
             }
         default:
             return state;
@@ -75,15 +81,16 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
 type ActionType = InferActionsTypes<typeof actionChat>
 export const actionChat = {
     deleteMessages: () => ({type: "CHAT_DELETE_MESSAGES"} as const),
-    deleteGames: () => ({type: "CHAT_DELETE_GAMES"} as const),
+    deleteListGames: () => ({type: "CHAT_DELETE_GAMES"} as const),
     deleteRooms: () => ({type: "CHAT_DELETE_ROOMS"} as const),
 
     setMessages: (messages: MessageApiType[]) => ({type: "CHAT_SET_MESSAGES", messages} as const),
     setStatus: (status: statusType) => ({type: "CHAT_SET_STATUS", status} as const),
-    setGames: (games: GameApiType[]) => ({type: "SET_GAMES", games} as const),
+    setListGames: (listGames: GameApiType[]) => ({type: "SET_GAMES", listGames} as const),
     addGameRoom: (gameRoom: gameRoomType[]) => ({type: "SET_GAME_ROOM", gameRoom} as const),
+    startGame: (game: StartGameType) => ({type: "SET_START_GAME", game} as const),
 
-    deleteGame: (gameDeleteDate: deleteGameApiType) => ({type: "DELETE_GAME", gameDeleteDate} as const),
+    deleteGameInList: (gameDeleteDate: deleteGameApiType) => ({type: "DELETE_GAME", gameDeleteDate} as const),
 }
 
 
@@ -107,7 +114,7 @@ const newGameHandlerCreator = (dispatch: Dispatch) => {
     if (_newGameHandler === null) {
         _newGameHandler = (games: GameApiType[]) => {
             debugger
-            dispatch(actionChat.setGames(games))
+            dispatch(actionChat.setListGames(games))
         }
     }
     return _newGameHandler
@@ -129,7 +136,7 @@ let _newDeleteGame: deleteGameReceivedSubscribersType | null = null
 const newDeleteGameCreator = (dispatch: Dispatch) => {
     if (_newDeleteGame === null) {
         _newDeleteGame = (gameDeleteDate: deleteGameApiType) => {
-            dispatch(actionChat.deleteGame(gameDeleteDate))
+            dispatch(actionChat.deleteGameInList(gameDeleteDate))
         }
     }
     return _newDeleteGame
@@ -139,11 +146,20 @@ let _newGameRoom: gameRoomReceivedSubscribersType | null = null
 const newGameRoomCreator = (dispatch: Dispatch) => {
     if (_newGameRoom === null) {
         _newGameRoom = (gameRoom: gameRoomType[]) => {
-            debugger
             dispatch(actionChat.addGameRoom(gameRoom))
         }
     }
     return _newGameRoom
+}
+export type newStartGameReceivedSubscribersType = (date:StartGameType) => void
+let _newStartGame: newStartGameReceivedSubscribersType | null = null
+const newStartGameCreator = (dispatch: Dispatch) => {
+    if (_newStartGame === null) {
+        _newStartGame = (date:StartGameType) => {
+            dispatch(actionChat.startGame(date))
+        }
+    }
+    return _newStartGame
 }
 
 
@@ -166,7 +182,24 @@ export const stopMessagesListening = (): ThunkActionType => async (dispatch) => 
     chatApi.unSubscribe("acceptGame", newGameRoomCreator(dispatch))
     chatApi.stop()
     dispatch(actionChat.deleteMessages())
-    dispatch(actionChat.deleteGames())
+    dispatch(actionChat.deleteListGames())
+    dispatch(actionChat.deleteRooms())
+}
+
+export const startGameListening = ():ThunkActionType => async (dispatch,getState) => {
+    const token=getState().auth.token
+    if(token){
+        chatApi.start(token)
+        chatApi.subscribe("acceptGame", newGameRoomCreator(dispatch))
+        chatApi.subscribe("startGame", newStartGameCreator(dispatch))
+        chatApi.subscribe("statusChanged", newStatusChangedCreator(dispatch))
+    }
+}
+export const stopGameListening = (): ThunkActionType => async (dispatch) => {
+    chatApi.unSubscribe("acceptGame", newGameRoomCreator(dispatch))
+    chatApi.unSubscribe("startGame", newStartGameCreator(dispatch))
+    chatApi.unSubscribe("statusChanged", newStatusChangedCreator(dispatch))
+    chatApi.stop()
     dispatch(actionChat.deleteRooms())
 }
 
@@ -202,6 +235,15 @@ export const acceptGame = (gameId: string): ThunkActionType => async () => {
             date: {
                 id: gameId
 
+            }
+        })
+}
+export const startGame = (gameId: string): ThunkActionType => async () => {
+    debugger
+        chatApi.sendMessage({
+            eventName: "startGame",
+            date: {
+                gameId: gameId
             }
         })
 }

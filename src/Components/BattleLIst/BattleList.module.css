@@ -1,0 +1,23 @@
+.displayBattleList{
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+
+}
+.displayList{
+    display: grid;
+    grid-gap: 10px;
+
+}
+.displayBattle{
+
+}
+.gameLink{
+    border: solid 2px #338443;
+    background-color: #7266bf;
+
+}
+.gameLink div{
+    border: solid 2px #cc43ef;
+
+
+}

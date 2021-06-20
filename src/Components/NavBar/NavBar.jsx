@@ -19,6 +19,9 @@ const NavBar = () => {
                 <div>
                     <NavLink to='/chat' className={s.navLink}>chat</NavLink>
                 </div>
+                <div>
+                    <NavLink to='/battleList' className={s.navLink}>battle list</NavLink>
+                </div>
             </>}
             {/*<div>
                 <NavLink to='/authorization' className={s.navLink}>login</NavLink>

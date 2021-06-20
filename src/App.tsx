@@ -12,6 +12,7 @@ import {getAuthorization} from "./redux/auth-selectors";
 import Battle from "./Components/Battle/Battle";
 import {ChatPage} from "./Components/pages/Chat/ChatPage";
 import BattleRoom from "./Components/BattleRoom/BattleRoom";
+import {BattleList} from "./Components/BattleLIst/BattleList";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                 {authorization && <Route path='/battle' render={() => <Battle/>}/>}
                 {authorization && <Route path='/battleRoom' render={() => <BattleRoom/>}/>}
                 {authorization && <Route path='/chat' render={() => <ChatPage/>}/>}
+                {authorization && <Route path='/battleList' render={() => <BattleList/>}/>}
                 <Route path='/authorization' render={() => <Authorization/>}/>
                 <Route path='/firstAuthorization' render={() => <FirstAuthorization/>}/>
             </div>

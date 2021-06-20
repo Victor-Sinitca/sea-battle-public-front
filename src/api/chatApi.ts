@@ -1,16 +1,18 @@
 import {
     deleteGameReceivedSubscribersType, gameRoomReceivedSubscribersType,
     gamesReceivedSubscribersType,
-    messagesReceivedSubscribersType,
+    messagesReceivedSubscribersType, newStartGameReceivedSubscribersType,
     statusReceivedSubscribersType
 } from "../redux/chat-reducer";
+import {SectorType} from "../../Types/Types";
 
 let subscribers = {
     "messagesReceived": [] as messagesReceivedSubscribersType[],
     "gameListReceived": [] as gamesReceivedSubscribersType[],
     "deleteGameListReceived": [] as deleteGameReceivedSubscribersType[],
     "statusChanged": [] as statusReceivedSubscribersType[],
-    "acceptGame": [] as gameRoomReceivedSubscribersType[]
+    "acceptGame": [] as gameRoomReceivedSubscribersType[],
+    "startGame": [] as newStartGameReceivedSubscribersType[]
 }
 
 
@@ -41,6 +43,9 @@ const messageHandler = (e: MessageEvent) => {
     }
     if (newMessages.eventName === "acceptGameOfId") {
         subscribers["acceptGame"].forEach(s => s(newMessages.date))
+    }
+    if (newMessages.eventName === "startGame") {
+        subscribers["startGame"].forEach(s => s(newMessages?.date[0]))
     }
 }
 const openHandler = () => {
@@ -86,6 +91,7 @@ export const chatApi = {
         subscribers["deleteGameListReceived"] = []
         subscribers["gameListReceived"] = []
         subscribers["acceptGame"] = []
+        subscribers["startGame"] = []
     },
     subscribe(eventName: eventName, callback: callbackType) {
         // @ts-ignore
@@ -139,9 +145,53 @@ export type gameRoomType = {
     },
     gamesRoomId: string,
 }
-
+export type StartGameType = {
+    gameId: string,
+    firstUser: {
+        id: string,
+        name: string
+    },
+    secondUser: {
+        id: string,
+        name: string
+    },
+    gameData: {
+        FUMap: Array<Array<{ sector: SectorType }>>,
+        SUMap: Array<Array<{ sector: SectorType }>>,
+        FUTurn: {
+            turn: true
+        },
+        FUShips: {
+            ship1: number,
+            ship2: number,
+            ship3: number,
+            ship4: number,
+            numberShips1: number,
+            numberShips2: number,
+            numberShips3: number,
+            numberShips4: number,
+        },
+        SUShips: {
+            ship1: number,
+            ship2: number,
+            ship3: number,
+            ship4: number,
+            numberShips1: number,
+            numberShips2: number,
+            numberShips3: number,
+            numberShips4: number,
+        },
+    }
+}
 
 export type statusType = "pending" | "ready" | "error"
-export type eventName = "messagesReceived" | "statusChanged" | "gameListReceived" | "deleteGameListReceived" | "acceptGame"
+export type eventName =
+    "messagesReceived"
+    | "statusChanged"
+    | "gameListReceived"
+    | "deleteGameListReceived"
+    | "acceptGame"
+    | "startGame"
 export type callbackType = messagesReceivedSubscribersType | statusReceivedSubscribersType
     | gamesReceivedSubscribersType | deleteGameReceivedSubscribersType | gameRoomReceivedSubscribersType
+    | newStartGameReceivedSubscribersType
