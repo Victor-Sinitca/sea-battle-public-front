@@ -106,16 +106,15 @@ const battleMapReducer = (state = initialState as initialStateBattleMapType, act
             }
         }
         case "UNLOCK_FOR_SET_SHIP" : {
-            if (action.firstUser && state.FUMap && (typeof (state.horizonSetShipFU) === "boolean")) {
+            if (action.firstUser && state.FUMap) {
                 stateCopy = {...state}
                 stateCopy.FUMap = [...state.FUMap];
-
-                stateCopy.FUMap = checkForShipInput(stateCopy.FUMap, state.horizonSetShipFU, action.shipValue, true).userMap
+                stateCopy.FUMap = checkForShipInput(stateCopy.FUMap, action.horizon, action.shipValue, true).userMap
                 return stateCopy
-            } else if (state.SUMap && (typeof (state.horizonSetShipSU) === "boolean")) {
+            } else if (state.SUMap) {
                 stateCopy = {...state}
                 stateCopy.SUMap = [...state.SUMap];
-                stateCopy.SUMap = checkForShipInput(stateCopy.SUMap, state.horizonSetShipSU, action.shipValue, true).userMap
+                stateCopy.SUMap = checkForShipInput(stateCopy.SUMap, action.horizon, action.shipValue, true).userMap
                 return stateCopy
             } else {
                 console.log(`Error UNLOCK_FOR_SET_SHIP. First User is ${action.firstUser}`)
@@ -247,8 +246,8 @@ export const actionBattleMap = {
     setSecondUserMap: (SUMap: Array<Array<{ sector: SectorType }>>) => {
         return ({type: "SET_SECOND_USER_MAP", SUMap} as const)
     },
-    setShipUser: (sector: SectorType, firstUser: boolean) => {
-        return ({type: "SET_SHIP_USER", sector, firstUser} as const)
+    setShipUser: (sector: SectorType, firstUser: boolean, horizonSetShip:boolean,whatSetShip:number) => {
+        return ({type: "SET_SHIP_USER", sector, firstUser,horizonSetShip,whatSetShip} as const)
     },
     setShotUser: (sector: SectorType, firstUser: boolean) => {
         return ({type: "SET_SHOT_USER", sector, firstUser} as const)
@@ -310,7 +309,7 @@ export const setShipsRandom = (firstUser: boolean, userMap: Array<Array<{ sector
                 dispatch(actionBattleMap.setWhatSetShip(shipValue, firstUser))
                 dispatch(actionBattleMap.setHorizon(horizon, firstUser))
                 dispatch(actionBattleMap.unlockForSetShip(shipValue, horizon, firstUser))
-                dispatch(actionBattleMap.setShipUser(shipInputState[getRandomInt(shipInputState.length)], firstUser))
+                dispatch(actionBattleMap.setShipUser(shipInputState[getRandomInt(shipInputState.length)], firstUser,horizon,shipValue))
             }
         }
     }
@@ -341,7 +340,7 @@ function* fetchSetShipsRandomSaga(action: RandomSagaType) {   //сага (реа
                 yield put(actionBattleMap.setWhatSetShip(shipValue, action.firstUser));
                 yield put(actionBattleMap.setHorizon(horizon, action.firstUser));
                 yield put(actionBattleMap.unlockForSetShip(shipValue, horizon, action.firstUser));
-                yield put(actionBattleMap.setShipUser(shipInputState[getRandomInt(shipInputState.length)], action.firstUser));
+                yield put(actionBattleMap.setShipUser(shipInputState[getRandomInt(shipInputState.length)], action.firstUser,horizon,shipValue));
             }
         }
     } catch (error) {

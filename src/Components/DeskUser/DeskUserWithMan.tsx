@@ -4,8 +4,15 @@ import Desk from "./Desk/Desk";
 import ShipBar from "./ShipBar/ShipBar";
 import SetShipBar from "./SetShipBar/SetShipBar";
 import {useDispatch} from "react-redux";
-import {actionBattleMap, setShipsRandom,} from "../../redux/battleWithMan-reduсer";
-import {compType, MapsType, SectorType, settingShipUserType, ShipsType} from "../../../Types/Types";
+
+import {MapsType, SectorType, ShipsType} from "../../../Types/Types";
+import {
+    actionChat, clearMapOnWS,
+    deleteShipOnMapOnWS, setShipsRandomOnWS,
+    setShipUserOnWS,
+    setShotUserOnWS,
+    startGameUserOnWS,
+} from "../../redux/chat-reducer";
 
 type PropsType = {
     firstUser: boolean
@@ -14,10 +21,17 @@ type PropsType = {
     SUShips: ShipsType
     FUShips: ShipsType
     UserTurn: boolean
+    settingShipUser:{
+        firstUser: boolean,
+        secondUser: boolean,
+    }
+    gameId:string,
+    firstUserState: {id: string, name: string}
+    secondUserState: {id: string, name: string}
 }
 const DeskUserWithMan: FC<PropsType> = ({
                                      firstUser, firstMap, secondMap, SUShips, FUShips,
-                                     UserTurn,
+                                     UserTurn,settingShipUser,gameId,firstUserState,secondUserState
                                  }) => {
     const [deleteShipUser,setDeleteShipUser] =useState(false)
     const [whatSetShip,setWhatSetShip] =useState(0)
@@ -30,32 +44,42 @@ const DeskUserWithMan: FC<PropsType> = ({
     const yourShips = FUShips.numberShips1 > 0 || FUShips.numberShips2 > 0 ||
         FUShips.numberShips3 > 0 || FUShips.numberShips4 > 0;
 
+    const handlerSetHorizonShip=(horizon: boolean)=>{
+        setHorizonSetShip(horizon)
+    }
+    const handlerSetWhatSetShip=(ship: number)=>{
+        setWhatSetShip(ship)
+    }
+
     const returnToClick = (sector: SectorType): void => {
         deleteShipUser ?
-            dispatch(actionBattleMap.deleteShipOnMap(sector, firstUser))
+            dispatch(deleteShipOnMapOnWS(sector, gameId,firstUserState.id))
             :
-            dispatch(actionBattleMap.setShipUser(sector, firstUser))
+            dispatch(setShipUserOnWS(sector, gameId,firstUserState.id,horizonSetShip,whatSetShip))
     }
     const setShotUserDispatch = (sector: SectorType): void => {
-        dispatch(actionBattleMap.setShotUser(sector, firstUser))
+        dispatch(setShotUserOnWS(sector, gameId,firstUserState.id))
     }
     const toggleDeleteShipDispatch = (): void => {
         setDeleteShipUser(!deleteShipUser)
     }
 
     const setShipsRandomDispatch = (): void => {
-
+        dispatch(setShipsRandomOnWS(gameId, firstUserState.id))
     }
     const clearMapDispatch = (): void => {
-
+        dispatch(clearMapOnWS(gameId, firstUserState.id))
     }
     const startNewGameDispatch = (): void => {
-
+        /*dispatch(deleteShipOnMapOnWS(sector, gameId,userState.id))*/
+    }
+    const startGameDispatch = (firstUser: boolean): void => {
+        dispatch(startGameUserOnWS(gameId, firstUserState.id))
     }
     return (
         <div className={yourShips ? !shipOpponent ? s.displayDeskWinn : s.displayDesk : s.displayDeskLoss}>
-           {/* <div className={s.displayDesk1}>
-                <div className={s.header}>Field one</div>
+            <div className={s.displayDesk1}>
+                <div className={s.header}>{firstUserState.name}</div>
                 <div className={s.displayUser}>
                     <Desk userMap={firstMap} firstDesk={true} shipOpponent={shipOpponent}
                           yourShips={yourShips}
@@ -64,11 +88,11 @@ const DeskUserWithMan: FC<PropsType> = ({
                     {((firstUser && settingShipUser.firstUser) || (!firstUser && settingShipUser.secondUser))
                         ? <SetShipBar FUShips={FUShips} whatSetShip={whatSetShip}
                                       firstUser={firstUser}
-                                      lockAllMap={actionBattleMap.lockAllMap}
-                                      setWhatSetShip={actionBattleMap.setWhatSetShip}
-                                      startGame={actionBattleMap.startGame}
-                                      setHorizon={actionBattleMap.setHorizon}
-                                      unlockForSetShip={actionBattleMap.unlockForSetShip}/>
+                                      lockAllMap={actionChat.lockAllMap}
+                                      setWhatSetShip={handlerSetWhatSetShip}
+                                      startGame={startGameDispatch}
+                                      setHorizon={handlerSetHorizonShip}
+                                      unlockForSetShip={actionChat.unlockForSetShip}/>
                         : <ShipBar userShips={SUShips} UserTurn={UserTurn}/>
                     }
                     {((firstUser && settingShipUser.firstUser) || (!firstUser && settingShipUser.secondUser))
@@ -95,7 +119,7 @@ const DeskUserWithMan: FC<PropsType> = ({
             <div className={s.displayDesk2}>
                 {(!settingShipUser.firstUser && !settingShipUser.secondUser) ?
                     <div>
-                        <div className={s.header}>Field two</div>
+                        <div className={s.header}>{secondUserState.name}</div>
                         <div className={s.displayUser}>
                             <Desk userMap={secondMap} firstDesk={false} shipOpponent={shipOpponent}
                                   yourShips={yourShips}
@@ -116,7 +140,7 @@ const DeskUserWithMan: FC<PropsType> = ({
                         :
                         <div className={s.header}> Waiting for the second user</div>
                 }
-            </div>*/}
+            </div>
         </div>
     )
 }

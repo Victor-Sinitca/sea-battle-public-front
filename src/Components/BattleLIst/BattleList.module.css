@@ -5,6 +5,8 @@
 }
 .displayList{
     display: grid;
+    grid-template-rows: min-content;
+    align-content:start;
     grid-gap: 10px;
 
 }

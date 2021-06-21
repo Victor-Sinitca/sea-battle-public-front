@@ -45,7 +45,7 @@ const messageHandler = (e: MessageEvent) => {
         subscribers["acceptGame"].forEach(s => s(newMessages.date))
     }
     if (newMessages.eventName === "startGame") {
-        subscribers["startGame"].forEach(s => s(newMessages?.date[0]))
+        subscribers["startGame"].forEach(s => s(newMessages.date))
     }
 }
 const openHandler = () => {
@@ -180,6 +180,10 @@ export type StartGameType = {
             numberShips2: number,
             numberShips3: number,
             numberShips4: number,
+        },
+        settingShipUser: {
+            firstUser: boolean,
+            secondUser: boolean,
         },
     }
 }

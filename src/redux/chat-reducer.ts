@@ -3,13 +3,15 @@ import {
     chatApi,
     deleteGameApiType,
     GameApiType,
-    gameRoomApiType,
     gameRoomType,
-    MessageApiType, StartGameType,
+    MessageApiType,
+    StartGameType,
     statusType
 } from "../api/chatApi";
 import {Dispatch} from "redux";
 import {v1} from "uuid"
+import {checkForShipInput, lockMap} from "../commen/logics/checkForShipInput/checkForSingleShipInput";
+import {SectorType} from "../../Types/Types";
 
 
 export type MessageType = MessageApiType & { id: string }
@@ -19,12 +21,13 @@ let initialState = {
     messages: [] as MessageType[],
     listGames: [] as GamesType[],
     status: "pending" as statusType,
-    gameRoom:[] as gameRoomType[],
-    startGame:{} as StartGameType
+    gameRoom: [] as gameRoomType[],
+    startGame: null as null | StartGameType
 }
 
 type initialStateType = typeof initialState
 const chatReducer = (state = initialState as initialStateType, action: ActionType): initialStateType => {
+    let stateCopy: initialStateType
     switch (action.type) {
         case "CHAT_SET_MESSAGES":
             return {
@@ -60,7 +63,7 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
         case "DELETE_GAME":
             return {
                 ...state,
-                listGames: [...state.listGames.filter(game=> game.id !== action.gameDeleteDate.date.idGameDelete)]
+                listGames: [...state.listGames.filter(game => game.id !== action.gameDeleteDate.date.idGameDelete)]
             }
         case "CHAT_SET_STATUS":
             return {
@@ -70,8 +73,49 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
         case "SET_START_GAME":
             return {
                 ...state,
-                startGame: action.game
+                startGame: action.game[0]
             }
+        case "BATTLE_UNLOCK_FOR_SET_SHIP" : {
+            if (action.firstUser && state.startGame) {
+                stateCopy = {...state}
+                if (stateCopy.startGame) {
+                    stateCopy.startGame.gameData.FUMap = [...state.startGame.gameData.FUMap];
+                    stateCopy.startGame.gameData.FUMap = checkForShipInput(stateCopy.startGame.gameData.FUMap, action.horizon, action.shipValue, true).userMap
+                    return stateCopy
+                } else return state
+            } else if (state.startGame) {
+                stateCopy = {...state}
+                if (stateCopy.startGame) {
+                    stateCopy.startGame.gameData.SUMap = [...state.startGame.gameData.SUMap];
+                    stateCopy.startGame.gameData.SUMap = checkForShipInput(stateCopy.startGame.gameData.SUMap, action.horizon, action.shipValue, true).userMap
+                    return stateCopy
+                } else return state
+            } else {
+                console.log(`Error UNLOCK_FOR_SET_SHIP. First User is ${action.firstUser}`)
+                return state
+            }
+        }
+        case "BATTLE_LOCK_ALL_MAP": {
+            if (action.firstUser && state.startGame) {
+                stateCopy = {...state}
+                if (stateCopy.startGame) {
+                    stateCopy.startGame.gameData.FUMap = [...state.startGame.gameData.FUMap];
+                    stateCopy.startGame.gameData.FUMap = lockMap(stateCopy.startGame.gameData.FUMap)
+                    return stateCopy
+                } else return state
+
+            } else if (state.startGame?.gameData.SUMap) {
+                stateCopy = {...state}
+                if (stateCopy.startGame) {
+                    stateCopy.startGame.gameData.SUMap = [...state.startGame.gameData.SUMap];
+                    stateCopy.startGame.gameData.SUMap = lockMap(stateCopy.startGame.gameData.SUMap)
+                    return stateCopy
+                } else return state
+            } else {
+                console.log(`Error LOCK_ALL_MAP. First User is ${action.firstUser}`)
+                return state
+            }
+        }
         default:
             return state;
     }
@@ -80,6 +124,14 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
 
 type ActionType = InferActionsTypes<typeof actionChat>
 export const actionChat = {
+    lockAllMap: (firstUser: boolean) => {
+        return ({type: "BATTLE_LOCK_ALL_MAP", firstUser} as const)
+    },
+    unlockForSetShip: (shipValue: number, horizon: boolean, firstUser: boolean,) => {
+        return ({type: "BATTLE_UNLOCK_FOR_SET_SHIP", shipValue, horizon, firstUser,} as const)
+    },
+
+
     deleteMessages: () => ({type: "CHAT_DELETE_MESSAGES"} as const),
     deleteListGames: () => ({type: "CHAT_DELETE_GAMES"} as const),
     deleteRooms: () => ({type: "CHAT_DELETE_ROOMS"} as const),
@@ -88,7 +140,7 @@ export const actionChat = {
     setStatus: (status: statusType) => ({type: "CHAT_SET_STATUS", status} as const),
     setListGames: (listGames: GameApiType[]) => ({type: "SET_GAMES", listGames} as const),
     addGameRoom: (gameRoom: gameRoomType[]) => ({type: "SET_GAME_ROOM", gameRoom} as const),
-    startGame: (game: StartGameType) => ({type: "SET_START_GAME", game} as const),
+    startGame: (game: StartGameType[]) => ({type: "SET_START_GAME", game} as const),
 
     deleteGameInList: (gameDeleteDate: deleteGameApiType) => ({type: "DELETE_GAME", gameDeleteDate} as const),
 }
@@ -98,7 +150,7 @@ type ThunkActionType = BaseActionType<ActionType>
 
 
 export type messagesReceivedSubscribersType = (messages: MessageApiType[]) => void
-let _newMessageHandler: messagesReceivedSubscribersType| null = null
+let _newMessageHandler: messagesReceivedSubscribersType | null = null
 const newMessageHandlerCreator = (dispatch: Dispatch) => {
     if (_newMessageHandler === null) {
         _newMessageHandler = (messages: MessageApiType[]) => {
@@ -109,7 +161,7 @@ const newMessageHandlerCreator = (dispatch: Dispatch) => {
 
 }
 export type gamesReceivedSubscribersType = (games: GameApiType[]) => void
-let _newGameHandler: gamesReceivedSubscribersType| null = null
+let _newGameHandler: gamesReceivedSubscribersType | null = null
 const newGameHandlerCreator = (dispatch: Dispatch) => {
     if (_newGameHandler === null) {
         _newGameHandler = (games: GameApiType[]) => {
@@ -151,11 +203,12 @@ const newGameRoomCreator = (dispatch: Dispatch) => {
     }
     return _newGameRoom
 }
-export type newStartGameReceivedSubscribersType = (date:StartGameType) => void
+export type newStartGameReceivedSubscribersType = (date: StartGameType[]) => void
 let _newStartGame: newStartGameReceivedSubscribersType | null = null
 const newStartGameCreator = (dispatch: Dispatch) => {
     if (_newStartGame === null) {
-        _newStartGame = (date:StartGameType) => {
+        _newStartGame = (date: StartGameType[]) => {
+            debugger
             dispatch(actionChat.startGame(date))
         }
     }
@@ -163,9 +216,9 @@ const newStartGameCreator = (dispatch: Dispatch) => {
 }
 
 
-export const startMessagesListening = ():ThunkActionType => async (dispatch,getState) => {
-    const token=getState().auth.token
-    if(token){
+export const startMessagesListening = (): ThunkActionType => async (dispatch, getState) => {
+    const token = getState().auth.token
+    if (token) {
         chatApi.start(token)
         chatApi.subscribe("messagesReceived", newMessageHandlerCreator(dispatch))
         chatApi.subscribe("gameListReceived", newGameHandlerCreator(dispatch))
@@ -186,9 +239,9 @@ export const stopMessagesListening = (): ThunkActionType => async (dispatch) => 
     dispatch(actionChat.deleteRooms())
 }
 
-export const startGameListening = ():ThunkActionType => async (dispatch,getState) => {
-    const token=getState().auth.token
-    if(token){
+export const startGameListening = (): ThunkActionType => async (dispatch, getState) => {
+    const token = getState().auth.token
+    if (token) {
         chatApi.start(token)
         chatApi.subscribe("acceptGame", newGameRoomCreator(dispatch))
         chatApi.subscribe("startGame", newStartGameCreator(dispatch))
@@ -204,48 +257,113 @@ export const stopGameListening = (): ThunkActionType => async (dispatch) => {
 }
 
 
-
 export const sendMessage = (message: string): ThunkActionType => async () => {
-        chatApi.sendMessage({
-            eventName: "message",
-            date: {
-                messages: message
-            }
-        })
+    chatApi.sendMessage({
+        eventName: "message",
+        date: {
+            messages: message
+        }
+    })
 }
 export const sendGame = (game: string): ThunkActionType => async () => {
-        chatApi.sendMessage({
-            eventName: "listGame",
-            date: {
-                nameGame: game
-            }
-        })
+    chatApi.sendMessage({
+        eventName: "listGame",
+        date: {
+            nameGame: game
+        }
+    })
 }
 export const deleteGame = (gameId: string): ThunkActionType => async () => {
-        chatApi.sendMessage({
-            eventName: "deleteGameOfId",
-            date: {
-                id: gameId
-            }
-        })
+    chatApi.sendMessage({
+        eventName: "deleteGameOfId",
+        date: {
+            id: gameId
+        }
+    })
 }
 export const acceptGame = (gameId: string): ThunkActionType => async () => {
-        chatApi.sendMessage({
-            eventName: "acceptGameOfId",
-            date: {
-                id: gameId
+    chatApi.sendMessage({
+        eventName: "acceptGameOfId",
+        date: {
+            id: gameId
 
-            }
-        })
+        }
+    })
 }
-export const startGame = (gameId: string): ThunkActionType => async () => {
+export const startGameReducer = (gameId: string): ThunkActionType => async () => {
+    chatApi.sendMessage({
+        eventName: "startGame",
+        date: {
+            gameId: gameId
+        }
+    })
+}
+export const deleteShipOnMapOnWS = (sector: SectorType, gameId: string, userId: string): ThunkActionType => async () => {
     debugger
-        chatApi.sendMessage({
-            eventName: "startGame",
-            date: {
-                gameId: gameId
-            }
-        })
+    chatApi.sendMessage({
+        eventName: "startGameDeleteShip",
+        date: {
+            sector: sector,
+            gameId: gameId,
+            userId: userId
+        }
+    })
+}
+export const setShipUserOnWS = (sector: SectorType, gameId: string, userId: string,
+                                horizonSetShip: boolean, whatSetShip: number): ThunkActionType => async () => {
+    chatApi.sendMessage({
+        eventName: "startGameSetShip",
+        date: {
+            sector: {
+                x: sector.x,
+                y: sector.y,
+            },
+            gameId: gameId,
+            userId: userId,
+            horizonSetShip:horizonSetShip,
+            whatSetShip:whatSetShip
+        }
+    })
+}
+export const setShotUserOnWS = (sector: SectorType, gameId: string, userId: string): ThunkActionType => async () => {
+    debugger
+    chatApi.sendMessage({
+        eventName: "startGameSetShot",
+        date: {
+            gameId: gameId,
+            userId: userId,
+            sector: sector
+        }
+    })
+}
+export const setShipsRandomOnWS = (gameId: string, userId: string): ThunkActionType => async () => {
+    debugger
+    chatApi.sendMessage({
+        eventName: "startGameSetShipsRandom",
+        date: {
+            gameId: gameId,
+            userId: userId
+        }
+    })
+}
+export const clearMapOnWS = (gameId: string, userId: string): ThunkActionType => async () => {
+    chatApi.sendMessage({
+        eventName: "startGameClearMap",
+        date: {
+            gameId: gameId,
+            userId: userId
+        }
+    })
+}
+export const startGameUserOnWS = (gameId: string, userId: string): ThunkActionType => async () => {
+    debugger
+    chatApi.sendMessage({
+        eventName: "startGameUser",
+        date: {
+            gameId: gameId,
+            userId: userId
+        }
+    })
 }
 
 

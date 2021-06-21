@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useState} from "react";
 import s from "./DeskUser.module.css";
 import Desk from "./Desk/Desk";
 import ShipBar from "./ShipBar/ShipBar";
@@ -9,6 +9,7 @@ import compPhoto from "../../assets/img/intelligence-brain.png";
 import {useDispatch} from "react-redux";
 import {actionBattleMap, setShipsRandom,} from "../../redux/battleMap-reduсer";
 import {compType, MapsType, SectorType, settingShipUserType, ShipsType} from "../../../Types/Types";
+import {startGameUserOnWS} from "../../redux/chat-reducer";
 
 type PropsType = {
     firstUser: boolean
@@ -24,26 +25,39 @@ type PropsType = {
     settingShipUser: settingShipUserType
 }
 const DeskUser: FC<PropsType> = ({
-                                     firstUser, firstMap, secondMap, SUShips, FUShips, whatSetShip,
-                                     UserTurn, deleteShipUser, comp, settingShipUser, isCompGame
+                                     firstUser, firstMap, secondMap, SUShips, FUShips,
+                                     UserTurn, comp, settingShipUser, isCompGame
                                  }) => {
     const dispatch = useDispatch()
     const shipOpponent = SUShips.numberShips1 > 0 || SUShips.numberShips2 > 0 ||
         SUShips.numberShips3 > 0 || SUShips.numberShips4 > 0;
     const yourShips = FUShips.numberShips1 > 0 || FUShips.numberShips2 > 0 ||
         FUShips.numberShips3 > 0 || FUShips.numberShips4 > 0;
+    const [deleteShipUser,setDeleteShipUser] =useState(false)
+    const [whatSetShip,setWhatSetShip] =useState(0)
+    const [horizonSetShip,setHorizonSetShip] =useState(false)
+
+    const toggleDeleteShipDispatch = (): void => {
+        setDeleteShipUser(!deleteShipUser)
+    }
+
+    const handlerSetHorizonShip=(horizon: boolean)=>{
+        setHorizonSetShip(horizon)
+    }
+    const handlerSetWhatSetShip=(ship: number)=>{
+        setWhatSetShip(ship)
+    }
+
+
 
     const returnToClick = (sector: SectorType): void => {
         deleteShipUser ?
             dispatch(actionBattleMap.deleteShipOnMap(sector, firstUser))
             :
-            dispatch(actionBattleMap.setShipUser(sector, firstUser))
+            dispatch(actionBattleMap.setShipUser(sector, firstUser,horizonSetShip,whatSetShip))
     }
     const setShotUserDispatch = (sector: SectorType): void => {
         dispatch(actionBattleMap.setShotUser(sector, firstUser))
-    }
-    const toggleDeleteShipDispatch = (): void => {
-        dispatch(actionBattleMap.toggleDeleteShip(firstUser))
     }
     const lookSecondUserDispatch = (): void => {
         dispatch(actionBattleMap.toggleLookSecondUser())
@@ -61,6 +75,9 @@ const DeskUser: FC<PropsType> = ({
     const startNewGameDispatch = (): void => {
         dispatch(actionBattleMap.startNewGame());
     }
+    const startGameDispatch = (firstUser: boolean): void => {
+        dispatch(actionBattleMap.startGame(firstUser))
+    }
 
     return (
         <div className={yourShips ? !shipOpponent ? s.displayDeskWinn : s.displayDesk : s.displayDeskLoss}>
@@ -75,9 +92,9 @@ const DeskUser: FC<PropsType> = ({
                         ? <SetShipBar FUShips={FUShips} whatSetShip={whatSetShip}
                                       firstUser={firstUser}
                                       lockAllMap={actionBattleMap.lockAllMap}
-                                      setWhatSetShip={actionBattleMap.setWhatSetShip}
-                                      startGame={actionBattleMap.startGame}
-                                      setHorizon={actionBattleMap.setHorizon}
+                                      setWhatSetShip={handlerSetWhatSetShip}
+                                      startGame={startGameDispatch}
+                                      setHorizon={handlerSetHorizonShip}
                                       unlockForSetShip={actionBattleMap.unlockForSetShip}
                         />
                         : <ShipBar userShips={SUShips} UserTurn={UserTurn}/>

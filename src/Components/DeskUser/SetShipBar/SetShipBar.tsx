@@ -15,9 +15,9 @@ type PropsType = {
     whatSetShip: number
 
     lockAllMap: (firstUser: boolean) => void
-    setWhatSetShip: (ship: number, firstUser: boolean) => void
+    setWhatSetShip: (ship: number) => void
     startGame: (firstUser: boolean) => void
-    setHorizon: (horizon: boolean, firstUser: boolean) => void
+    setHorizon: (horizon: boolean) => void
     unlockForSetShip: (shipValue: number, horizon: boolean, firstUser: boolean) => void
 
 
@@ -28,25 +28,23 @@ const SetShipBar: FC<PropsType> = ({FUShips, firstUser, whatSetShip,
 
     const SetShip1 = (): void => {
         dispatch(lockAllMap(firstUser))
-        dispatch(setWhatSetShip(1, firstUser))
+       setWhatSetShip(1)
     }
     const SetShip2 = (): void => {
         dispatch(lockAllMap(firstUser))
-        dispatch(setWhatSetShip(2, firstUser))
+        setWhatSetShip(2)
     }
     const SetShip3 = (): void => {
         dispatch(lockAllMap(firstUser))
-        dispatch(setWhatSetShip(3, firstUser))
+        setWhatSetShip(3)
     }
     const SetShip4 = (): void => {
         dispatch(lockAllMap(firstUser))
-        dispatch(setWhatSetShip(4, firstUser))
+        setWhatSetShip(4)
     }
-
     const startGameDispatch = (): void => {
-        dispatch(startGame(firstUser))
+        startGame(firstUser)
     }
-
     return <div className={s.displaySetShip}>
         <div>
             <div className={s.ship1}>
@@ -89,7 +87,7 @@ const SetShipBar: FC<PropsType> = ({FUShips, firstUser, whatSetShip,
         {(FUShips.ship1 || FUShips.ship2 || FUShips.ship3 || FUShips.ship4)
             ? <div>
                 <SetShip ship={whatSetShip} firstUser={firstUser}
-                         setHorizon={setHorizon} unlockForSetShip={unlockForSetShip}/>
+                         setHorizon={setHorizon} unlockForSetShip={unlockForSetShip} FUShips={FUShips}/>
             </div>
             :
             <div className={s.startGameButton}>

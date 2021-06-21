@@ -4,7 +4,6 @@ import battleMapReducer, {watchSetShipsRandomSaga} from "./battleMap-reduсer";
 import createSagaMiddleware from 'redux-saga'
 import saveBattleMapReducer from "./saveBattleMap-reduсer";
 import authReducer from "./auth-reducer";
-import battleMapWithManReducer from "./battleWithMan-reduсer";
 import chatReducer from "./chat-reducer";
 
 declare global {
@@ -15,7 +14,6 @@ declare global {
 
 const rootReducers = combineReducers({
     battleMap:battleMapReducer,
-    battleMapWithMan:battleMapWithManReducer,
     saveBattleMap:saveBattleMapReducer,
     chat: chatReducer,
     auth:authReducer
