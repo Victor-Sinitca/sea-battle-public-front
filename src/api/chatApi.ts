@@ -71,8 +71,8 @@ function createChanel(token: string) {
         tokenDate = token
     }
     cleanUp()
-    debugger
-    ws = new WebSocket(`ws://localhost:8000/?id=${tokenDate}`);
+/*    ws = new WebSocket(`ws://localhost:8000/?id=${tokenDate}`);*/
+    ws = new WebSocket(`ws://192.168.35.2:8000/?id=${tokenDate}`);
     notifySubscribersAboutStatus("pending")
     ws?.addEventListener("close", closeHandler)
     ws?.addEventListener("message", messageHandler)

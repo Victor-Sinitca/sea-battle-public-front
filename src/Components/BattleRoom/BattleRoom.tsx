@@ -46,17 +46,22 @@ const BattleRoom: FC = () => {
     return <div>
         <div className={s.displayWindow}>
             <div className={s.window1}>
-                <ListGame myId={myId || ""} listGame={listGame}
-                          deleteGame={deleteGameInList} acceptGame={acceptGameInList}/>
-                <div className={s.window3}>
-                    <div>Название</div>
-                    <AddMessagesForm statusWS={statusWS} sendMessageForm={handleSendGame}/>
+                <div className={s.displayCreateGame}>
+                    <div>Название игры</div>
+                    <div>
+                        <AddMessagesForm statusWS={statusWS} sendMessageForm={handleSendGame}/>
+                    </div>
                 </div>
+                <ListGame myId={myId || "empty Id"} listGame={listGame}
+                          deleteGame={deleteGameInList} acceptGame={acceptGameInList}/>
             </div>
             <div className={s.window2}>
                 <div className={s.window3}>
-                    <div>Чат</div>
-                    <Chat statusWS={statusWS} messages={messages} sendMessageForm={sendMessageForm}/>
+                    <div style={{padding:10}}>Чат</div>
+                    <div style={{padding:10}}>
+                        <Chat statusWS={statusWS} messages={messages} sendMessageForm={sendMessageForm}/>
+                    </div>
+
                 </div>
                 <div className={s.window3}>
                     <div>Комната создания игры</div>

@@ -6,7 +6,7 @@
   "h h"
   "n p";
   grid-template-rows: 100px 1fr;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 120px 1fr;
   grid-gap: 15px;
   border:  2px #21e81a;
   background-color: #93d8ee;
@@ -28,7 +28,7 @@
 
 }
 .displayPlace{
-  padding: 20px;
+  padding-left: 20px;
   background-color: #84caf6;
   box-shadow: 0 0 8px 8px #93d8ee inset;
 }

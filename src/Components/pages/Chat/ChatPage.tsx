@@ -24,7 +24,7 @@ export const ChatPage: FC = () => {
         }
     }, [])
     return <div>
-        <Chat statusWS={statusWS} messages={messages} sendMessageForm={sendMessageForm} />
+        <Chat statusWS={statusWS} messages={messages} sendMessageForm={sendMessageForm}/>
     </div>
 }
 
@@ -33,11 +33,14 @@ type ChatType = {
     messages: MessageType[]
     sendMessageForm: (values: string) => void
 }
-export const Chat: FC<ChatType> = ({statusWS,messages,sendMessageForm}) => {
+export const Chat: FC<ChatType> = ({statusWS, messages, sendMessageForm}) => {
     return <div>
         {statusWS === "error" && <div>Some error occurred. Please refresh the page</div>}
         <Messages messages={messages}/>
-        <AddMessagesForm statusWS={statusWS} sendMessageForm={sendMessageForm}/>
+        <div style={{paddingTop: 5, paddingBottom: 5}}>
+            <AddMessagesForm statusWS={statusWS} sendMessageForm={sendMessageForm}/>
+        </div>
+
     </div>
 }
 
@@ -101,7 +104,7 @@ export const AddMessagesForm: FC<AddMessagesFormType> = ({statusWS, sendMessageF
             refButton.current?.click()
         }
     }
-    return <div style={{paddingTop: "20px"}}>
+    return <div>
         <Formik
             enableReinitialize
             initialValues={{term: ""}}
@@ -109,15 +112,18 @@ export const AddMessagesForm: FC<AddMessagesFormType> = ({statusWS, sendMessageF
             onSubmit={submitForm}
         >
             {({errors, touched, isSubmitting, values}) => (
-                <Form>
+                <Form style={{display: "inline-flex",}}>
                     <div style={{width: "auto"}}>
                         {createFieldFormikTextarea<{ term: string }>("твое сообщение",
                             "term", undefined, "text", {onKeyDown})}
                     </div>
-                    <button ref={refButton} type="submit"
-                            disabled={statusWS !== "ready" || isSubmitting || !values.term}>
-                        send
-                    </button>
+                    <div style={{padding: 5}}>
+                        <button ref={refButton} type="submit"
+                                disabled={statusWS !== "ready" || isSubmitting || !values.term}>
+                            send
+                        </button>
+                    </div>
+
                 </Form>
             )}
         </Formik>
@@ -131,7 +137,9 @@ const Message: FC<{ message: MessageApiType }> = React.memo(({message}) => {
         <UserAvatar name={message.userName} avatar={{small: message.photo, large: ""}}
                     link={`/profile/${message.userId}`}/>
         <br/>
-        {message.message}
+        <div style={{wordBreak: "break-all"}}>
+            {message.message}
+        </div>
         <hr/>
     </div>
 })

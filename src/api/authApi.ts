@@ -28,7 +28,6 @@ export const authAPI = {
     },
 
     getAuthorization(email: string, password: string, name:string) {
-        debugger
         return instance.post<MeType>(`/users/`, {
             user: {
                 name:name,

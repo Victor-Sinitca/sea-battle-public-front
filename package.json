@@ -28,6 +28,7 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
+    "startHost": "HOST=0.0.0.0 react-scripts start",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

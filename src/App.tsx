@@ -13,6 +13,7 @@ import Battle from "./Components/Battle/Battle";
 import {ChatPage} from "./Components/pages/Chat/ChatPage";
 import BattleRoom from "./Components/BattleRoom/BattleRoom";
 import {BattleList} from "./Components/BattleLIst/BattleList";
+import {Profile} from "./Components/Profile/Profile";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <div className="displayPlace">
                 <Route path='/' render={() => <Redirect to={"/placeBattleMan"}/>}/>
                 <Route path='/placeBattleMan' render={() => <PlaceBattle/>}/>
+                {authorization && <Route path='/profile/:userID?' render={() => <Profile/>}/>}
                 {authorization && <Route path='/battle' render={() => <Battle/>}/>}
                 {authorization && <Route path='/battleRoom' render={() => <BattleRoom/>}/>}
                 {authorization && <Route path='/chat' render={() => <ChatPage/>}/>}

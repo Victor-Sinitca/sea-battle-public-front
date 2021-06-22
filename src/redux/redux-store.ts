@@ -5,6 +5,7 @@ import createSagaMiddleware from 'redux-saga'
 import saveBattleMapReducer from "./saveBattleMap-reduсer";
 import authReducer from "./auth-reducer";
 import chatReducer from "./chat-reducer";
+import profileReducer from "./profile-reducer";
 
 declare global {
     interface Window {
@@ -16,7 +17,8 @@ const rootReducers = combineReducers({
     battleMap:battleMapReducer,
     saveBattleMap:saveBattleMapReducer,
     chat: chatReducer,
-    auth:authReducer
+    auth:authReducer,
+    profilePage:profileReducer
 });
 
 type RootReducerType=typeof rootReducers
