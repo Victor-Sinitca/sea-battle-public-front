@@ -6,6 +6,7 @@ import saveBattleMapReducer from "./saveBattleMap-reduсer";
 import authReducer from "./auth-reducer";
 import chatReducer from "./chat-reducer";
 import profileReducer from "./profile-reducer";
+import authHttpReducer from "./authHttp-reducer";
 
 declare global {
     interface Window {
@@ -18,7 +19,8 @@ const rootReducers = combineReducers({
     saveBattleMap:saveBattleMapReducer,
     chat: chatReducer,
     auth:authReducer,
-    profilePage:profileReducer
+    profilePage:profileReducer,
+    authHttp:authHttpReducer
 });
 
 type RootReducerType=typeof rootReducers
