@@ -2,11 +2,11 @@ import React from "react";
 import s from "./NavBar.module.css"
 import {NavLink} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {getAuthorization} from "../../redux/auth-selectors";
+import {getIsAuthorization} from "../../redux/authHttp-selectors";
 
 
 const NavBar = () => {
-    const authorization = useSelector(getAuthorization)
+    const authorization = useSelector(getIsAuthorization)
     return (
         <div className={s.displayNavBar}>
             <div className={`${s.item} ${s.active}`}>

@@ -3,7 +3,6 @@ import thunkMiddleware, {ThunkAction} from "redux-thunk";
 import battleMapReducer, {watchSetShipsRandomSaga} from "./battleMap-reduсer";
 import createSagaMiddleware from 'redux-saga'
 import saveBattleMapReducer from "./saveBattleMap-reduсer";
-import authReducer from "./auth-reducer";
 import chatReducer from "./chat-reducer";
 import profileReducer from "./profile-reducer";
 import authHttpReducer from "./authHttp-reducer";
@@ -18,7 +17,6 @@ const rootReducers = combineReducers({
     battleMap:battleMapReducer,
     saveBattleMap:saveBattleMapReducer,
     chat: chatReducer,
-    auth:authReducer,
     profilePage:profileReducer,
     authHttp:authHttpReducer
 });

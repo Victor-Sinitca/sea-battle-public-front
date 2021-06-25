@@ -3,12 +3,13 @@ import s from "./Battle.module.css"
 import {useDispatch, useSelector} from "react-redux";
 import DeskUserWithMan from "../DeskUser/DeskUserWithMan";
 import {getStartGame} from "../../redux/chat-selectors";
-import {getAuthUserId} from "../../redux/auth-selectors";
+import {getAuthUser} from "../../redux/authHttp-selectors";
+
 
 
 const Battle:FC = ()  => {
     const startGame= useSelector(getStartGame)
-    const authUserId= useSelector(getAuthUserId)
+    const authUserId= useSelector(getAuthUser)?.id
 
     const dispatch = useDispatch()
 

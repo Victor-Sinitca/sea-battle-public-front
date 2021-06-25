@@ -1,6 +1,6 @@
 import {AnyBaseActionType, InferActionsTypes} from "./redux-store";
-import {authAPI} from "../api/authApi";
-import {UserType} from "../http/userHttpApi";
+import {authAPI, UserType} from "../api/authApi";
+
 
 
 let initialState = {
@@ -48,8 +48,10 @@ export const actionAuth = {
 
 export const toLogout = (): AnyBaseActionType => async (dispatch) => {
     try {
+        const data = await authAPI.logout()
         localStorage.setItem('token', "");
         dispatch(actionAuth.deleteAuth())
+
     } catch (e) {
         console.log("error in toLogout" + e.message)
     }
@@ -57,20 +59,19 @@ export const toLogout = (): AnyBaseActionType => async (dispatch) => {
 export const login = (email: string, password: string,): AnyBaseActionType =>
     async (dispatch) => {
         try {
-            const data = await authAPI.getToLogin(email, password)
-            localStorage.setItem('token', data.user.token);
-            dispatch(actionAuth.setAuth(data.user._id, data.user.email,
-                data.user.token, true, data.user.name))
+            const data = await authAPI.login(email, password)
+            localStorage.setItem('token', data.accessToken);
+            dispatch(actionAuth.setAuth(data.user, true,))
         } catch (e) {
             console.log("error in login" + e.message)
         }
     }
-export const authorization = (email: string, password: string, name: string): AnyBaseActionType =>
+export const registration = (email: string, password: string, name: string): AnyBaseActionType =>
     async (dispatch) => {
         try {
-            const data = await authAPI.getAuthorization(email, password, name)
-            localStorage.setItem('token', data.user.token);
-            dispatch(actionAuth.setAuth(data.user._id, data.user.email, data.user.token, true, data.user.name))
+            const data = await authAPI.registration(email, password, name)
+            localStorage.setItem('token', data.accessToken);
+            dispatch(actionAuth.setAuth(data.user, true,))
         } catch (e) {
             console.log("error in authorization" + e.message)
         }
@@ -78,12 +79,9 @@ export const authorization = (email: string, password: string, name: string): An
 export const authMe = (): AnyBaseActionType =>
     async (dispatch) => {
         try {
-            const token = localStorage.getItem("token")
-            if (token !== null) {
-                const data = await authAPI.getMe(token)
-                localStorage.setItem('token', data.user.token);
-                dispatch(actionAuth.setAuth(data.user._id, data.user.email, data.user.token, true, data.user.name))
-            }
+                const data = await authAPI.refresh()
+                localStorage.setItem('token', data.accessToken);
+                dispatch(actionAuth.setAuth(data.user, true,))
         } catch (e) {
             console.log("error in authMe" + e.message)
         }

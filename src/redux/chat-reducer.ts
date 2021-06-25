@@ -12,6 +12,7 @@ import {Dispatch} from "redux";
 import {v1} from "uuid"
 import {checkForShipInput, lockMap} from "../commen/logics/checkForShipInput/checkForSingleShipInput";
 import {SectorType} from "../../Types/Types";
+import {authMe} from "./authHttp-reducer";
 
 
 export type MessageType = MessageApiType & { id: string }
@@ -217,7 +218,8 @@ const newStartGameCreator = (dispatch: Dispatch) => {
 
 
 export const startMessagesListening = (): ThunkActionType => async (dispatch, getState) => {
-    const token = getState().auth.token
+    await dispatch(authMe())
+    const token = localStorage.getItem("token")
     if (token) {
         chatApi.start(token)
         chatApi.subscribe("messagesReceived", newMessageHandlerCreator(dispatch))
@@ -240,7 +242,8 @@ export const stopMessagesListening = (): ThunkActionType => async (dispatch) => 
 }
 
 export const startGameListening = (): ThunkActionType => async (dispatch, getState) => {
-    const token = getState().auth.token
+    await dispatch(authMe())
+    const token = localStorage.getItem("token")
     if (token) {
         chatApi.start(token)
         chatApi.subscribe("acceptGame", newGameRoomCreator(dispatch))

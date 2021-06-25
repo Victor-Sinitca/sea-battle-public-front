@@ -4,8 +4,6 @@ import {profileAPI, ProfileType} from "../api/profileApi";
 
 
 let initialState = {
-    userId: null as number|null,
-    status: "" as string,
     profile: null as ProfileType|null,
     isUpdateProfile:false as boolean,
 }
@@ -16,9 +14,6 @@ const profileReducer = (state: initialStateType= initialState, action:ActionType
     switch (action.type) {
         case "PP/SET_USERS_PROFILE": {
             return {...state, profile: action.profile}
-        }
-        case "PP/SET_USER_STATUS": {
-            return {...state, status: action.status}
         }
         case "PP/SET_PHOTO_USER": {
             return state
@@ -52,11 +47,8 @@ export const actionProfile={
 type ThunkActionType=ThunkAction<Promise<void>, AppStateType, any, ActionType>
 export const getProfileThunk = (userId:string):ThunkActionType => async (dispatch) => {
     try {
-        const token = localStorage.getItem("token") ||""
         dispatch(actionProfile.setIsUpdateProfile(true))
-        debugger
-        let data = await profileAPI.getProfile(token,userId)
-        debugger
+        let data = await profileAPI.getProfile(userId)
         dispatch(actionProfile.setUsersProfile(data))
     } catch (error) {
         console.log("error getProfileThunk "+error.message)

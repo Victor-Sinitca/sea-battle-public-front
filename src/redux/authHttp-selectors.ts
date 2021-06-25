@@ -1,16 +1,13 @@
 import {AppStateType} from "./redux-store";
 
-export const getAuthUserId =(state:AppStateType)=>{
-    return state.auth.userId
+export const getAuthUser =(state:AppStateType)=>{
+    return state.authHttp.user
+}
+export const getIsAuthorization =(state:AppStateType)=>{
+    return state.authHttp.isAuthorization
+}
+export const getIsLoading =(state:AppStateType)=>{
+    return state.authHttp.isLoading
 }
 
-export const getEmail =(state:AppStateType)=>{
-    return state.auth.email
-}
-export const getAuthorization =(state:AppStateType)=>{
-    return state.auth.authorization
-}
-export const getToken =(state:AppStateType)=>{
-    return state.auth.token
-}
 

@@ -1,24 +1,24 @@
 import React, {FC} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getAuthorization, getAuthUserId, getEmail, getToken} from "../../redux/auth-selectors";
 import s from "./Header.module.css"
-import {toLogout} from "../../redux/auth-reducer";
+
 import {useHistory} from "react-router-dom";
+import {getAuthUser, getIsAuthorization} from "../../redux/authHttp-selectors";
+import {toLogout} from "../../redux/authHttp-reducer";
 
 
 export const Header: FC = () => {
     const dispatch = useDispatch()
     let history = useHistory();
-    const userId = useSelector(getAuthUserId)
-    const email = useSelector(getEmail)
-    const authorization = useSelector(getAuthorization)
+    const authUser= useSelector(getAuthUser)
+    const authorization = useSelector(getIsAuthorization)
 
     const handlerLogout =()=>{
+        debugger
         dispatch(toLogout())
         history.push('/authorization')
     }
     const handlerLogin =()=>{
-        dispatch(toLogout())
         history.push('/authorization')
     }
 
@@ -26,10 +26,10 @@ export const Header: FC = () => {
         {authorization ? <>
                 <div className={s.displayHeader}>
                     <div>
-                        userId : {userId}
+                        userId : {authUser?.id}
                     </div>
                     <div>
-                        email: {email}
+                        email: {authUser?.email}
                     </div>
                     <div>
                         <button onClick={handlerLogout}>выйти</button>

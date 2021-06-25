@@ -4,8 +4,8 @@ import {Form, Formik, FormikHelpers} from "formik";
 import {createFieldFormik} from "../../commen/FormikControls/FormikControls";
 import s from "./Authorization.module.css"
 import {Redirect, useHistory} from "react-router-dom";
-import {login} from "../../redux/auth-reducer";
-import {getAuthorization} from "../../redux/auth-selectors";
+import {login} from "../../redux/authHttp-reducer";
+import {getIsAuthorization} from "../../redux/authHttp-selectors";
 
 
 type InitialValuesType = {
@@ -32,7 +32,7 @@ const userSearchFormValidate = (values: InitialValuesType) => {
 export const Authorization: FC = () => {
     let history = useHistory();
     const dispatch = useDispatch()
-    const isAuthorization = useSelector(getAuthorization)
+    const isAuthorization = useSelector(getIsAuthorization)
     const initialProfile = {
         email: "",
         password: "",
@@ -44,15 +44,13 @@ export const Authorization: FC = () => {
         setSubmitting(false)
     }
 
-    const handlerAuthorization =()=>{
-        history.push('/firstAuthorization')
+    const handlerRegistration =()=>{
+        history.push('/registration')
     }
 
     if(isAuthorization){
         return <Redirect to={'/placeBattleMan'}/>
     }
-
-
     return <div>
         <Formik
             initialValues={initialProfile as InitialValuesType}
@@ -72,7 +70,7 @@ export const Authorization: FC = () => {
                 </Form>
             )}
         </Formik>
-        <button onClick={handlerAuthorization}>authorization</button>
+        <button onClick={handlerRegistration}>регистрация</button>
     </div>
 }
 

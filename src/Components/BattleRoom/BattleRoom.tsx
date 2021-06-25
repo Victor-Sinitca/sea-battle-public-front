@@ -12,14 +12,14 @@ import {
 } from "../../redux/chat-reducer";
 import {AddMessagesForm, Chat} from "../pages/Chat/ChatPage";
 import ListGame from "./ListGame/ListGame";
-import {getAuthUserId} from "../../redux/auth-selectors";
+import {getAuthUser} from "../../redux/authHttp-selectors";
 
 
 const BattleRoom: FC = () => {
     const listGame = useSelector(getListGames)
     const statusWS = useSelector(getStatus)
     const messages = useSelector(getMessages)
-    const myId = useSelector(getAuthUserId)
+    const myId = useSelector(getAuthUser)?.id
     const GamesRoom = useSelector(getListGamesRoom)
 
     const dispatch = useDispatch()

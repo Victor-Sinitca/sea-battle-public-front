@@ -1,39 +1,44 @@
-import {instance, setToken} from "./api";
+import $api, {API_URL} from "./index";
+import axios, {AxiosRequestConfig} from "axios";
 
-
-type MeType = {
-    user: {
-        _id: string,
-        email: string,
-        token: string,
+export  type UserType={
+    email: string,
+    id: string
+    isActivated: boolean
+}
+export type UserProfileType={
         name: string,
-    }
+        id: string,
+        status: string,
+        photo: string,
+        gameSBState: {
+            numberOfGamesSB: number,
+            numberOfWinsSB: number
+        }
+
+}
+type AuthResponseType = {
+    accessToken:string
+    refreshToken:string
+    user:UserType,
+    profile:UserProfileType,
 }
 
 export const authAPI = {
-    getMe(token:string) {
-        return instance.get<MeType>(`/users/current`, {
-            headers: {
-                "Authorization": `Token ${token} `
-            }
-        }).then(response =>  response.data)},
-
-    getToLogin(email: string, password: string,) {
-        return instance.post<MeType>(`/users/login`, {
-            user: {
-                email: email,
-                password: password
-            }
+    login(email: string, password: string,) {
+        return $api.post<AuthResponseType>(`/login`, { email, password})
+            .then(response => response.data)
+    },
+    registration(email: string, password: string, name:string) {
+        return $api.post<AuthResponseType>(`/registration`, { email, password, name})
+            .then(response => response.data);
+    },
+    logout() {
+        return $api.post<any>(`/logout`).then(response => response.data)
+    },
+    refresh(){
+        return axios.get<AuthResponseType>(`${API_URL}/refresh`,{
+            withCredentials: true,
         }).then(response => response.data)
-    },
-
-    getAuthorization(email: string, password: string, name:string) {
-        return instance.post<MeType>(`/users/`, {
-            user: {
-                name:name,
-                email: email,
-                password: password
-            }
-        }).then(response => response.data);
-    },
+    }
 }

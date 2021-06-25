@@ -1,30 +1,25 @@
-import {instance, setToken} from "./api";
+import $api from "./index";
 
 
 export type ProfileType = {
-    _id: string,
-    name: string,
-    photo: string,
-    status: string,
-    seaBattleSate: {
-        numberOfGames: number,
-        numberOfWins: number,
-        numberOfLosses: number
+    name:string,
+    id:string,
+    status:string,
+    photo:string,
+    gameSBState:{
+        numberOfGamesSB:number,
+        numberOfWinsSB:number,
     }
 }
 
 export const profileAPI = {
-    getProfile(token: string, userID: string) {
+    getProfile(userID: string) {
         debugger
-        return instance.get<ProfileType>(`/users/profile/` + userID, {
-            headers: {
-                "Authorization": `Token ${token} `
-            }
-        }).then(response => response.data)
+        return $api.get<ProfileType>(`/profile/` + userID).then(response => response.data)
     },
 
     updateProfile(token: string, email: string, password: string,) {
-        return instance.post<ProfileType>(`/users/profile`,
+        return $api.post<ProfileType>(`/users/profile`,
             {
                 user: {
                     email: email,

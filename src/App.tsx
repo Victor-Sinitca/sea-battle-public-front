@@ -3,21 +3,23 @@ import React, {useEffect} from "react";
 import {Redirect, Route} from "react-router-dom";
 import NavBar from "./Components/NavBar/NavBar";
 import PlaceBattle from "./Components/PlaceBattle/PlaceBattle";
-import {Authorization} from "./Components/Authorization/Authorization";
 import {Header} from "./Components/Header/Header";
 import {useDispatch, useSelector} from "react-redux";
-import {authMe} from "./redux/auth-reducer";
-import {FirstAuthorization} from "./Components/FirstAuthorization/FirstAuthorization";
-import {getAuthorization} from "./redux/auth-selectors";
+
+
 import Battle from "./Components/Battle/Battle";
 import {ChatPage} from "./Components/pages/Chat/ChatPage";
 import BattleRoom from "./Components/BattleRoom/BattleRoom";
 import {BattleList} from "./Components/BattleLIst/BattleList";
+import {getIsAuthorization} from "./redux/authHttp-selectors";
+import {authMe} from "./redux/authHttp-reducer";
+import {Authorization} from "./Components/Authorization/Authorization";
+import {Registration} from "./Components/Registration/Registration";
 import {Profile} from "./Components/Profile/Profile";
 
 
 function App() {
-    const authorization = useSelector(getAuthorization)
+    const isAuthorization = useSelector(getIsAuthorization)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -32,13 +34,13 @@ function App() {
             <div className="displayPlace">
                 <Route path='/' render={() => <Redirect to={"/placeBattleMan"}/>}/>
                 <Route path='/placeBattleMan' render={() => <PlaceBattle/>}/>
-                {authorization && <Route path='/profile/:userID?' render={() => <Profile/>}/>}
-                {authorization && <Route path='/battle' render={() => <Battle/>}/>}
-                {authorization && <Route path='/battleRoom' render={() => <BattleRoom/>}/>}
-                {authorization && <Route path='/chat' render={() => <ChatPage/>}/>}
-                {authorization && <Route path='/battleList' render={() => <BattleList/>}/>}
+                {isAuthorization && <Route path='/profile/:userID?' render={() => <Profile/>}/>}
+                {isAuthorization && <Route path='/battle' render={() => <Battle/>}/>}
+                {isAuthorization && <Route path='/battleRoom' render={() => <BattleRoom/>}/>}
+                {isAuthorization && <Route path='/chat' render={() => <ChatPage/>}/>}
+                {isAuthorization && <Route path='/battleList' render={() => <BattleList/>}/>}
                 <Route path='/authorization' render={() => <Authorization/>}/>
-                <Route path='/firstAuthorization' render={() => <FirstAuthorization/>}/>
+                <Route path='/registration' render={() => <Registration/>}/>
             </div>
         </div>
     );

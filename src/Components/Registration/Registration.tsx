@@ -2,10 +2,11 @@ import React, {FC,} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Form, Formik, FormikHelpers} from "formik";
 import {createFieldFormik} from "../../commen/FormikControls/FormikControls";
-import s from "./FirstAuthorization.module.css"
-import {useHistory,Redirect} from "react-router-dom";
-import {authorization} from "../../redux/auth-reducer";
-import {getAuthorization} from "../../redux/auth-selectors";
+import s from "./Registration.module.css"
+import {Redirect, useHistory} from "react-router-dom";
+
+import {getIsAuthorization} from "../../redux/authHttp-selectors";
+import {registration} from "../../redux/authHttp-reducer";
 
 
 type InitialValuesType = {
@@ -36,10 +37,10 @@ const userSearchFormValidate = (values: InitialValuesType) => {
 }
 
 
-export const FirstAuthorization: FC = () => {
+export const Registration: FC = () => {
     let history = useHistory();
     const dispatch = useDispatch()
-    const isAuthorization = useSelector(getAuthorization)
+    const isAuthorization = useSelector(getIsAuthorization)
 
 
     const initialProfile = {
@@ -50,7 +51,8 @@ export const FirstAuthorization: FC = () => {
     type  InitialValuesType = typeof initialProfile
     const submitForm = (values: InitialValuesType,
                         {setSubmitting}: FormikHelpers<InitialValuesType>,) => {
-        dispatch(authorization(values.email, values.password , values.name))
+        debugger
+        dispatch(registration(values.email, values.password , values.name))
         setSubmitting(false)
         history.push("/placeBattleMan")
     }
@@ -58,9 +60,8 @@ export const FirstAuthorization: FC = () => {
        return <Redirect to={'/placeBattleMan'}/>
     }
 
-
     return <div>
-        <div>Заполните форму для авторизации</div>
+        <div>Заполните форму для авторизации на сервер</div>
         <Formik
             initialValues={initialProfile as InitialValuesType}
             validate={userSearchFormValidate}

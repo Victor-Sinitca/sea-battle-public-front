@@ -2,28 +2,26 @@ import React, {FC, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getProfile} from "../../redux/profile-selectors";
 import ava from "../../assets/img/ava.jpeg"
-import {getAuthUserId} from "../../redux/auth-selectors";
 import {useHistory, useParams} from "react-router-dom";
 import {getProfileThunk} from "../../redux/profile-reducer";
+import {getAuthUser} from "../../redux/authHttp-selectors";
 
 export const Profile: FC = () => {
     const profile = useSelector(getProfile)
-    const authUserId=useSelector(getAuthUserId)
+    const authUser=useSelector(getAuthUser)
     const dispatch =useDispatch()
 
     let history = useHistory();
     const {userID} = useParams<{ userID: string }>();
     let userId = userID || null;
-    const isOwner = !userID || userID === authUserId
+    const isOwner = !userID || userID === authUser?.id
 
     const refreshProfile = () => {
         if (!userId) {
-            userId = authUserId
-            if (!userId) {
+            if (!authUser?.id) {
                 history.push("/authorization")
             } else {
-                dispatch(getProfileThunk(userId))
-
+                dispatch(getProfileThunk(authUser.id))
             }
         } else {
             dispatch(getProfileThunk(userId))
@@ -31,7 +29,6 @@ export const Profile: FC = () => {
     }
     useEffect(()=>{
         refreshProfile()
-
     },[])
 
 
@@ -46,9 +43,9 @@ export const Profile: FC = () => {
             <div>name: {profile.name}</div>
             <img src={profile.photo || ava } />
             <div> status:{profile.status}</div>
-            <div> number of Game:{profile.seaBattleSate.numberOfGames} </div>
-            <div>number of Wins: {profile.seaBattleSate.numberOfWins}</div>
-            <div>number of Losses: {profile.seaBattleSate.numberOfLosses}</div>
+            <div> number of Game:{profile.gameSBState.numberOfGamesSB} </div>
+            <div>number of Wins: {profile.gameSBState.numberOfWinsSB}</div>
+            <div>number of Losses: {profile.gameSBState.numberOfGamesSB - profile.gameSBState.numberOfWinsSB}</div>
         </div>
     }
 }
