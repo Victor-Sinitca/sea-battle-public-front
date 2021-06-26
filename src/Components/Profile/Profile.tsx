@@ -39,7 +39,7 @@ export const Profile: FC = () => {
         return <div>профиля нет</div>
     } else {
         return <div>
-            <div> твой профиль</div>
+            {isOwner && <div> твой профиль</div>}
             <div>name: {profile.name}</div>
             <img src={profile.photo || ava } />
             <div> status:{profile.status}</div>

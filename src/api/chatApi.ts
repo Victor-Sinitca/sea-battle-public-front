@@ -5,6 +5,7 @@ import {
     statusReceivedSubscribersType
 } from "../redux/chat-reducer";
 import {SectorType} from "../../Types/Types";
+import {API_WS} from "./index";
 
 let subscribers = {
     "messagesReceived": [] as messagesReceivedSubscribersType[],
@@ -72,7 +73,7 @@ function createChanel(token: string) {
     }
     cleanUp()
 /*    ws = new WebSocket(`ws://localhost:8000/?id=${tokenDate}`);*/
-    ws = new WebSocket(`ws://192.168.35.2:7000/WS/?id=${tokenDate}`);
+    ws = new WebSocket(`${API_WS}/?id=${tokenDate}`);
     notifySubscribersAboutStatus("pending")
     ws?.addEventListener("close", closeHandler)
     ws?.addEventListener("message", messageHandler)
@@ -155,6 +156,7 @@ export type StartGameType = {
         id: string,
         name: string
     },
+    winnerUser:null | string,
     gameData: {
         FUMap: Array<Array<{ sector: SectorType }>>,
         SUMap: Array<Array<{ sector: SectorType }>>,
