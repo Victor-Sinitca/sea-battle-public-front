@@ -1,4 +1,4 @@
-import {BaseActionType, InferActionsTypes} from "./redux-store";
+import {AppStateType, BaseActionType, InferActionsTypes} from "./redux-store";
 import {
     chatApi,
     deleteGameApiType,
@@ -60,6 +60,11 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
             return {
                 ...state,
                 gameRoom: [...state.gameRoom, ...action.gameRoom]
+            }
+        case "DELETE_GAME_IN_ROOM_OF_ID":
+            return {
+                ...state,
+                gameRoom: [...state.gameRoom.filter((g)=>g.gamesRoomId !== action.date.gamesRoomId)]
             }
         case "DELETE_GAME":
             return {
@@ -144,6 +149,7 @@ export const actionChat = {
     startGame: (game: StartGameType[]) => ({type: "SET_START_GAME", game} as const),
 
     deleteGameInList: (gameDeleteDate: deleteGameApiType) => ({type: "DELETE_GAME", gameDeleteDate} as const),
+    deleteGameInRoomOfId: (date: gameRoomType,userId:string | undefined) => ({type: "DELETE_GAME_IN_ROOM_OF_ID", date,userId} as const),
 }
 
 
@@ -166,7 +172,6 @@ let _newGameHandler: gamesReceivedSubscribersType | null = null
 const newGameHandlerCreator = (dispatch: Dispatch) => {
     if (_newGameHandler === null) {
         _newGameHandler = (games: GameApiType[]) => {
-            debugger
             dispatch(actionChat.setListGames(games))
         }
     }
@@ -209,11 +214,21 @@ let _newStartGame: newStartGameReceivedSubscribersType | null = null
 const newStartGameCreator = (dispatch: Dispatch) => {
     if (_newStartGame === null) {
         _newStartGame = (date: StartGameType[]) => {
-            debugger
             dispatch(actionChat.startGame(date))
         }
     }
     return _newStartGame
+}
+export type newLeaveGameRoomOfIdReceivedSubscribersType = (date: gameRoomType) => void
+let _newLeaveGameRoomOfId: newLeaveGameRoomOfIdReceivedSubscribersType | null = null
+const newLeaveGameRoomOfIdCreator = (dispatch: Dispatch, userId:string | undefined) => {
+    if (_newLeaveGameRoomOfId === null) {
+        _newLeaveGameRoomOfId = (date: gameRoomType) => {
+
+            dispatch(actionChat.deleteGameInRoomOfId(date,userId))
+        }
+    }
+    return _newLeaveGameRoomOfId
 }
 
 
@@ -247,12 +262,14 @@ export const startGameListening = (): ThunkActionType => async (dispatch, getSta
     if (token) {
         chatApi.start(token)
         chatApi.subscribe("acceptGame", newGameRoomCreator(dispatch))
+        chatApi.subscribe("leaveGameRoomOfId", newLeaveGameRoomOfIdCreator(dispatch,getState().authHttp.user?.id))
         chatApi.subscribe("startGame", newStartGameCreator(dispatch))
         chatApi.subscribe("statusChanged", newStatusChangedCreator(dispatch))
     }
 }
-export const stopGameListening = (): ThunkActionType => async (dispatch) => {
+export const stopGameListening = (): ThunkActionType => async (dispatch,getState) => {
     chatApi.unSubscribe("acceptGame", newGameRoomCreator(dispatch))
+    chatApi.unSubscribe("leaveGameRoomOfId", newLeaveGameRoomOfIdCreator(dispatch,getState().authHttp.user?.id))
     chatApi.unSubscribe("startGame", newStartGameCreator(dispatch))
     chatApi.unSubscribe("statusChanged", newStatusChangedCreator(dispatch))
     chatApi.stop()
@@ -359,11 +376,19 @@ export const clearMapOnWS = (gameId: string, userId: string): ThunkActionType =>
     })
 }
 export const startGameUserOnWS = (gameId: string, userId: string): ThunkActionType => async () => {
-    debugger
     chatApi.sendMessage({
         eventName: "startGameUser",
         date: {
             gameId: gameId,
+            userId: userId
+        }
+    })
+}
+export const leaveGameRoomOfId = (gameId: string, userId: string): ThunkActionType => async () => {
+    chatApi.sendMessage({
+        eventName: "leaveGameRoomOfId",
+        date: {
+            gamesRoomId: gameId,
             userId: userId
         }
     })

@@ -1,7 +1,7 @@
 import {
     deleteGameReceivedSubscribersType, gameRoomReceivedSubscribersType,
     gamesReceivedSubscribersType,
-    messagesReceivedSubscribersType, newStartGameReceivedSubscribersType,
+    messagesReceivedSubscribersType, newLeaveGameRoomOfIdReceivedSubscribersType, newStartGameReceivedSubscribersType,
     statusReceivedSubscribersType
 } from "../redux/chat-reducer";
 import {SectorType} from "../../Types/Types";
@@ -13,7 +13,8 @@ let subscribers = {
     "deleteGameListReceived": [] as deleteGameReceivedSubscribersType[],
     "statusChanged": [] as statusReceivedSubscribersType[],
     "acceptGame": [] as gameRoomReceivedSubscribersType[],
-    "startGame": [] as newStartGameReceivedSubscribersType[]
+    "startGame": [] as newStartGameReceivedSubscribersType[],
+    "leaveGameRoomOfId": [] as newLeaveGameRoomOfIdReceivedSubscribersType[]
 }
 
 
@@ -47,6 +48,9 @@ const messageHandler = (e: MessageEvent) => {
     }
     if (newMessages.eventName === "startGame") {
         subscribers["startGame"].forEach(s => s(newMessages.date))
+    }
+    if (newMessages.eventName === "startGameDeleteGameOfId") {
+        subscribers["leaveGameRoomOfId"].forEach(s => s(newMessages.date))
     }
 }
 const openHandler = () => {
@@ -93,6 +97,7 @@ export const chatApi = {
         subscribers["gameListReceived"] = []
         subscribers["acceptGame"] = []
         subscribers["startGame"] = []
+        subscribers["leaveGameRoomOfId"] = []
     },
     subscribe(eventName: eventName, callback: callbackType) {
         // @ts-ignore
@@ -198,6 +203,7 @@ export type eventName =
     | "deleteGameListReceived"
     | "acceptGame"
     | "startGame"
+| "leaveGameRoomOfId"
 export type callbackType = messagesReceivedSubscribersType | statusReceivedSubscribersType
     | gamesReceivedSubscribersType | deleteGameReceivedSubscribersType | gameRoomReceivedSubscribersType
-    | newStartGameReceivedSubscribersType
+    | newStartGameReceivedSubscribersType | newLeaveGameRoomOfIdReceivedSubscribersType
