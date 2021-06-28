@@ -23,7 +23,7 @@ export const ChatPage: FC = () => {
             dispatch(stopMessagesListening())
         }
     }, [])
-    return <div>
+    return <div style={{paddingTop:20}}>
         <Chat statusWS={statusWS} messages={messages} sendMessageForm={sendMessageForm}/>
     </div>
 }
@@ -133,13 +133,17 @@ export const AddMessagesForm: FC<AddMessagesFormType> = ({statusWS, sendMessageF
 
 
 const Message: FC<{ message: MessageApiType }> = React.memo(({message}) => {
-    return <div>
-        <UserAvatar name={message.userName} avatar={{small: message.photo, large: ""}}
-                    link={`/profile/${message.userId}`}/>
-        <br/>
-        <div style={{wordBreak: "break-all"}}>
-            {message.message}
+    return <div >
+        <div style={{display:"inline-flex", }}>
+            <div style={{minWidth: 120}}>
+                <UserAvatar name={message.userName} avatar={{small: message.photo, large: ""}}
+                            link={`/profile/${message.userId}`}/>
+            </div>
+            <div style={{wordBreak: "break-all"}}>
+                {message.message}
+            </div>
         </div>
+
         <hr/>
     </div>
 })

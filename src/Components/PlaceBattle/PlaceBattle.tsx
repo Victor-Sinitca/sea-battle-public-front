@@ -54,7 +54,7 @@ const PlaceBattle:FC = ()  => {
         if (comp.game && !settingShipUser.firstUser && settingShipUser.secondUser) { // заполнение поля компьютером
             dispatch(RandomSaga(false, secondUserMap)) //установка кораблей через сагу
             /* dispatch(setShipsRandom(false, secondUserMap)) //установка кораблей через санку  */
-            dispatch(actionBattleMap.startGame(false)) //true - start game first user, false - start game second user
+            dispatch(actionBattleMap.startGames(false)) //true - start game first user, false - start game second user
         }
     });
     useEffect(() => { //стрельба компьютера

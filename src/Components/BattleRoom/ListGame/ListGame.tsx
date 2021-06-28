@@ -14,19 +14,17 @@ const ListGame: FC<ListGameType> = ({listGame, myId, deleteGame,acceptGame}) => 
     return <div className={s.window3}>
         <div>Список игр</div>
         {listGame.map(g => {
-                const handleDeleteGame = () => {deleteGame(g.id)}
-                const handleAcceptGame = () => {acceptGame(g.id)}
                 return <div className={s.displayGame}>
                     <div>{g.userName}</div>
                     <div>{g.nameGame}</div>
                     <div>{g.id}</div>
                     {myId === g.userId ?
                         <div>
-                            <button onClick={handleDeleteGame}>удалить игру</button>
+                            <button onClick={() => deleteGame(g.id)}>удалить игру</button>
                         </div>
                         :
                         <div>
-                            <button onClick={handleAcceptGame}>принять игру</button>
+                            <button onClick={() => acceptGame(g.id)}>принять игру</button>
                         </div>
                     }
                 </div>

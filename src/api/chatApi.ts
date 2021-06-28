@@ -1,7 +1,11 @@
 import {
-    deleteGameReceivedSubscribersType, gameRoomReceivedSubscribersType,
+    deleteGameReceivedSubscribersType,
+    gameRoomReceivedSubscribersType,
     gamesReceivedSubscribersType,
-    messagesReceivedSubscribersType, newLeaveGameRoomOfIdReceivedSubscribersType, newStartGameReceivedSubscribersType,
+    messagesReceivedSubscribersType,
+    newLeaveGameRoomOfIdReceivedSubscribersType,
+    newShotGameReceivedSubscribersType,
+    newStartGameReceivedSubscribersType,
     statusReceivedSubscribersType
 } from "../redux/chat-reducer";
 import {SectorType} from "../../Types/Types";
@@ -13,8 +17,9 @@ let subscribers = {
     "deleteGameListReceived": [] as deleteGameReceivedSubscribersType[],
     "statusChanged": [] as statusReceivedSubscribersType[],
     "acceptGame": [] as gameRoomReceivedSubscribersType[],
-    "startGame": [] as newStartGameReceivedSubscribersType[],
-    "leaveGameRoomOfId": [] as newLeaveGameRoomOfIdReceivedSubscribersType[]
+    "startGames": [] as newStartGameReceivedSubscribersType[],
+    "leaveGameRoomOfId": [] as newLeaveGameRoomOfIdReceivedSubscribersType[],
+    "setShotGame": [] as newShotGameReceivedSubscribersType[]
 }
 
 
@@ -47,7 +52,10 @@ const messageHandler = (e: MessageEvent) => {
         subscribers["acceptGame"].forEach(s => s(newMessages.date))
     }
     if (newMessages.eventName === "startGame") {
-        subscribers["startGame"].forEach(s => s(newMessages.date))
+        subscribers["startGames"].forEach(s => s(newMessages.date))
+    }
+    if (newMessages.eventName === "setShotGame") {
+        subscribers["setShotGame"].forEach(s => s(newMessages.date))
     }
     if (newMessages.eventName === "startGameDeleteGameOfId") {
         subscribers["leaveGameRoomOfId"].forEach(s => s(newMessages.date))
@@ -76,7 +84,7 @@ function createChanel(token: string) {
         tokenDate = token
     }
     cleanUp()
-/*    ws = new WebSocket(`ws://localhost:8000/?id=${tokenDate}`);*/
+    /*    ws = new WebSocket(`ws://localhost:8000/?id=${tokenDate}`);*/
     ws = new WebSocket(`${API_WS}/?id=${tokenDate}`);
     notifySubscribersAboutStatus("pending")
     ws?.addEventListener("close", closeHandler)
@@ -96,7 +104,8 @@ export const chatApi = {
         subscribers["deleteGameListReceived"] = []
         subscribers["gameListReceived"] = []
         subscribers["acceptGame"] = []
-        subscribers["startGame"] = []
+        subscribers["startGames"] = []
+        subscribers["setShotGame"] = []
         subscribers["leaveGameRoomOfId"] = []
     },
     subscribe(eventName: eventName, callback: callbackType) {
@@ -161,7 +170,7 @@ export type StartGameType = {
         id: string,
         name: string
     },
-    winnerUser:null | string,
+    winnerUser: null | string,
     gameData: {
         FUMap: Array<Array<{ sector: SectorType }>>,
         SUMap: Array<Array<{ sector: SectorType }>>,
@@ -192,6 +201,7 @@ export type StartGameType = {
             firstUser: boolean,
             secondUser: boolean,
         },
+        chatData: MessageApiType[]
     }
 }
 
@@ -202,8 +212,9 @@ export type eventName =
     | "gameListReceived"
     | "deleteGameListReceived"
     | "acceptGame"
-    | "startGame"
-| "leaveGameRoomOfId"
+    | "startGames"
+    | "leaveGameRoomOfId"
+    | "setShotGame"
 export type callbackType = messagesReceivedSubscribersType | statusReceivedSubscribersType
     | gamesReceivedSubscribersType | deleteGameReceivedSubscribersType | gameRoomReceivedSubscribersType
-    | newStartGameReceivedSubscribersType | newLeaveGameRoomOfIdReceivedSubscribersType
+    | newStartGameReceivedSubscribersType | newLeaveGameRoomOfIdReceivedSubscribersType | newShotGameReceivedSubscribersType

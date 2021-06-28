@@ -13,5 +13,8 @@ export const getListGamesRoom =(state:AppStateType)=>{
     return state.chat.gameRoom
 }
 export const getStartGame =(state:AppStateType)=>{
-    return state.chat.startGame
+    return state.chat.startGames
+}
+export const getActiveStartGameId =(state:AppStateType)=>{
+    return state.chat.activeStartGameId
 }

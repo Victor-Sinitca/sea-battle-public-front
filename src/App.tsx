@@ -35,7 +35,7 @@ function App() {
                 <Route path='/' render={() => <Redirect to={"/placeBattleMan"}/>}/>
                 <Route path='/placeBattleMan' render={() => <PlaceBattle/>}/>
                 {isAuthorization && <Route path='/profile/:userID?' render={() => <Profile/>}/>}
-                {isAuthorization && <Route path='/battle' render={() => <Battle/>}/>}
+                {/*{isAuthorization && <Route path='/battle' render={() => <Battle/>}/>}*/}
                 {isAuthorization && <Route path='/battleRoom' render={() => <BattleRoom/>}/>}
                 {isAuthorization && <Route path='/chat' render={() => <ChatPage/>}/>}
                 {isAuthorization && <Route path='/battleList' render={() => <BattleList/>}/>}

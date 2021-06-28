@@ -267,7 +267,7 @@ export const actionBattleMap = {
     deleteShipOnMap: (sector: SectorType, firstUser: boolean) => {
         return ({type: "DELETE_SHIP", sector, firstUser} as const)
     },
-    startGame: (firstUser: boolean) => {
+    startGames: (firstUser: boolean) => {
         return ({type: "START_GAME", firstUser} as const)
     },
     reduceSectorFire: (indexElement: number) => {

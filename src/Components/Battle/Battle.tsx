@@ -4,19 +4,18 @@ import {useDispatch, useSelector} from "react-redux";
 import DeskUserWithMan from "../DeskUser/DeskUserWithMan";
 import {getStartGame} from "../../redux/chat-selectors";
 import {getAuthUser} from "../../redux/authHttp-selectors";
+import {StartGameType} from "../../api/chatApi";
 
+type PropsType={
+    startGame: StartGameType
+}
 
-
-const Battle:FC = ()  => {
-    const startGame= useSelector(getStartGame)
+const Battle:FC<PropsType> = ({startGame})  => {
     const authUserId= useSelector(getAuthUser)?.id
-
-    const dispatch = useDispatch()
-
     if(startGame === null){
         return <div></div>
     } else {
-        if(authUserId===startGame.firstUser.id){
+        if(authUserId===startGame?.firstUser.id){
             const firstUserMap = startGame.gameData.FUMap;
             const secondUserMap = startGame.gameData.SUMap;
             const FUTurn = startGame.gameData.FUTurn.turn;

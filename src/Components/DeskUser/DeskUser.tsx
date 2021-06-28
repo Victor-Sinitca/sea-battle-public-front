@@ -76,7 +76,7 @@ const DeskUser: FC<PropsType> = ({
         dispatch(actionBattleMap.startNewGame());
     }
     const startGameDispatch = (firstUser: boolean): void => {
-        dispatch(actionBattleMap.startGame(firstUser))
+        dispatch(actionBattleMap.startGames(firstUser))
     }
 
     return (

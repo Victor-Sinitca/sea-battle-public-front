@@ -23,7 +23,8 @@ let initialState = {
     listGames: [] as GamesType[],
     status: "pending" as statusType,
     gameRoom: [] as gameRoomType[],
-    startGame: null as null | StartGameType
+    startGames: [] as [] | StartGameType[],
+    activeStartGameId: null as string | null,
 }
 
 type initialStateType = typeof initialState
@@ -61,11 +62,21 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
                 ...state,
                 gameRoom: [...state.gameRoom, ...action.gameRoom]
             }
-        case "DELETE_GAME_IN_ROOM_OF_ID":
-            return {
+        case "DELETE_GAME_IN_ROOM_OF_ID": {
+            if (action.userId === action.date.firstUser.id || action.userId === action.date.secondUser.id) {
+                return {
+                    ...state,
+                    gameRoom: [...state.gameRoom.map((g) => {
+                        if (g.gamesRoomId === action.date.gamesRoomId) {
+                            return action.date
+                        } else return g
+                    })]
+                }
+            } else return {
                 ...state,
-                gameRoom: [...state.gameRoom.filter((g)=>g.gamesRoomId !== action.date.gamesRoomId)]
+                gameRoom: [...state.gameRoom.filter((g) => g.gamesRoomId !== action.date.gamesRoomId)]
             }
+        }
         case "DELETE_GAME":
             return {
                 ...state,
@@ -76,51 +87,104 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
                 ...state,
                 status: action.status
             }
-        case "SET_START_GAME":
+
+        case "SET_ACTIVE_START_GAME_ID":
             return {
                 ...state,
-                startGame: action.game[0]
+                activeStartGameId: action.activeStartGameId
             }
+
+
+        case "SET_START_GAME": {
+            let isNewGame = true
+            let newStartGames = state.startGames.map((g: StartGameType) => {
+                if (g.gameId === action.game[0].gameId) {
+                    isNewGame = false
+                    return action.game[0]
+                } else return g
+            })
+            if (isNewGame){
+                return {
+                    ...state,
+                    startGames:[...state.startGames , ...action.game]
+                }
+            } else return {
+                ...state,
+                startGames:[...newStartGames ]
+            }
+        }
         case "BATTLE_UNLOCK_FOR_SET_SHIP" : {
-            if (action.firstUser && state.startGame) {
+            stateCopy = {...state}
+            stateCopy.startGames.forEach((value,index,array)=>{
+                if(value.gameId === state.activeStartGameId){
+                    if(action.firstUser){
+                        value.gameData.FUMap = [...stateCopy.startGames[index].gameData.FUMap];
+                        value.gameData.FUMap = checkForShipInput(stateCopy.startGames[index].gameData.FUMap,
+                            action.horizon, action.shipValue, true).userMap
+                    }else{
+                        value.gameData.SUMap = [...stateCopy.startGames[index].gameData.SUMap];
+                        value.gameData.SUMap = checkForShipInput(stateCopy.startGames[index].gameData.SUMap,
+                            action.horizon, action.shipValue, true).userMap
+                    }
+                }
+            })
+            return stateCopy
+
+
+            /*if (action.firstUser && state.startGames) {
                 stateCopy = {...state}
-                if (stateCopy.startGame) {
-                    stateCopy.startGame.gameData.FUMap = [...state.startGame.gameData.FUMap];
-                    stateCopy.startGame.gameData.FUMap = checkForShipInput(stateCopy.startGame.gameData.FUMap, action.horizon, action.shipValue, true).userMap
+                if (stateCopy.startGames) {
+                    stateCopy.startGames.gameData.FUMap = [...state.startGames.gameData.FUMap];
+                    stateCopy.startGames.gameData.FUMap =
+                        checkForShipInput(stateCopy.startGames.gameData.FUMap, action.horizon, action.shipValue, true).userMap
                     return stateCopy
                 } else return state
-            } else if (state.startGame) {
+            } else if (state.startGames) {
                 stateCopy = {...state}
-                if (stateCopy.startGame) {
-                    stateCopy.startGame.gameData.SUMap = [...state.startGame.gameData.SUMap];
-                    stateCopy.startGame.gameData.SUMap = checkForShipInput(stateCopy.startGame.gameData.SUMap, action.horizon, action.shipValue, true).userMap
+                if (stateCopy.startGames) {
+                    stateCopy.startGames.gameData.SUMap = [...state.startGames.gameData.SUMap];
+                    stateCopy.startGames.gameData.SUMap = checkForShipInput(stateCopy.startGames.gameData.SUMap, action.horizon, action.shipValue, true).userMap
                     return stateCopy
                 } else return state
             } else {
                 console.log(`Error UNLOCK_FOR_SET_SHIP. First User is ${action.firstUser}`)
                 return state
-            }
+            }*/
         }
         case "BATTLE_LOCK_ALL_MAP": {
-            if (action.firstUser && state.startGame) {
+            stateCopy = {...state}
+            stateCopy.startGames.forEach((value,index,array)=>{
+                if(value.gameId === state.activeStartGameId){
+                    if(action.firstUser){
+                        value.gameData.FUMap = [...state.startGames[index].gameData.FUMap];
+                        value.gameData.FUMap = lockMap(stateCopy.startGames[index].gameData.FUMap)
+                    }else{
+                        value.gameData.SUMap = [...state.startGames[index].gameData.SUMap];
+                        value.gameData.SUMap = lockMap(stateCopy.startGames[index].gameData.SUMap)
+                    }
+                }
+            })
+            return stateCopy
+
+            /*if (action.firstUser && state.startGames) {
                 stateCopy = {...state}
-                if (stateCopy.startGame) {
-                    stateCopy.startGame.gameData.FUMap = [...state.startGame.gameData.FUMap];
-                    stateCopy.startGame.gameData.FUMap = lockMap(stateCopy.startGame.gameData.FUMap)
+                if (stateCopy.startGames) {
+                    stateCopy.startGames.gameData.FUMap = [...state.startGames.gameData.FUMap];
+                    stateCopy.startGames.gameData.FUMap = lockMap(stateCopy.startGames.gameData.FUMap)
                     return stateCopy
                 } else return state
 
-            } else if (state.startGame?.gameData.SUMap) {
+            } else if (state.startGames?.gameData.SUMap) {
                 stateCopy = {...state}
-                if (stateCopy.startGame) {
-                    stateCopy.startGame.gameData.SUMap = [...state.startGame.gameData.SUMap];
-                    stateCopy.startGame.gameData.SUMap = lockMap(stateCopy.startGame.gameData.SUMap)
+                if (stateCopy.startGames) {
+                    stateCopy.startGames.gameData.SUMap = [...state.startGames.gameData.SUMap];
+                    stateCopy.startGames.gameData.SUMap = lockMap(stateCopy.startGames.gameData.SUMap)
                     return stateCopy
                 } else return state
             } else {
                 console.log(`Error LOCK_ALL_MAP. First User is ${action.firstUser}`)
                 return state
-            }
+            }*/
         }
         default:
             return state;
@@ -130,26 +194,28 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
 
 type ActionType = InferActionsTypes<typeof actionChat>
 export const actionChat = {
-    lockAllMap: (firstUser: boolean) => {
-        return ({type: "BATTLE_LOCK_ALL_MAP", firstUser} as const)
+    lockAllMap: (firstUser: boolean,) => {
+        return ({type: "BATTLE_LOCK_ALL_MAP", firstUser,} as const)
     },
     unlockForSetShip: (shipValue: number, horizon: boolean, firstUser: boolean,) => {
         return ({type: "BATTLE_UNLOCK_FOR_SET_SHIP", shipValue, horizon, firstUser,} as const)
     },
-
-
     deleteMessages: () => ({type: "CHAT_DELETE_MESSAGES"} as const),
     deleteListGames: () => ({type: "CHAT_DELETE_GAMES"} as const),
     deleteRooms: () => ({type: "CHAT_DELETE_ROOMS"} as const),
-
     setMessages: (messages: MessageApiType[]) => ({type: "CHAT_SET_MESSAGES", messages} as const),
     setStatus: (status: statusType) => ({type: "CHAT_SET_STATUS", status} as const),
     setListGames: (listGames: GameApiType[]) => ({type: "SET_GAMES", listGames} as const),
     addGameRoom: (gameRoom: gameRoomType[]) => ({type: "SET_GAME_ROOM", gameRoom} as const),
-    startGame: (game: StartGameType[]) => ({type: "SET_START_GAME", game} as const),
-
+    startGames: (game: StartGameType[]) => ({type: "SET_START_GAME", game} as const),
+    setActiveStartGameId: (activeStartGameId: string) => ({type: "SET_ACTIVE_START_GAME_ID", activeStartGameId} as const),
+    setShotMB: (game: StartGameType[]) => ({type: "SET_SHOT_START_GAME", game} as const),
     deleteGameInList: (gameDeleteDate: deleteGameApiType) => ({type: "DELETE_GAME", gameDeleteDate} as const),
-    deleteGameInRoomOfId: (date: gameRoomType,userId:string | undefined) => ({type: "DELETE_GAME_IN_ROOM_OF_ID", date,userId} as const),
+    deleteGameInRoomOfId: (date: gameRoomType, userId: string | undefined) => ({
+        type: "DELETE_GAME_IN_ROOM_OF_ID",
+        date,
+        userId
+    } as const),
 }
 
 
@@ -214,18 +280,28 @@ let _newStartGame: newStartGameReceivedSubscribersType | null = null
 const newStartGameCreator = (dispatch: Dispatch) => {
     if (_newStartGame === null) {
         _newStartGame = (date: StartGameType[]) => {
-            dispatch(actionChat.startGame(date))
+            dispatch(actionChat.startGames(date))
         }
     }
     return _newStartGame
 }
+export type newShotGameReceivedSubscribersType = (date: StartGameType[]) => void
+let _newShotGame: newShotGameReceivedSubscribersType | null = null
+const newShotGameCreator = (dispatch: Dispatch) => {
+    if (_newShotGame === null) {
+        _newShotGame = (date: StartGameType[]) => {
+            dispatch(actionChat.setShotMB(date))
+        }
+    }
+    return _newShotGame
+}
 export type newLeaveGameRoomOfIdReceivedSubscribersType = (date: gameRoomType) => void
 let _newLeaveGameRoomOfId: newLeaveGameRoomOfIdReceivedSubscribersType | null = null
-const newLeaveGameRoomOfIdCreator = (dispatch: Dispatch, userId:string | undefined) => {
+const newLeaveGameRoomOfIdCreator = (dispatch: Dispatch, userId: string | undefined) => {
     if (_newLeaveGameRoomOfId === null) {
         _newLeaveGameRoomOfId = (date: gameRoomType) => {
 
-            dispatch(actionChat.deleteGameInRoomOfId(date,userId))
+            dispatch(actionChat.deleteGameInRoomOfId(date, userId))
         }
     }
     return _newLeaveGameRoomOfId
@@ -262,15 +338,17 @@ export const startGameListening = (): ThunkActionType => async (dispatch, getSta
     if (token) {
         chatApi.start(token)
         chatApi.subscribe("acceptGame", newGameRoomCreator(dispatch))
-        chatApi.subscribe("leaveGameRoomOfId", newLeaveGameRoomOfIdCreator(dispatch,getState().authHttp.user?.id))
-        chatApi.subscribe("startGame", newStartGameCreator(dispatch))
+        chatApi.subscribe("leaveGameRoomOfId", newLeaveGameRoomOfIdCreator(dispatch, getState().authHttp.user?.id))
+        chatApi.subscribe("startGames", newStartGameCreator(dispatch))
+        chatApi.subscribe("setShotGame", newShotGameCreator(dispatch))
         chatApi.subscribe("statusChanged", newStatusChangedCreator(dispatch))
     }
 }
-export const stopGameListening = (): ThunkActionType => async (dispatch,getState) => {
+export const stopGameListening = (): ThunkActionType => async (dispatch, getState) => {
     chatApi.unSubscribe("acceptGame", newGameRoomCreator(dispatch))
-    chatApi.unSubscribe("leaveGameRoomOfId", newLeaveGameRoomOfIdCreator(dispatch,getState().authHttp.user?.id))
-    chatApi.unSubscribe("startGame", newStartGameCreator(dispatch))
+    chatApi.unSubscribe("leaveGameRoomOfId", newLeaveGameRoomOfIdCreator(dispatch, getState().authHttp.user?.id))
+    chatApi.unSubscribe("startGames", newStartGameCreator(dispatch))
+    chatApi.unSubscribe("setShotGame", newShotGameCreator(dispatch))
     chatApi.unSubscribe("statusChanged", newStatusChangedCreator(dispatch))
     chatApi.stop()
     dispatch(actionChat.deleteRooms())
@@ -340,8 +418,8 @@ export const setShipUserOnWS = (sector: SectorType, gameId: string, userId: stri
             },
             gameId: gameId,
             userId: userId,
-            horizonSetShip:horizonSetShip,
-            whatSetShip:whatSetShip
+            horizonSetShip: horizonSetShip,
+            whatSetShip: whatSetShip
         }
     })
 }
