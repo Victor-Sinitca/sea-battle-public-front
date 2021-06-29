@@ -42,10 +42,10 @@
 .window4 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    height:120px;
+
 }
 .window4 div {
-    border: solid 4px #b47e7e;
+    border: solid 2px #b47e7e;
     background-color: #534b7f;
     align-items:stretch;
 }

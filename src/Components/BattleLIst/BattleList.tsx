@@ -5,6 +5,7 @@ import {getActiveStartGameId, getListGamesRoom, getStartGame, getStatus} from ".
 import {
     actionChat,
     leaveGameRoomOfId, sendMessage,
+    sendMessageMB,
     startGameListening,
     startGameReducer,
     stopGameListening
@@ -12,7 +13,7 @@ import {
 import Battle from "../Battle/Battle";
 import {getAuthUser} from "../../redux/authHttp-selectors";
 import {ListStartedGames} from "./ListStartedGames";
-import {Chat} from "../pages/Chat/ChatPage";
+import {Chat, ChatInBattle} from "../pages/Chat/ChatPage";
 
 
 export const BattleList: FC = React.memo(() => {
@@ -34,7 +35,7 @@ export const BattleList: FC = React.memo(() => {
     }
     const startGame = startGames.filter((g=>g.gameId === activeStartGameId))[0]
     const sendMessageForm = (term: string) => {
-        dispatch(sendMessageMB(term, gameId))
+        dispatch(sendMessageMB(term, startGame.gameId))
     }
 
     useEffect(() => {
@@ -62,8 +63,7 @@ export const BattleList: FC = React.memo(() => {
         <div className={s.displayBattle}>
             {activeStartGameId && startGame ? <div>
                 <Battle  startGame={startGame} />
-                 <Chat statusWS={statusWS} messages={startGame.gameData.chatData} sendMessageForm={sendMessageForm}/>
-
+                <ChatInBattle statusWS={statusWS} messages={startGame.chatData} sendMessageForm={sendMessageForm}/>
             </div>
                 : <div> выберите игру</div>}
         </div>

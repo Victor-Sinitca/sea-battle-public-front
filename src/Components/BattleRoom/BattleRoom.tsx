@@ -10,9 +10,10 @@ import {
     startMessagesListening,
     stopMessagesListening
 } from "../../redux/chat-reducer";
-import {AddMessagesForm, Chat} from "../pages/Chat/ChatPage";
+import {Chat} from "../pages/Chat/ChatPage";
 import ListGame from "./ListGame/ListGame";
 import {getAuthUser} from "../../redux/authHttp-selectors";
+import {AddMessagesFormChat} from "../pages/Chat/AddMeesagesFormChat";
 
 
 const BattleRoom: FC = () => {
@@ -49,7 +50,7 @@ const BattleRoom: FC = () => {
                 <div className={s.displayCreateGame}>
                     <div>Название игры</div>
                     <div>
-                        <AddMessagesForm statusWS={statusWS} sendMessageForm={handleSendGame}/>
+                        <AddMessagesFormChat statusWS={statusWS} sendMessageForm={handleSendGame}/>
                     </div>
                 </div>
                 <ListGame myId={myId || "empty Id"} listGame={listGame}
@@ -64,17 +65,17 @@ const BattleRoom: FC = () => {
 
                 </div>
                 <div className={s.window3}>
-                    <div>Комната создания игры</div>
+                    <div>Проводимые игры</div>
                     {GamesRoom.map(r =>
                         <div className={s.window4}>
                             <div>
-                                <div>{r.firstUser.name}</div>
-                                <div>{r.gamesRoomId}</div>
+                                {r.firstUser.name}
+                               {/* <div>{r.gamesRoomId}</div>*/}
 
                             </div>
                             <div>
-                                <div>{r.secondUser.name}</div>
-                                <div>{r.gamesRoomId}</div>
+                                {r.secondUser.name}
+                                {/*<div>{r.gamesRoomId}</div>*/}
                             </div>
                         </div>
                     )

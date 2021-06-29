@@ -18,6 +18,7 @@ import {authMe} from "./authHttp-reducer";
 export type MessageType = MessageApiType & { id: string }
 export type GamesType = GameApiType & { id: string }
 
+
 let initialState = {
     messages: [] as MessageType[],
     listGames: [] as GamesType[],
@@ -37,6 +38,18 @@ const chatReducer = (state = initialState as initialStateType, action: ActionTyp
                 messages: [...state.messages, ...action.messages.map(m => ({...m, id: v1()}))].filter(
                     (m, index, array) => index >= array.length - 100)
             }
+        case "CHAT_SET_MESSAGES_MB":
+            stateCopy = {...state}
+            stateCopy.startGames = [...state.startGames]
+            stateCopy.startGames.forEach((value,index,array)=>{
+                if(value.gameId === action.gameId){
+                    debugger
+                    value.chatData = [...state.startGames[index].chatData, ...action.messages.map(m => ({...m, id: v1()})) ]
+                    let ddd= value.chatData
+                    debugger
+                }
+            })
+            return stateCopy
         case "CHAT_DELETE_MESSAGES":
             return {
                 ...state,
@@ -204,6 +217,7 @@ export const actionChat = {
     deleteListGames: () => ({type: "CHAT_DELETE_GAMES"} as const),
     deleteRooms: () => ({type: "CHAT_DELETE_ROOMS"} as const),
     setMessages: (messages: MessageApiType[]) => ({type: "CHAT_SET_MESSAGES", messages} as const),
+    setMessagesMB: (messages: MessageApiType[], gameId:string) => ({type: "CHAT_SET_MESSAGES_MB", messages,gameId} as const),
     setStatus: (status: statusType) => ({type: "CHAT_SET_STATUS", status} as const),
     setListGames: (listGames: GameApiType[]) => ({type: "SET_GAMES", listGames} as const),
     addGameRoom: (gameRoom: gameRoomType[]) => ({type: "SET_GAME_ROOM", gameRoom} as const),
@@ -231,6 +245,20 @@ const newMessageHandlerCreator = (dispatch: Dispatch) => {
         }
     }
     return _newMessageHandler
+
+}
+export type messagesMBReceivedSubscribersType = (data:{
+    messages: MessageApiType[],gameId:string
+}) => void
+let _newMessageMBHandler: messagesMBReceivedSubscribersType | null = null
+const newMessageMBHandlerCreator = (dispatch: Dispatch) => {
+    if (_newMessageMBHandler === null) {
+        _newMessageMBHandler = (data) => {
+            debugger
+            dispatch(actionChat.setMessagesMB(data.messages,data.gameId))
+        }
+    }
+    return _newMessageMBHandler
 
 }
 export type gamesReceivedSubscribersType = (games: GameApiType[]) => void
@@ -341,6 +369,7 @@ export const startGameListening = (): ThunkActionType => async (dispatch, getSta
         chatApi.subscribe("leaveGameRoomOfId", newLeaveGameRoomOfIdCreator(dispatch, getState().authHttp.user?.id))
         chatApi.subscribe("startGames", newStartGameCreator(dispatch))
         chatApi.subscribe("setShotGame", newShotGameCreator(dispatch))
+        chatApi.subscribe("startGameSendMessage", newMessageMBHandlerCreator(dispatch))
         chatApi.subscribe("statusChanged", newStatusChangedCreator(dispatch))
     }
 }
@@ -349,6 +378,7 @@ export const stopGameListening = (): ThunkActionType => async (dispatch, getStat
     chatApi.unSubscribe("leaveGameRoomOfId", newLeaveGameRoomOfIdCreator(dispatch, getState().authHttp.user?.id))
     chatApi.unSubscribe("startGames", newStartGameCreator(dispatch))
     chatApi.unSubscribe("setShotGame", newShotGameCreator(dispatch))
+    chatApi.unSubscribe("startGameSendMessage", newMessageMBHandlerCreator(dispatch))
     chatApi.unSubscribe("statusChanged", newStatusChangedCreator(dispatch))
     chatApi.stop()
     dispatch(actionChat.deleteRooms())
@@ -360,6 +390,15 @@ export const sendMessage = (message: string): ThunkActionType => async () => {
         eventName: "message",
         date: {
             messages: message
+        }
+    })
+}
+export const sendMessageMB = (message: string , gameId:string): ThunkActionType => async () => {
+    chatApi.sendMessage({
+        eventName: "startGameSendMessage",
+        date: {
+            gameId:gameId,
+            message: message
         }
     })
 }

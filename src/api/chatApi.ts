@@ -1,8 +1,8 @@
 import {
     deleteGameReceivedSubscribersType,
     gameRoomReceivedSubscribersType,
-    gamesReceivedSubscribersType,
-    messagesReceivedSubscribersType,
+    gamesReceivedSubscribersType, messagesMBReceivedSubscribersType,
+    messagesReceivedSubscribersType, MessageType,
     newLeaveGameRoomOfIdReceivedSubscribersType,
     newShotGameReceivedSubscribersType,
     newStartGameReceivedSubscribersType,
@@ -19,7 +19,8 @@ let subscribers = {
     "acceptGame": [] as gameRoomReceivedSubscribersType[],
     "startGames": [] as newStartGameReceivedSubscribersType[],
     "leaveGameRoomOfId": [] as newLeaveGameRoomOfIdReceivedSubscribersType[],
-    "setShotGame": [] as newShotGameReceivedSubscribersType[]
+    "setShotGame": [] as newShotGameReceivedSubscribersType[],
+    "startGameSendMessage": [] as messagesMBReceivedSubscribersType[]
 }
 
 
@@ -59,6 +60,9 @@ const messageHandler = (e: MessageEvent) => {
     }
     if (newMessages.eventName === "startGameDeleteGameOfId") {
         subscribers["leaveGameRoomOfId"].forEach(s => s(newMessages.date))
+    }
+    if (newMessages.eventName === "startGameSendMessage") {
+        subscribers["startGameSendMessage"].forEach(s => s(newMessages.date))
     }
 }
 const openHandler = () => {
@@ -107,6 +111,7 @@ export const chatApi = {
         subscribers["startGames"] = []
         subscribers["setShotGame"] = []
         subscribers["leaveGameRoomOfId"] = []
+        subscribers["startGameSendMessage"] = []
     },
     subscribe(eventName: eventName, callback: callbackType) {
         // @ts-ignore
@@ -171,6 +176,7 @@ export type StartGameType = {
         name: string
     },
     winnerUser: null | string,
+    chatData: MessageType[],
     gameData: {
         FUMap: Array<Array<{ sector: SectorType }>>,
         SUMap: Array<Array<{ sector: SectorType }>>,
@@ -201,7 +207,7 @@ export type StartGameType = {
             firstUser: boolean,
             secondUser: boolean,
         },
-        chatData: MessageApiType[]
+
     }
 }
 
@@ -215,6 +221,14 @@ export type eventName =
     | "startGames"
     | "leaveGameRoomOfId"
     | "setShotGame"
-export type callbackType = messagesReceivedSubscribersType | statusReceivedSubscribersType
-    | gamesReceivedSubscribersType | deleteGameReceivedSubscribersType | gameRoomReceivedSubscribersType
-    | newStartGameReceivedSubscribersType | newLeaveGameRoomOfIdReceivedSubscribersType | newShotGameReceivedSubscribersType
+    | "startGameSendMessage"
+export type callbackType =
+    messagesReceivedSubscribersType
+    | statusReceivedSubscribersType
+    | gamesReceivedSubscribersType
+    | deleteGameReceivedSubscribersType
+    | gameRoomReceivedSubscribersType
+    | newStartGameReceivedSubscribersType
+    | newLeaveGameRoomOfIdReceivedSubscribersType
+    | newShotGameReceivedSubscribersType
+    | messagesMBReceivedSubscribersType

@@ -1,6 +1,6 @@
 .displayMapBattle {
     display: grid;
-    grid-template-rows: 360px 360px 100px;
+    grid-template-rows: 360px;
     grid-gap: 20px;
 }
 
