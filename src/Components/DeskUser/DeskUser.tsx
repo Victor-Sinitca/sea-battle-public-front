@@ -150,7 +150,7 @@ const DeskUser: FC<PropsType> = ({
                             </div>
                             {isCompGame &&
                                 <div className={s.button1}>
-                                    {comp.game ?
+                                   {/* {comp.game ?
                                         <button className={s.button1} onClick={compGameDispatch}>
                                             <img className={s.userImg} src={user} alt="no img"/>
                                             VS
@@ -162,7 +162,7 @@ const DeskUser: FC<PropsType> = ({
                                             VS
                                             <img className={s.userImg} src={user1} alt="no img"/>
                                         </button>
-                                    }
+                                    }*/}
                                 </div>
                             }
                         </div>

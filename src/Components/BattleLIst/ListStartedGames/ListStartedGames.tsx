@@ -1,7 +1,7 @@
 import React, {FC} from "react";
-import s from "./BattleList.module.css";
-import {leaveGameRoomOfId, startGameReducer} from "../../redux/chat-reducer";
-import {gameRoomType, StartGameType} from "../../api/chatApi";
+import s from "../BattleList.module.css";
+import {leaveGameRoomOfId, startGameReducer} from "../../../redux/chat-reducer";
+import {gameRoomType, StartGameType} from "../../../api/chatApi";
 
 
 type PropsType = {

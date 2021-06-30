@@ -12,7 +12,7 @@ import {
 } from "../../redux/chat-reducer";
 import Battle from "../Battle/Battle";
 import {getAuthUser} from "../../redux/authHttp-selectors";
-import {ListStartedGames} from "./ListStartedGames";
+import {ListStartedGames} from "./ListStartedGames/ListStartedGames";
 import {Chat, ChatInBattle} from "../pages/Chat/ChatPage";
 
 

@@ -16,7 +16,12 @@ const profileReducer = (state: initialStateType = initialState, action: ActionTy
             return {...state, profile: action.profile}
         }
         case "PP/SET_PHOTO_USER": {
-            return state
+            return {
+                ...state,
+                profile: state.profile? {
+                    ...state.profile,  photo:action.photo
+                }:null
+            }
         }
         case "PP/SET_USER_STATUS": {
             return {
@@ -65,12 +70,8 @@ export const getProfileThunk = (userId: string): ThunkActionType => async (dispa
 }
 export const uploadPhotoThink = (file: File): ThunkActionType => async (dispatch) => {
     try {
-        debugger
         const data = await profileAPI.uploadPhoto(file)
-        debugger
-
-
-
+        dispatch(actionProfile.setPhotoUser(data))
     } catch (e) {
         console.log("error in uploadPhotoThink" + e.message)
     }

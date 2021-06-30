@@ -24,7 +24,7 @@ export const profileAPI = {
     uploadPhoto(file: File) {
         let data = new FormData();
         data.append("wallpaper", file);
-        return $api.put<string>(`/profile/uploadPhoto`, data, {headers: {'Content-Type': 'multipart/form-data'}})
+        return $api.post<string>(`/profile/uploadPhoto`, data, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(response => response.data)
     },
     updateProfile(token: string, email: string, password: string,) {
