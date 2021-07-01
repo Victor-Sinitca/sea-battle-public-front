@@ -2,9 +2,15 @@ import React, {FC} from "react";
 
 
 export  type SectorGameType = {
-    x: number,
-    y: number,
-    color: "red" | "blue" | "black" | "green"
+    sectorState: {
+        x: number,
+        y: number,
+    },
+    date:{
+        color: "red" | "blue" | "black" | "green",
+        isSelected: boolean,
+        state:number,
+    }
 }
 
 
@@ -14,15 +20,16 @@ export  type SectorGameType = {
 type PropsType = {
     sector: SectorGameType
     returnToClick: (sector: SectorGameType) => void
+    selectSector:SectorGameType|null
 }
 
-export const Sector :FC<PropsType> = ({sector,returnToClick})=>{
+export const Sector :FC<PropsType> = ({sector,returnToClick,selectSector})=>{
 
     const handlerClickSector = () => {
         returnToClick(sector)
     }
 
-    return <div style={{backgroundColor:sector.color}} onClick={handlerClickSector}>
-
+    return <div style={{backgroundColor:sector.date.color}} onClick={handlerClickSector}>
+        {sector.date.state}
     </div>
 }
