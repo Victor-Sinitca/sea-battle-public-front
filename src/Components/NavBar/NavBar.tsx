@@ -12,6 +12,12 @@ const NavBar = () => {
             <div className={`${s.item} ${s.active}`}>
                 <NavLink to='/placeBattleMan' activeClassName={s.active}>Бой с ИИ</NavLink>
             </div>
+            <div className={`${s.item} ${s.active}`}>
+                <NavLink to='/dragDrop' activeClassName={s.active}>Перетяжка</NavLink>
+            </div>
+            <div className={`${s.item} ${s.active}`}>
+                <NavLink to='/game' activeClassName={s.active}>работа</NavLink>
+            </div>
             {authorization && <>
                 <div className={`${s.item} ${s.active}`}>
                     <NavLink to='/profile'  activeClassName={s.active}>профиль</NavLink>

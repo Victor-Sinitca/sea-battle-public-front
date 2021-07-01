@@ -15,6 +15,8 @@ export  type SectorType = {
     unlock: boolean,
     img: null | number
 }
+
+
 export  type ShipsType = {
     ship1: number,
     ship2: number,
