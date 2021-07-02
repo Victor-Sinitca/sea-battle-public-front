@@ -3,6 +3,7 @@ import Desk from "./DeskGame";
 import {SectorGameType} from "./Sector";
 import {getRandomInt} from "../../commen/logics/getRandom/getRandom";
 import {isSectorInLine} from "./gameLogic/isSectorInLine";
+import {isNearbyWithSector} from "./gameLogic/isNearbyWithSector";
 
 
 function initMap() {
@@ -34,13 +35,7 @@ export const Game: FC = () => {
 
 
     const onMouseDown = (sector: SectorGameType) => {
-        if (
-            (selectSector?.sectorState.x === sector.sectorState.x - 1 && selectSector?.sectorState.y === sector.sectorState.y)
-            || (selectSector?.sectorState.x === sector.sectorState.x + 1 && selectSector?.sectorState.y === sector.sectorState.y)
-            || (selectSector?.sectorState.y === sector.sectorState.y - 1 && selectSector?.sectorState.x === sector.sectorState.x)
-            || (selectSector?.sectorState.y === sector.sectorState.y + 1 && selectSector?.sectorState.x === sector.sectorState.x)
-        ) {
-
+        if (isNearbyWithSector(selectSector,sector)){
             let sectorInMemory = JSON.parse(JSON.stringify(sector)) as SectorGameType
             let selectSectorInMemory = JSON.parse(JSON.stringify(selectSector)) as SectorGameType
             let newMap = [...map]
