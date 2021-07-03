@@ -4,6 +4,11 @@ import {SectorGameType} from "./Sector";
 import {getRandomInt} from "../../commen/logics/getRandom/getRandom";
 import {isSectorInLine} from "./gameLogic/isSectorInLine";
 import {isNearbyWithSector} from "./gameLogic/isNearbyWithSector";
+import {Profiler} from "inspector";
+import {replaceSectors} from "./gameLogic/replaceSectors";
+import {deleteSectorSelection} from "./gameLogic/deleteSectorSelection";
+import {selectSectorFunc} from "./gameLogic/selectSector";
+import {SetIsFirstClickSector} from "./gameLogic/setIsFirstClickSector";
 
 
 function initMap() {
@@ -20,7 +25,7 @@ function initMap() {
                 date: {
                     color: "red",
                     state: getRandomInt(5),
-                    isBum:false,
+                    isBum: false,
                 }
             }
         }
@@ -29,111 +34,69 @@ function initMap() {
 }
 
 
+
+
 export const Game: FC = () => {
     const [map, setMap] = useState(initMap())
     const [selectSector, setSelectSector] = useState<SectorGameType | null>(null)
 
 
     const onMouseDown = (sector: SectorGameType) => {
-        if (isNearbyWithSector(selectSector,sector)){
-            let sectorInMemory = JSON.parse(JSON.stringify(sector)) as SectorGameType
-            let selectSectorInMemory = JSON.parse(JSON.stringify(selectSector)) as SectorGameType
-            let newMap = [...map]
-            newMap[sectorInMemory.sectorState.y] = [...map[sectorInMemory.sectorState.y]]
-            newMap[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x] = {...map[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x]}
-            newMap[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x].sectorState = {...map[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x].sectorState}
-            newMap[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x].sectorState.isSelected = false
-            newMap[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x].sectorState.isFirstClick = false
-            newMap[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x].date = selectSectorInMemory.date
-
-            newMap[selectSectorInMemory.sectorState.y] = [...newMap[selectSectorInMemory.sectorState.y]]
-            newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x] = {...newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x]}
-            newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x].sectorState = {...newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x].sectorState}
-            newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x].sectorState.isSelected = false
-            newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x].sectorState.isFirstClick = false
-            newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x].date = sectorInMemory.date
-
-            setSelectSector(null)
-
-            const isLineInMap = isSectorInLine(newMap,sectorInMemory,selectSectorInMemory)
-            if (!isLineInMap ){
-                newMap[sectorInMemory.sectorState.y] = [...map[sectorInMemory.sectorState.y]]
-                newMap[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x] = {...map[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x]}
-                newMap[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x].sectorState = {...map[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x].sectorState}
-                newMap[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x].sectorState.isSelected = false
-                newMap[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x].sectorState.isFirstClick = false
-                newMap[sectorInMemory.sectorState.y][sectorInMemory.sectorState.x].date = sectorInMemory.date
-
-                newMap[selectSectorInMemory.sectorState.y] = [...newMap[selectSectorInMemory.sectorState.y]]
-                newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x] = {...newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x]}
-                newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x].sectorState = {...newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x].sectorState}
-                newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x].sectorState.isSelected = false
-                newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x].sectorState.isFirstClick = false
-                newMap[selectSectorInMemory.sectorState.y][selectSectorInMemory.sectorState.x].date = selectSectorInMemory.date
+        if (selectSector) {
+            if (isNearbyWithSector(selectSector, sector)) {
+                let sectorInMemory = JSON.parse(JSON.stringify(sector)) as SectorGameType
+                let selectSectorInMemory = JSON.parse(JSON.stringify(selectSector)) as SectorGameType
+                let newMap = replaceSectors(map, sectorInMemory, selectSectorInMemory)
+                let newMap1 = replaceSectors(newMap, selectSectorInMemory, sectorInMemory)
+                setSelectSector(null)
+                const isLineInMap = isSectorInLine(newMap1, sectorInMemory, selectSectorInMemory)
+                if (isLineInMap) {
+                    setMap(isLineInMap)
+                } else {
+                    setMap(deleteSectorSelection(map, selectSector))
+                }
+            } else if (sector.sectorState.isSelected) {
+                setMap(SetIsFirstClickSector(map,sector))
+            } else {
+                let newMap = selectSectorFunc(map, sector)
+                newMap = deleteSectorSelection(newMap, selectSector)
                 setMap(newMap)
-            }else {
-                setMap(isLineInMap)
+                setSelectSector(sector)
             }
         } else {
-            let newMap = [...map]
-            newMap[sector.sectorState.y] = [...map[sector.sectorState.y]]
-            newMap[sector.sectorState.y][sector.sectorState.x] = {...map[sector.sectorState.y][sector.sectorState.x]}
-            newMap[sector.sectorState.y][sector.sectorState.x].sectorState = {...map[sector.sectorState.y][sector.sectorState.x].sectorState}
-            newMap[sector.sectorState.y][sector.sectorState.x].sectorState.isSelected = true
-            if (selectSector) {
-                newMap[selectSector.sectorState.y] = [...newMap[selectSector.sectorState.y]]
-                newMap[selectSector.sectorState.y][selectSector.sectorState.x] = {...newMap[selectSector.sectorState.y][selectSector.sectorState.x]}
-                newMap[selectSector.sectorState.y][selectSector.sectorState.x].sectorState = {...newMap[selectSector.sectorState.y][selectSector.sectorState.x].sectorState}
-                newMap[selectSector.sectorState.y][selectSector.sectorState.x].sectorState.isSelected = false
-                newMap[selectSector.sectorState.y][selectSector.sectorState.x].sectorState.isFirstClick = false
-            }
-            setMap(newMap)
+            setMap(selectSectorFunc(map, sector))
             setSelectSector(sector)
         }
     }
-
     const onMouseUp = (sector: SectorGameType) => {
-        /*        if(sector.sectorState.isFirstClick && sector.sectorState.isSelected){
-                    let newMap = [...map]
-                    newMap[sector.sectorState.y] = [...map[sector.sectorState.y]]
-                    newMap[sector.sectorState.y][sector.sectorState.x] = {...map[sector.sectorState.y][sector.sectorState.x]}
-                    newMap[sector.sectorState.y][sector.sectorState.x].sectorState = {...map[sector.sectorState.y][sector.sectorState.x].sectorState}
-                    newMap[sector.sectorState.y][sector.sectorState.x].sectorState.isFirstClick = false
-                    newMap[sector.sectorState.y][sector.sectorState.x].sectorState.isSelected = false
-                    setMap(newMap)
-                    setSelectSector(null)
-                }else{
-                    let newMap = [...map]
-                    newMap[sector.sectorState.y] = [...map[sector.sectorState.y]]
-                    newMap[sector.sectorState.y][sector.sectorState.x] = {...map[sector.sectorState.y][sector.sectorState.x]}
-                    newMap[sector.sectorState.y][sector.sectorState.x].sectorState = {...map[sector.sectorState.y][sector.sectorState.x].sectorState}
-                    newMap[sector.sectorState.y][sector.sectorState.x].sectorState.isFirstClick = true
-                    setMap(newMap)
-                }*/
+        if (sector.sectorState.isFirstClick && sector.sectorState.isSelected) {
+            setMap(deleteSectorSelection(map, sector))
+            setSelectSector(null)
+        }
+    }
+    const onMouseOver = (sector: SectorGameType) => {
+        if (selectSector) {
+            if (isNearbyWithSector(selectSector, sector)) {
+                let sectorInMemory = JSON.parse(JSON.stringify(sector)) as SectorGameType
+                let selectSectorInMemory = JSON.parse(JSON.stringify(selectSector)) as SectorGameType
+                let newMap = replaceSectors(map, sectorInMemory, selectSectorInMemory)
+                let newMap1 = replaceSectors(newMap, selectSectorInMemory, sectorInMemory)
+                setSelectSector(null)
+                const isLineInMap = isSectorInLine(newMap1, sectorInMemory, selectSectorInMemory)
+                if (isLineInMap) {
+                    setMap(isLineInMap)
+                } else {
+                    setMap(deleteSectorSelection(map, selectSector))
+                }
+            }else {
+                setMap(deleteSectorSelection(map, selectSector))
+                setSelectSector(null)
+            }
+        }
     }
 
-    const onMouseOver = (sector: SectorGameType) => {
-        /*if (
-            (selectSector?.sectorState.x === sector.sectorState.x - 1 && selectSector?.sectorState.y === sector.sectorState.y)
-            || (selectSector?.sectorState.x === sector.sectorState.x + 1 && selectSector?.sectorState.y === sector.sectorState.y)
-            || (selectSector?.sectorState.y === sector.sectorState.y - 1 && selectSector?.sectorState.x === sector.sectorState.x)
-            || (selectSector?.sectorState.y === sector.sectorState.y + 1 && selectSector?.sectorState.x === sector.sectorState.x)
-        ) {
-            let newMap = [...map]
-            newMap[sector.sectorState.y] = [...map[sector.sectorState.y]]
-            newMap[sector.sectorState.y][sector.sectorState.x] = {...map[sector.sectorState.y][sector.sectorState.x]}
-            newMap[sector.sectorState.y][sector.sectorState.x].sectorState = {...map[sector.sectorState.y][sector.sectorState.x].sectorState}
-            newMap[sector.sectorState.y][sector.sectorState.x].sectorState.isSelected = true
-            if (selectSector) {
-                newMap[selectSector.sectorState.y] = [...newMap[selectSector.sectorState.y]]
-                newMap[selectSector.sectorState.y][selectSector.sectorState.x] = {...newMap[selectSector.sectorState.y][selectSector.sectorState.x]}
-                newMap[selectSector.sectorState.y][selectSector.sectorState.x].sectorState = {...newMap[selectSector.sectorState.y][selectSector.sectorState.x].sectorState}
-                newMap[selectSector.sectorState.y][selectSector.sectorState.x].sectorState.isSelected = false
-            }
-            setMap(newMap)
-            setSelectSector(sector)
-        }*/
-    }
+
+
 
 
     return <div>

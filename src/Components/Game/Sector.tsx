@@ -1,10 +1,10 @@
 import React, {FC, MouseEvent, MouseEventHandler,} from "react";
 import s from "./Sector.module.css"
-import sw0  from "../../assets/img/sw1.png"
-import sw1  from "../../assets/img/sw2.png"
-import sw2  from "../../assets/img/sw3.png"
-import sw3  from "../../assets/img/sw4.png"
-import sw4  from "../../assets/img/sw5.png"
+import sw0 from "../../assets/img/sw1.png"
+import sw1 from "../../assets/img/sw2.png"
+import sw2 from "../../assets/img/sw3.png"
+import sw3 from "../../assets/img/sw4.png"
+import sw4 from "../../assets/img/sw5.png"
 
 
 export  type SectorGameType = {
@@ -17,7 +17,7 @@ export  type SectorGameType = {
     date: {
         color: "red" | "blue" | "black" | "green",
         state: number,
-        isBum:boolean,
+        isBum: boolean,
     }
 }
 
@@ -30,18 +30,17 @@ type PropsType = {
 
 }
 
-export const Sector: FC<PropsType> = ({sector,returnMouseDown, returnMouseUp,returnMouseOver}) => {
-    const imgMass=[sw0, sw1, sw2, sw3, sw4]
+export const Sector: FC<PropsType> = ({sector, returnMouseDown, returnMouseUp, returnMouseOver}) => {
+    const imgMass = [sw0, sw1, sw2, sw3, sw4]
 
     const handlerMouseDown = () => {
-        if(!sector.sectorState.isSelected && !sector.sectorState.isFirstClick )
-            returnMouseDown(sector)
+        returnMouseDown(sector)
     }
     const handlerMouseUp = () => {
         returnMouseUp(sector)
     }
     const handlerMouseOver = (event: MouseEvent<HTMLDivElement>) => {
-        if(event.buttons === 1){
+        if (event.buttons === 1) {
             returnMouseOver(sector)
         }
     }
@@ -49,7 +48,7 @@ export const Sector: FC<PropsType> = ({sector,returnMouseDown, returnMouseUp,ret
     return <div className={sector.sectorState.isSelected && s.isActive}
                 onMouseDown={handlerMouseDown}
                 onMouseUp={handlerMouseUp}
-                onMouseOver={handlerMouseOver}  >
-        <img className={sector.date.isBum ? s.isBum : s.img} draggable={"false"}  src={imgMass[sector.date.state]}/>
+                onMouseOver={handlerMouseOver}>
+        <img className={sector.date.isBum ? s.isBum : s.img} draggable={"false"} src={imgMass[sector.date.state]}/>
     </div>
 }
