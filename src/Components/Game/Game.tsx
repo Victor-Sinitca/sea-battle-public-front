@@ -8,6 +8,7 @@ import {deleteSectorSelection} from "./gameLogic/deleteSectorSelection";
 import {selectSectorFunc} from "./gameLogic/selectSector";
 import {SetIsFirstClickSector} from "./gameLogic/setIsFirstClickSector";
 import {initMapGame3inLine} from "./gameLogic/initMapGame3inLine";
+import {boomFunc} from "./gameLogic/boomFunc";
 
 
 
@@ -69,6 +70,9 @@ export const Game: FC = () => {
             }
         }
     }
+    const onClickBum =()=>{
+        setMap(boomFunc(map))
+    }
 
 
 
@@ -80,5 +84,6 @@ export const Game: FC = () => {
               returnMouseUp={onMouseUp}
               returnMouseOver={onMouseOver}
         />
+        <button onClick={onClickBum}>bum</button>
     </div>
 }
