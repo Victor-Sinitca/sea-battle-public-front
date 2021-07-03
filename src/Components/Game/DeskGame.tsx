@@ -13,7 +13,7 @@ type PropsType = {
 }
 const Desk: FC<PropsType> = ({userMap, returnMouseDown,selectSector,returnMouseUp,returnMouseOver,}) => {
     return (
-        <div className={s.displayMap}>
+        <div className={s.displayMap} >
             {userMap.map(a => a.map(b =>
                 <Sector returnMouseDown={returnMouseDown}
                         returnMouseUp={returnMouseUp}

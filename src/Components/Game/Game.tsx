@@ -1,43 +1,18 @@
 import React, {FC, useState} from "react";
-import Desk from "./DeskGame";
+import Desk, {MapsGameType} from "./DeskGame";
 import {SectorGameType} from "./Sector";
-import {getRandomInt} from "../../commen/logics/getRandom/getRandom";
 import {isSectorInLine} from "./gameLogic/isSectorInLine";
 import {isNearbyWithSector} from "./gameLogic/isNearbyWithSector";
-import {Profiler} from "inspector";
 import {replaceSectors} from "./gameLogic/replaceSectors";
 import {deleteSectorSelection} from "./gameLogic/deleteSectorSelection";
 import {selectSectorFunc} from "./gameLogic/selectSector";
 import {SetIsFirstClickSector} from "./gameLogic/setIsFirstClickSector";
-
-
-function initMap() {
-    let map = Array.from(Array(20), () => new Array(20))
-    for (let i = 0; i < 20; i++) {
-        for (let j = 0; j < 20; j++) {
-            map[i][j] = {
-                sectorState: {
-                    x: j,
-                    y: i,
-                    isSelected: false,
-                    isFirstClick: false,
-                },
-                date: {
-                    color: "red",
-                    state: getRandomInt(5),
-                    isBum: false,
-                }
-            }
-        }
-    }
-    return map
-}
-
+import {initMapGame3inLine} from "./gameLogic/initMapGame3inLine";
 
 
 
 export const Game: FC = () => {
-    const [map, setMap] = useState(initMap())
+    const [map, setMap] = useState<MapsGameType>(initMapGame3inLine(10,10))
     const [selectSector, setSelectSector] = useState<SectorGameType | null>(null)
 
 
