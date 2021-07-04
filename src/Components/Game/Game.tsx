@@ -92,7 +92,7 @@ export const Game: FC = () => {
                 setMap(boomFunc(map))
                 setIsBoom(true)
             } else setIsBoom(false)
-        }, 2000);
+        }, 800);
     }, [isEndTurn, isBoom])
 
     useEffect(() => {
