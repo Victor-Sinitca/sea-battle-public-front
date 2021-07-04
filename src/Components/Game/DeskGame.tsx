@@ -4,6 +4,7 @@ import {Sector, SectorGameType} from "./Sector";
 
 export type MapsGameType = Array<Array<SectorGameType>>
 type PropsType = {
+    isEndTurn:boolean
     userMap: MapsGameType
     returnMouseDown: (sector: SectorGameType) => void
     returnMouseUp: (sector: SectorGameType) => void
@@ -11,7 +12,7 @@ type PropsType = {
     selectSector:SectorGameType |null
 
 }
-const Desk: FC<PropsType> = ({userMap, returnMouseDown,selectSector,returnMouseUp,returnMouseOver,}) => {
+const Desk: FC<PropsType> = ({userMap, returnMouseDown,selectSector,returnMouseUp,returnMouseOver,isEndTurn}) => {
     return (
         <div className={s.displayMap} >
             {userMap.map(a => a.map(b =>

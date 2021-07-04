@@ -41,7 +41,6 @@ const setSectorH = (Map: MapsGameType, i: number, j: number, I: number) => {
 
 export const boomFunc = (Map: MapsGameType) => {
     let map = [...Map]
-    console.log(" boomFunc")
     for (let i = map.length - 1; i >= 0; i--) {
         for (let j = map[i].length - 1; j >= 0; j--) {
             if (map[i][j].date.isBum) {
