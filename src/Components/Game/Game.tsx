@@ -19,6 +19,7 @@ export const Game: FC = () => {
     const [selectSector, setSelectSector] = useState<SectorGameType | null>(null)
     const [isEndTurn, setIsEndTurn] = useState<boolean>(false)
     const [isBoom, setIsBoom] = useState<boolean>(false)
+    const [endMove, setEndMove] = useState<boolean>(false)
 
 
     const onMouseDown = (sector: SectorGameType) => {
@@ -93,6 +94,7 @@ export const Game: FC = () => {
     const newMap = () => {
         if (!checkMapOnMove(map)) {
             setMap(initMapGame3inLine(10, 10))
+            setEndMove(false)
         }
     }
     const setMapOnClick = () => {
@@ -136,7 +138,8 @@ export const Game: FC = () => {
             if (!checkMapOnMove(map)) {
                 setTimeout(() => {
                    /* console.log("checkMapOnMove ==> init map")*/
-                    setMap(initMapGame3inLine(10, 10))
+                    /*setMap(initMapGame3inLine(10, 10))*/
+                    setEndMove(true)
                 }, 1000)
             }
         }
@@ -154,9 +157,11 @@ export const Game: FC = () => {
               returnMouseOver={onMouseOver}
               isEndTurn={isEndTurn}
         />
+        {endMove && <div>нет ходов</div>}
+
         {/*  <button onClick={onClickBum}>bum</button>
         <button onClick={checkIsBum}>check is bum</button>*/}
-       {/* <button onClick={newMap}>new map</button>
-        <button onClick={setMapOnClick}>set map</button>*/}
+        <button onClick={newMap}>new map</button>
+        {/*<button onClick={setMapOnClick}>set map</button>*/}
     </div>
 }
