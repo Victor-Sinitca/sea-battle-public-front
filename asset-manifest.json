@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/sea-battle-public-front/static/css/main.67077715.chunk.css",
-    "main.js": "/sea-battle-public-front/static/js/main.8257dc1f.chunk.js",
-    "main.js.map": "/sea-battle-public-front/static/js/main.8257dc1f.chunk.js.map",
+    "main.css": "/sea-battle-public-front/static/css/main.4f59d646.chunk.css",
+    "main.js": "/sea-battle-public-front/static/js/main.c88c3f98.chunk.js",
+    "main.js.map": "/sea-battle-public-front/static/js/main.c88c3f98.chunk.js.map",
     "runtime-main.js": "/sea-battle-public-front/static/js/runtime-main.0a2840a1.js",
     "runtime-main.js.map": "/sea-battle-public-front/static/js/runtime-main.0a2840a1.js.map",
-    "static/js/2.b55a117d.chunk.js": "/sea-battle-public-front/static/js/2.b55a117d.chunk.js",
-    "static/js/2.b55a117d.chunk.js.map": "/sea-battle-public-front/static/js/2.b55a117d.chunk.js.map",
+    "static/js/2.3bbc2dd5.chunk.js": "/sea-battle-public-front/static/js/2.3bbc2dd5.chunk.js",
+    "static/js/2.3bbc2dd5.chunk.js.map": "/sea-battle-public-front/static/js/2.3bbc2dd5.chunk.js.map",
     "static/js/3.d3698d4b.chunk.js": "/sea-battle-public-front/static/js/3.d3698d4b.chunk.js",
     "static/js/3.d3698d4b.chunk.js.map": "/sea-battle-public-front/static/js/3.d3698d4b.chunk.js.map",
     "index.html": "/sea-battle-public-front/index.html",
-    "static/css/main.67077715.chunk.css.map": "/sea-battle-public-front/static/css/main.67077715.chunk.css.map",
-    "static/js/2.b55a117d.chunk.js.LICENSE.txt": "/sea-battle-public-front/static/js/2.b55a117d.chunk.js.LICENSE.txt",
+    "static/css/main.4f59d646.chunk.css.map": "/sea-battle-public-front/static/css/main.4f59d646.chunk.css.map",
+    "static/js/2.3bbc2dd5.chunk.js.LICENSE.txt": "/sea-battle-public-front/static/js/2.3bbc2dd5.chunk.js.LICENSE.txt",
     "static/media/G1.eed52ca1.png": "/sea-battle-public-front/static/media/G1.eed52ca1.png",
     "static/media/G2.eb86452d.png": "/sea-battle-public-front/static/media/G2.eb86452d.png",
     "static/media/G3.f01f86a6.png": "/sea-battle-public-front/static/media/G3.f01f86a6.png",
@@ -26,8 +26,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.0a2840a1.js",
-    "static/js/2.b55a117d.chunk.js",
-    "static/css/main.67077715.chunk.css",
-    "static/js/main.8257dc1f.chunk.js"
+    "static/js/2.3bbc2dd5.chunk.js",
+    "static/css/main.4f59d646.chunk.css",
+    "static/js/main.c88c3f98.chunk.js"
   ]
 }
