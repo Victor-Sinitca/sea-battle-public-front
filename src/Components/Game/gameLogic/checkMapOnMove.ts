@@ -67,8 +67,35 @@ export const checkMapOnMove = (map: MapsGameType) => {
            }
 
 
+            if (map[i][j].date.state === map[i + 1]?.[j + 1]?.date.state) {
+                if (map[i][j].date.state === map[i + 1]?.[j + 2]?.date.state) {
+                    isMove = true
+                    break
+                } else if (map[i][j].date.state === map[i + 1]?.[j - 1]?.date.state) {
+                    isMove = true
+                    break
+                }
+            } else if (map[i][j].date.state === map[i + 1]?.[j - 1]?.date.state &&
+                map[i][j].date.state === map[i + 1]?.[j - 2]?.date.state) {
+                isMove = true
+                break
+            }
 
-
+            if(map[i+1]?.[j].date.state){
+                if(map[i+1][j].date.state === map[i][j+1]?.date.state){
+                    if(map[i+1][j].date.state === map[i][j+2]?.date.state){
+                        isMove = true
+                        break
+                    } else if(map[i+1][j].date.state === map[i][j-1]?.date.state){
+                        isMove = true
+                        break
+                    }
+                }else if (map[i+1][j].date.state === map[i][j-1]?.date.state &&
+                    map[i+1][j].date.state === map[i][j-2]?.date.state){
+                    isMove = true
+                    break
+                }
+            }
 
 
 
