@@ -10,13 +10,13 @@ const NavBar = () => {
     return (
         <div className={s.displayNavBar}>
             <div className={`${s.item} ${s.active}`}>
-                <NavLink to='/placeBattleMan' activeClassName={s.active}>Бой с ИИ</NavLink>
+                <NavLink to='/placeBattleMan' activeClassName={s.active}>морской бой</NavLink>
             </div>
-            <div className={`${s.item} ${s.active}`}>
+            {/*<div className={`${s.item} ${s.active}`}>
                 <NavLink to='/dragDrop' activeClassName={s.active}>Перетяжка</NavLink>
-            </div>
+            </div>*/}
             <div className={`${s.item} ${s.active}`}>
-                <NavLink to='/game' activeClassName={s.active}>работа</NavLink>
+                <NavLink to='/game' activeClassName={s.active}>три в ряд</NavLink>
             </div>
             {authorization && <>
                 <div className={`${s.item} ${s.active}`}>

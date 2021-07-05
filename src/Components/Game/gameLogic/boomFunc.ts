@@ -13,7 +13,7 @@ const setSectorH = (Map: MapsGameType, i: number, j: number, I: number) => {
         map = replaceSectors(map, selectSectorInMemory, sectorInMemory)
     } else {
         let randomMassState = []
-        for (let s = 0; s < 5; s++) {
+        for (let s = 0; s < 8; s++) {
             if ((map[i][j - 1]?.date.state === s && map[i][j - 2]?.date.state === s) ||
                 (map[i][j + 1]?.date.state === s && map[i][j + 2]?.date.state === s) ||
                 (map[i][j + 1]?.date.state === s && map[i][j - 1]?.date.state === s) ||

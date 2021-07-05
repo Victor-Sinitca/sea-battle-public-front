@@ -10,6 +10,8 @@ import {SetIsFirstClickSector} from "./gameLogic/setIsFirstClickSector";
 import {initMapGame3inLine} from "./gameLogic/initMapGame3inLine";
 import {boomFunc} from "./gameLogic/boomFunc";
 import {checkMap} from "./gameLogic/checkMap";
+import {checkMapOnMove} from "./gameLogic/checkMapOnMove";
+import {initMapGame3inLineFalseGame} from "./gameLogic/initMapGame3inLineFalseGame";
 
 
 export const Game: FC = () => {
@@ -76,6 +78,8 @@ export const Game: FC = () => {
             }
         }
     }
+
+
     const onClickBum = () => {
         setMap(boomFunc(map))
     }
@@ -86,29 +90,57 @@ export const Game: FC = () => {
 
         }
     }
+    const newMap = () => {
+        if (!checkMapOnMove(map)) {
+            setMap(initMapGame3inLine(10, 10))
+        }
+    }
+    const setMapOnClick = () => {
+        setMap(initMapGame3inLineFalseGame(10, 10))
+    }
+
+
     useEffect(() => {
+       /* console.log("boomFunc")*/
         setTimeout(() => {
             if (isEndTurn && !isBoom) {
+               /* console.log("boomFunc ==> is bum")*/
                 setMap(boomFunc(map))
                 setIsBoom(true)
-            } else setIsBoom(false)
+            } else {
+                /*console.log("boomFunc ==> new turn")*/
+                setIsBoom(false)
+            }
         }, 800);
     }, [isEndTurn, isBoom])
 
     useEffect(() => {
-
+       /* console.log("checkMap")*/
         if (isBoom) {
             const newMap = checkMap(map)
             if (newMap.isBum) {
+               /* console.log("checkMap ==> isBum")*/
                 setMap(newMap.map)
                 setIsBoom(false)
             } else {
+                /*console.log("checkMap ==> new turn")*/
                 setIsEndTurn(false)
                 setIsBoom(false)
             }
         }
-
     }, [isBoom])
+
+    useEffect(() => {
+        /*console.log("checkMapOnMove")*/
+        if (!isEndTurn) {
+            if (!checkMapOnMove(map)) {
+                setTimeout(() => {
+                   /* console.log("checkMapOnMove ==> init map")*/
+                    setMap(initMapGame3inLine(10, 10))
+                }, 1000)
+            }
+        }
+    }, [isEndTurn])
 
 
     return <div>
@@ -124,5 +156,7 @@ export const Game: FC = () => {
         />
         {/*  <button onClick={onClickBum}>bum</button>
         <button onClick={checkIsBum}>check is bum</button>*/}
+       {/* <button onClick={newMap}>new map</button>
+        <button onClick={setMapOnClick}>set map</button>*/}
     </div>
 }

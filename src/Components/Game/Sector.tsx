@@ -1,10 +1,13 @@
 import React, {FC, MouseEvent, MouseEventHandler,} from "react";
 import s from "./Sector.module.css"
-import sw0 from "../../assets/img/sw1.png"
-import sw1 from "../../assets/img/sw2.png"
-import sw2 from "../../assets/img/sw3.png"
-import sw3 from "../../assets/img/sw4.png"
-import sw4 from "../../assets/img/sw5.png"
+import sw0 from "../../assets/img/G1.png"
+import sw1 from "../../assets/img/G2.png"
+import sw2 from "../../assets/img/G3.png"
+import sw3 from "../../assets/img/G4.png"
+import sw4 from "../../assets/img/G5.png"
+import sw5 from "../../assets/img/G6.png"
+import sw6 from "../../assets/img/G7.png"
+import sw7 from "../../assets/img/G8.png"
 
 
 export  type SectorGameType = {
@@ -31,7 +34,7 @@ type PropsType = {
 }
 
 export const Sector: FC<PropsType> = ({sector, returnMouseDown, returnMouseUp, returnMouseOver}) => {
-    const imgMass = [sw0, sw1, sw2, sw3, sw4]
+    const imgMass = [sw0, sw1, sw2, sw3, sw4,sw5,sw6,sw7,]
 
     const handlerMouseDown = () => {
         returnMouseDown(sector)
