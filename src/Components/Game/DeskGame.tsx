@@ -4,6 +4,11 @@ import {Sector, SectorGameType} from "./Sector";
 
 export type MapsGameType = Array<Array<SectorGameType>>
 type PropsType = {
+    deskState:{
+        x:number,
+        y:number,
+        length:number
+    }
     isEndTurn:boolean
     userMap: MapsGameType
     returnMouseDown: (sector: SectorGameType) => void
@@ -12,9 +17,17 @@ type PropsType = {
     selectSector:SectorGameType |null
 
 }
-const Desk: FC<PropsType> = ({userMap, returnMouseDown,selectSector,returnMouseUp,returnMouseOver,isEndTurn}) => {
+const Desk: FC<PropsType> = ({userMap,deskState, returnMouseDown,selectSector,returnMouseUp,returnMouseOver,isEndTurn}) => {
+    const repeat =(count:number)=>{
+        let string=''
+        for(let i=0; i<count; i++){
+            string=string+`${deskState.length + ""}px `
+        }
+        return string
+    }
+
     return (
-        <div className={s.displayMap} >
+        <div style={{display:"grid", gridTemplateColumns: repeat(deskState.y), gridTemplateRows:repeat(deskState.x)}}>
             {userMap.map(a => a.map(b =>
                 <Sector returnMouseDown={returnMouseDown}
                         returnMouseUp={returnMouseUp}

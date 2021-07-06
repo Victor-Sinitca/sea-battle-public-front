@@ -1,28 +1,37 @@
 .displayFormik{
-    display: grid;
+    display: block;
     grid-gap: 5px;
 }
 
 
-
-.formControl input,
-.formControl textarea{
-    border: solid #14551b 3px;
+.displayFormik input,
+.displayFormik textarea{
+    border-radius: 4px;
+    border: solid #81bb88 3px;
     width: 200px;
-    height: 12px;
+    height: 20px;
     font: 12px/1.5 Helvetica, Arial, sans-serif;
-
-
 }
 
-.formControl.error input,
-.formControl.error textarea{
+.displayFormik input:hover  ,
+.displayFormik textarea:hover  {
+
+    border: solid #2d6a41 3px;
+}
+.error{
+
+    font: 12px/1.5 Helvetica, Arial, sans-serif;
+    color: #761313;
+}
+
+
+
+.displayFormik.error input,
+.displayFormik.error textarea{
     border: solid red 4px;
 }
-.formControl.error span{
+.displayFormik.error span{
     color: #0000ff;
 }
-.formSummaryError{
-    border: solid red 1px;
-    color: #d5127d;
-}
+
+

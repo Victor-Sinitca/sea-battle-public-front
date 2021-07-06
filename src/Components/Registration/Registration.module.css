@@ -1,6 +1,23 @@
-.displayForm {
+
+.display{
+
+    display: grid;
+    grid-template-rows:min-content min-content min-content;
+    grid-template-columns: min-content;
+    justify-content: center;
+    padding-top: 20px;
+}
+.displayForm{
+    display: grid;
+    grid-gap: 8px;
 
 }
-.field{
+.displayButton{
+    display: inline-flex;
+    justify-content:center;
+}
 
+.display a {
+    justify-self: center;
+    font: 17px Helvetica, Arial, sans-serif;
 }

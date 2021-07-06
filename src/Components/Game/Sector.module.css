@@ -1,12 +1,16 @@
-.isActive {
+.active {
+    border-radius: 5px;
     border: solid 1px black;
 }
-.img{
-    height: 100%;
-    width: 100%;
+.img {
+    border-radius: 5px;
+    height: 97%;
+    width: 97%;
 }
-.isBum{
-    height: 100%;
-    width: 100%;
-    background-color: red;
+
+.isBum {
+    border-radius: 5px;
+    background-color: #10ac05;
+    height: 97%;
+    width: 97%;
 }

@@ -8,12 +8,12 @@ export const checkMapOnMove = (map: MapsGameType) => {
         for (let j = 0; j < map.length; j++) {
 
             if (map[i][j].date.state === map[i][j + 1]?.date.state) {
-                if (map[i][j].date.state === map[i][j + 3]?.date.state) {
+                if (map[i][j].date.state === map[i][j + 3]?.date.state) { //поиск по оси х  Ххох
                     isMove = true
                     break
                 }
             } else if (map[i][j].date.state === map[i][j + 2]?.date.state &&
-                map[i][j].date.state === map[i][j + 3]?.date.state) {
+                map[i][j].date.state === map[i][j + 3]?.date.state) { //поиск по оси х  Хохх
                 isMove = true
                 break
             }
@@ -22,12 +22,12 @@ export const checkMapOnMove = (map: MapsGameType) => {
 
 
             if (map[i][j].date.state === map[i + 1]?.[j].date.state) {
-                if (map[i][j].date.state === map[i + 3]?.[j].date.state) {
+                if (map[i][j].date.state === map[i + 3]?.[j].date.state) {  //поиск по оси y  Ххох
                     isMove = true
                     break
                 }
             } else if (map[i][j].date.state === map[i + 2]?.[j].date.state &&
-                map[i][j].date.state === map[i + 3]?.[j].date.state) {
+                map[i][j].date.state === map[i + 3]?.[j].date.state) { //поиск по оси y  Хохх
                 isMove = true
                 break
             }
@@ -96,10 +96,6 @@ export const checkMapOnMove = (map: MapsGameType) => {
                     break
                 }
             }
-
-
-
-
         }
     }
     return isMove

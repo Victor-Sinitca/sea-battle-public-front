@@ -10,43 +10,39 @@ import {toLogout} from "../../redux/authHttp-reducer";
 export const Header: FC = () => {
     const dispatch = useDispatch()
     let history = useHistory();
-    const authUser= useSelector(getAuthUser)
+    const authUser = useSelector(getAuthUser)
     const authorization = useSelector(getIsAuthorization)
 
-    const handlerLogout =()=>{
+    const handlerLogout = () => {
         debugger
         dispatch(toLogout())
         history.push('/authorization')
     }
-    const handlerLogin =()=>{
+    const handlerLogin = () => {
         history.push('/authorization')
     }
 
-    return <div>
-        {authorization ? <>
-                <div className={s.displayHeader}>
-                    <div>
-                        userId : {authUser?.id}
-                    </div>
-                    <div>
-                        email: {authUser?.email}
-                    </div>
-                    <div>
-                        <button onClick={handlerLogout}>выйти</button>
-                    </div>
+    return <>
+        {authorization ?
+            <div className={s.displayHeader}>
+                <div>
+                    userId : {authUser?.id}
                 </div>
-            </>
-            : <>
-                <div className={s.displayHeader}>
-                    <div>Вы не авторизованы</div>
-                    <div></div>
-                    <div>
-                        <button onClick={handlerLogin}>Login</button>
-                    </div>
+                <div>
+                    email: {authUser?.email}
                 </div>
-
-
-            </>
+                <div>
+                    <button onClick={handlerLogout}>выйти</button>
+                </div>
+            </div>
+            :
+            <div className={s.displayHeader}>
+                <div>Вы не авторизованы</div>
+                <div></div>
+                <div>
+                    <button style={{borderRadius: 5, padding: 5}} onClick={handlerLogin}>Войти</button>
+                </div>
+            </div>
         }
-    </div>
+    </>
 }

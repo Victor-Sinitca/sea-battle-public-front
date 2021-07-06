@@ -3,5 +3,5 @@
     grid-template-columns: 1fr 1fr 80px;
 }
 .displayHeader div{
-    padding: 10px;
+    align-self: center;
 }

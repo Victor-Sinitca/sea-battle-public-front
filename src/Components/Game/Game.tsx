@@ -12,10 +12,13 @@ import {boomFunc} from "./gameLogic/boomFunc";
 import {checkMap} from "./gameLogic/checkMap";
 import {checkMapOnMove} from "./gameLogic/checkMapOnMove";
 import {initMapGame3inLineFalseGame} from "./gameLogic/initMapGame3inLineFalseGame";
+import s from "./Game.module.css"
+import {sectorsNotEqual} from "./gameLogic/sectorsNotEqual";
 
 
 export const Game: FC = () => {
-    const [map, setMap] = useState<MapsGameType>(initMapGame3inLine(10, 10))
+    const [deskState, setDeskState] = useState({x: 10, y: 10, length: 50})
+    const [map, setMap] = useState<MapsGameType>(initMapGame3inLine(deskState.x, deskState.y))
     const [selectSector, setSelectSector] = useState<SectorGameType | null>(null)
     const [isEndTurn, setIsEndTurn] = useState<boolean>(false)
     const [isBoom, setIsBoom] = useState<boolean>(false)
@@ -59,7 +62,7 @@ export const Game: FC = () => {
         }
     }
     const onMouseOver = (sector: SectorGameType) => {
-        if (selectSector && !isEndTurn) {
+        if (selectSector && !isEndTurn && sectorsNotEqual(sector, selectSector)) {
             if (isNearbyWithSector(selectSector, sector)) {
                 let sectorInMemory = JSON.parse(JSON.stringify(sector)) as SectorGameType
                 let selectSectorInMemory = JSON.parse(JSON.stringify(selectSector)) as SectorGameType
@@ -93,7 +96,7 @@ export const Game: FC = () => {
     }
     const newMap = () => {
         if (!checkMapOnMove(map)) {
-            setMap(initMapGame3inLine(10, 10))
+            setMap(initMapGame3inLine(deskState.x, deskState.y))
             setEndMove(false)
         }
     }
@@ -101,12 +104,47 @@ export const Game: FC = () => {
         setMap(initMapGame3inLineFalseGame(10, 10))
     }
 
+    const add = (value: "x" | "y" | "length") => {
+        let x = deskState[value] as number
+        setDeskState({
+            ...deskState, [value]: x + 1
+        })
+        setMap(initMapGame3inLine(
+            value === "x" ? deskState.x + 1 : deskState.x,
+            value === "y" ? deskState.y + 1 : deskState.y
+        ))
+    }
+    const takeAway = (value: "x" | "y" | "length") => {
+        if (deskState[value] > 5) {
+            let x = deskState[value] as number
+            setDeskState({
+                ...deskState, [value]: x - 1
+            })
+            setMap(initMapGame3inLine(
+                value === "x" ? deskState.x - 1 : deskState.x,
+                value === "y" ? deskState.y - 1 : deskState.y
+            ))
+        }
+    }
+    const changeSizeSector = (add:boolean) => {
+        if(add){
+            setDeskState({
+                ...deskState, length: deskState.length + 1
+            })
+        }else if(deskState.length>10){
+            setDeskState({
+                ...deskState, length: deskState.length - 1
+            })
+        }
+
+    }
+
 
     useEffect(() => {
-       /* console.log("boomFunc")*/
+        /* console.log("boomFunc")*/
         setTimeout(() => {
             if (isEndTurn && !isBoom) {
-               /* console.log("boomFunc ==> is bum")*/
+                /* console.log("boomFunc ==> is bum")*/
                 setMap(boomFunc(map))
                 setIsBoom(true)
             } else {
@@ -117,11 +155,11 @@ export const Game: FC = () => {
     }, [isEndTurn, isBoom])
 
     useEffect(() => {
-       /* console.log("checkMap")*/
+        /* console.log("checkMap")*/
         if (isBoom) {
             const newMap = checkMap(map)
             if (newMap.isBum) {
-               /* console.log("checkMap ==> isBum")*/
+                /* console.log("checkMap ==> isBum")*/
                 setMap(newMap.map)
                 setIsBoom(false)
             } else {
@@ -137,31 +175,68 @@ export const Game: FC = () => {
         if (!isEndTurn) {
             if (!checkMapOnMove(map)) {
                 setTimeout(() => {
-                   /* console.log("checkMapOnMove ==> init map")*/
-                    /*setMap(initMapGame3inLine(10, 10))*/
-                    setEndMove(true)
+                    /* console.log("checkMapOnMove ==> init map")*/
+                    setMap(initMapGame3inLine(deskState.x, deskState.y))
+                    /* setEndMove(true)*/
                 }, 1000)
             }
         }
     }, [isEndTurn])
 
 
-    return <div>
-        {isEndTurn
-            ? <div>ждите</div>
-            : <div>твой ход</div>}
+    return <div style={{display:"inline-flex"}} >
+        <div>
+            <div> по вертикали:
+                <button onClick={() => {
+                    add("x")
+                }}>+</button>
+                <button onClick={() => {
+                    takeAway("x")
+                }}>-
+                </button>
+            </div>
+            <div> по горизонтали:
+                <button onClick={() => {
+                    add("y")
+                }}>+</button>
+                <button onClick={() => {
+                    takeAway("y")
+                }}>-
+                </button>
+            </div>
+            <div> маштаб:
+                <button onClick={() => {
+                    changeSizeSector(true)
+                }}>+</button>
+                <button onClick={() => {
+                    changeSizeSector(false)
+                }}>-
+                </button>
+            </div>
+        </div>
+        <div className={s.mainDisplay}>
+            <div className={s.header}>
+                {isEndTurn
+                    ? <>ждите</>
+                    : <>ваш ход</>}
+            </div>
+            <div>
+                <Desk userMap={map} selectSector={selectSector}
+                      returnMouseDown={onMouseDown}
+                      returnMouseUp={onMouseUp}
+                      returnMouseOver={onMouseOver}
+                      isEndTurn={isEndTurn}
+                      deskState={deskState}
+                />
+                {/* {endMove && <div>нет ходов</div>}*/}
 
-        <Desk userMap={map} selectSector={selectSector}
-              returnMouseDown={onMouseDown}
-              returnMouseUp={onMouseUp}
-              returnMouseOver={onMouseOver}
-              isEndTurn={isEndTurn}
-        />
-        {endMove && <div>нет ходов</div>}
+                {/*  <button onClick={onClickBum}>bum</button>
+                <button onClick={checkIsBum}>check is bum</button>*/}
+                {/* <button onClick={newMap}>new map</button>*/}
+                {/*<button onClick={setMapOnClick}>set map</button>*/}
+            </div>
 
-        {/*  <button onClick={onClickBum}>bum</button>
-        <button onClick={checkIsBum}>check is bum</button>*/}
-        <button onClick={newMap}>new map</button>
-        {/*<button onClick={setMapOnClick}>set map</button>*/}
+        </div>
     </div>
+
 }

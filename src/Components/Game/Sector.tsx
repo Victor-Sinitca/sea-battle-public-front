@@ -48,10 +48,13 @@ export const Sector: FC<PropsType> = ({sector, returnMouseDown, returnMouseUp, r
         }
     }
 
-    return <div className={sector.sectorState.isSelected && s.isActive}
+    return <div className={sector.sectorState.isSelected && s.active }
                 onMouseDown={handlerMouseDown}
                 onMouseUp={handlerMouseUp}
                 onMouseOver={handlerMouseOver}>
-        <img className={sector.date.isBum ? s.isBum : s.img} draggable={"false"} src={imgMass[sector.date.state]}/>
+
+            <img  className={sector.date.isBum?s.isBum : s.img} draggable={"false"} src={imgMass[sector.date.state]}/>
+
+
     </div>
 }

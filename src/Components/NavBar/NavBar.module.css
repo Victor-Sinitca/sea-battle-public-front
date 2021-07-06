@@ -1,15 +1,14 @@
 .displayNavBar{
     display: grid;
     grid-template-rows: min-content;
-    align-content:start;
     grid-gap: 20px;
     padding-left: 10px;
 }
 
 .item a{
-    color: #012801;
     font:bold  18px Arial ;
     text-decoration:none;
+    color: white;
 
 }
 .item a.active{

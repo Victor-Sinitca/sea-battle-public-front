@@ -1,6 +1,7 @@
 import {initialStateBattleMapType} from "./battleMap-reduсer";
 
 const SAVE_BATTLE_MAP = "SAVE_BATTLE_MAP"
+const DELETE_SAVE_BATTLE_MAP = "DELETE_SAVE_BATTLE_MAP"
 
 
 const initialState = {
@@ -20,16 +21,27 @@ const saveBattleMapReducer = (state = initialState as initialStateType, action: 
             }
             stateCopy.saveList.push(JSON.parse(JSON.stringify(action.battleMap)))
             return stateCopy
+        case DELETE_SAVE_BATTLE_MAP:
+            return {
+                ...state,
+                saveList:[]
+            }
         default:
             return state
     }
 }
-type ActionType = SaveBattleMapType
+type ActionType = SaveBattleMapType | DeleteSaveBattleMapType
 type SaveBattleMapType = {
     type: typeof SAVE_BATTLE_MAP
     battleMap: initialStateBattleMapType
 }
 export const saveBattleMap = (battleMap: initialStateBattleMapType): SaveBattleMapType => {
     return ({type: SAVE_BATTLE_MAP, battleMap})
+};
+type DeleteSaveBattleMapType = {
+    type: typeof DELETE_SAVE_BATTLE_MAP
+}
+export const deleteSaveBattleMap = (): DeleteSaveBattleMapType => {
+    return ({type: DELETE_SAVE_BATTLE_MAP})
 };
 export default saveBattleMapReducer;

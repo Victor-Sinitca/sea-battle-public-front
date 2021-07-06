@@ -21,12 +21,9 @@ export function createFieldFormik<FieldTypes>(
               }: FieldAttributes<any>) => {
 
                 return <div className={s.displayFormik}>
-                    <div>
-                        <input className={meta.error ? s.formSummaryError : undefined} type={type}
-                               placeholder={placeholder} {...field} />
-                    </div>
+                    <input  type={type} placeholder={placeholder} {...field} />
                     {meta.touched && meta.error && (
-                        <div className="error">{meta.error}</div>
+                        <div className={s.error}>{meta.error}</div>
                     )}
                 </div>
             }}
@@ -44,7 +41,7 @@ export function createFieldFormikTextarea<FieldTypes>(
 ) {
     return <div>
         {text ? <label>{text}</label> : null}
-        <Field name={name}{...props } >
+        <Field name={name}{...props} >
             {({
                   field, // { name, value, onChange, onBlur }
                   form: {touched, errors}, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
@@ -54,7 +51,7 @@ export function createFieldFormikTextarea<FieldTypes>(
                 return <div className={s.displayFormik}>
                     <div>
                         <textarea style={{width: 400}} className={meta.error ? s.formSummaryError : undefined}
-                               placeholder={placeholder} {...field} {...props }/>
+                                  placeholder={placeholder} {...field} {...props}/>
                     </div>
                     {meta.touched && meta.error && (
                         <div className="error">{meta.error}</div>

@@ -41,29 +41,23 @@ const setSectorH = (Map: MapsGameType, i: number, j: number, I: number) => {
 
 export const boomFunc = (Map: MapsGameType) => {
     let map = [...Map]
+
+    function fastening(ii: number, i: number, j: number) {
+        if (map[--ii]?.[j].date.isBum) {
+            fastening(ii, i, j)
+        } else map = setSectorH(map, i, j, ii)
+    }
+
+
     for (let i = map.length - 1; i >= 0; i--) {
         for (let j = map[i].length - 1; j >= 0; j--) {
+            let ii = i
             if (map[i][j].date.isBum) {
-                if (map[i - 1]?.[j].date.isBum) {
-                    if (map[i - 2]?.[j].date.isBum) {
-                        if (map[i - 3]?.[j].date.isBum) {
-                            if (map[i - 4]?.[j].date.isBum) {
-                                if (map[i - 5]?.[j].date.isBum) {
-                                    if (map[i - 6]?.[j].date.isBum) {
-                                        if (map[i - 7]?.[j].date.isBum) {
-                                            if (map[i - 8]?.[j].date.isBum) {
-                                                if (map[i - 9]?.[j].date.isBum) {
-                                                } else map = setSectorH(map, i, j, i - 9)
-                                            } else map = setSectorH(map, i, j, i - 8)
-                                        } else map = setSectorH(map, i, j, i - 7)
-                                    } else map = setSectorH(map, i, j, i - 6)
-                                } else map = setSectorH(map, i, j, i - 5)
-                            } else map = setSectorH(map, i, j, i - 4)
-                        } else map = setSectorH(map, i, j, i - 3)
-                    } else map = setSectorH(map, i, j, i - 2)
-                } else map = setSectorH(map, i, j, i - 1)
+                fastening(ii, i, j)
             }
         }
     }
     return map
 }
+
+

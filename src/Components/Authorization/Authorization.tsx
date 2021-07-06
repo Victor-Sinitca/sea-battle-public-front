@@ -15,22 +15,22 @@ type InitialValuesType = {
 
 const userSearchFormValidate = (values: InitialValuesType) => {
     let errors = {} as InitialValuesType;
+    let emailValidator = /^([a-z0-9_\.-])+@[a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i;
     if (!values.email) {
-        errors.email = 'Required';
-    } else if (values.email.length > 40) {
-        errors.email = 'fullName very long';
+        errors.email = 'введите email';
+    } else if (!emailValidator.test(values.email)) {
+        errors.email = 'введите правильный email';
     }
     if (!values.password) {
-        errors.password = 'Required';
-    } else if (values.password.length > 40) {
-        errors.password = 'fullName very long';
+        errors.password = 'введите пароль';
+    } else if (values.password.length < 8) {
+        errors.password = 'пароль должен быть больше восьми символов';
     }
     return errors;
 }
 
 
 export const Authorization: FC = () => {
-    let history = useHistory();
     const dispatch = useDispatch()
     const isAuthorization = useSelector(getIsAuthorization)
     const initialProfile = {
@@ -44,33 +44,35 @@ export const Authorization: FC = () => {
         setSubmitting(false)
     }
 
-    const handlerRegistration =()=>{
-        history.push('/registration')
-    }
-
     if(isAuthorization){
         return <Redirect to={'/placeBattleMan'}/>
     }
-    return <div>
+    return <div className={s.display}>
+        <div style={{padding:10, justifySelf:"center"} }>Войти в систему </div>
         <Formik
             initialValues={initialProfile as InitialValuesType}
             validate={userSearchFormValidate}
             onSubmit={submitForm}
         >
-            {({errors, isSubmitting, isValidating}) => (
+            {({errors, isSubmitting, isValidating,isValid}) => (
                 <Form className={s.displayForm}>
                     <div className={s.field}>{createFieldFormik<InitialValuesType>("enter your email",
-                        "email", "email")}</div>
+                        "email", )}</div>
                     <div>{createFieldFormik<InitialValuesType>("enter your password",
-                        "password", "password")}</div>
-                    <button type="submit" disabled={isSubmitting || (Object.keys(errors).length != 0)}>
-                        send
-                    </button>
-                    <button type="reset"> refresh</button>
+                        "password", )}</div>
+                    <div className={s.displayButton}>
+                        <button type="submit" disabled={isSubmitting || !isValid}>
+                            войти
+                        </button>
+                        <a href={'/registration'} > регистрация</a>
+                    </div>
+
                 </Form>
             )}
         </Formik>
-        <button onClick={handlerRegistration}>регистрация</button>
+
+
+
     </div>
 }
 

@@ -10,6 +10,7 @@ import {useDispatch} from "react-redux";
 import {actionBattleMap, setShipsRandom,} from "../../redux/battleMap-reduсer";
 import {compType, MapsType, SectorType, settingShipUserType, ShipsType} from "../../../Types/Types";
 import {startGameUserOnWS} from "../../redux/chat-reducer";
+import {deleteSaveBattleMap} from "../../redux/saveBattleMap-reduсer";
 
 type PropsType = {
     firstUser: boolean
@@ -74,6 +75,7 @@ const DeskUser: FC<PropsType> = ({
     }
     const startNewGameDispatch = (): void => {
         dispatch(actionBattleMap.startNewGame());
+        dispatch(deleteSaveBattleMap());
     }
     const startGameDispatch = (firstUser: boolean): void => {
         dispatch(actionBattleMap.startGames(firstUser))

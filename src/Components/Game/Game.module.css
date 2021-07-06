@@ -1,0 +1,10 @@
+.mainDisplay{
+    display: grid;
+    grid-template-rows: auto;
+    grid-auto-columns: min-content;
+}
+.header{
+    padding: 10px;
+    font: 20px Verdana ;
+    justify-self: center;
+}

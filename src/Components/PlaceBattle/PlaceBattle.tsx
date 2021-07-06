@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from "react";
+import React, {FC, useEffect, useLayoutEffect, useState} from "react";
 import Preloader from "../../commen/Preloader/Preloader";
 import s from "./PlaceBattle.module.css"
 import DeskUser from "../DeskUser/DeskUser";
@@ -36,11 +36,12 @@ const PlaceBattle:FC = ()  => {
     const IdTurn = useSelector(getIdTurn);
 
     const dispatch = useDispatch()
+    const [start, setStart]= useState(true)
 
 
     const buttonHistory = saveList.map(S =>
             <button className={S.idTurn=== IdTurn-1?  s.historyButton1 :s.historyButton}  key={S.idTurn} onClick={() => dispatch(actionBattleMap.loadState(S))}>
-                {S.idTurn ? S.idTurn : "to start"}
+                {/*{S.idTurn ? S.idTurn : "to start"}*/}{S.idTurn+1}
             </button>
     )
 
@@ -49,14 +50,15 @@ const PlaceBattle:FC = ()  => {
             dispatch(actionBattleMap.setFirstUserMap(initializeTheMapFunction(null)))
             dispatch(actionBattleMap.setSecondUserMap(initializeTheMapFunction(null)))
         }
-    });
+        setStart(false)
+    },[]);
     useEffect(() => { //расстановка кораблей компьютером
         if (comp.game && !settingShipUser.firstUser && settingShipUser.secondUser) { // заполнение поля компьютером
             dispatch(RandomSaga(false, secondUserMap)) //установка кораблей через сагу
             /* dispatch(setShipsRandom(false, secondUserMap)) //установка кораблей через санку  */
             dispatch(actionBattleMap.startGames(false)) //true - start game first user, false - start game second user
         }
-    });
+    },[settingShipUser.firstUser]);
     useEffect(() => { //стрельба компьютера
         if (comp.game && !FUTurn && !settingShipUser.secondUser) { //ход компьютера
             if (comp.damaged) { // если был поврежден корабль
@@ -80,13 +82,15 @@ const PlaceBattle:FC = ()  => {
             }
         }
     },);
+
     useEffect(()=>{
 
     },[FUTurn])
 
-    useEffect(() => {
+
+    useLayoutEffect(() => {
         // сохранение хода перед выстрелом
-        if (FUTurn ) { //ход 1 игрока
+        if (FUTurn && !start ) { //ход 1 игрока
             dispatch(actionBattleMap.increaseIdTurn())
             dispatch(saveBattleMap(stateBattleMap))
         }
@@ -105,8 +109,8 @@ const PlaceBattle:FC = ()  => {
                   whatSetShip={whatSetShipSU} UserTurn={!FUTurn}
                   deleteShipUser={deleteShipSU} comp={comp} settingShipUser={settingShipUser} isCompGame={true}/>
         }
-        <div>
-            {saveList.length>1? buttonHistory :null}
+         <div>
+            ход: {saveList.length>1 &&buttonHistory}
         </div>
     </div>
 }
