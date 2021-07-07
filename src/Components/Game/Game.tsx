@@ -14,6 +14,7 @@ import {checkMapOnMove} from "./gameLogic/checkMapOnMove";
 import {initMapGame3inLineFalseGame} from "./gameLogic/initMapGame3inLineFalseGame";
 import s from "./Game.module.css"
 import {sectorsNotEqual} from "./gameLogic/sectorsNotEqual";
+import {checkMapUpdate} from "./gameLogic/checkMapUpdate";
 
 
 export const Game: FC = () => {
@@ -90,10 +91,9 @@ export const Game: FC = () => {
         setIsEndTurn(false)
     }
     const checkIsBum = () => {
-        const newMap = checkMap(map)
+        const newMap = checkMapUpdate(map)
         if (newMap.isBum) {
             setMap(newMap.map)
-
         }
     }
     const newMap = () => {
