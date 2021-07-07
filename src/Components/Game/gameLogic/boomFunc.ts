@@ -33,13 +33,15 @@ const setSectorH = (Map: MapsGameType, i: number, j: number, I: number) => {
                 color: "red",
                 state: randomMassState[getRandomInt(randomMassState.length)],
                 isBum: false,
+                score:0,
+                addBonusSector:0,
             }
         }
     }
     return map
 }
 
-export const boomFunc = (Map: MapsGameType) => {
+export const boomFunc = (Map: MapsGameType, ) => {
     let map = [...Map]
 
     function fastening(ii: number, i: number, j: number) {
@@ -57,7 +59,7 @@ export const boomFunc = (Map: MapsGameType) => {
             }
         }
     }
-    return map
+    return  map
 }
 
 

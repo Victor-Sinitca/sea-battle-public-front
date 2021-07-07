@@ -23,6 +23,8 @@ export const initMapGame3inLineFalseGame = (x: number = 10, y: number = 10) => {
                     color: "red",
                     state: setValue,
                     isBum: false,
+                    score:0,
+                    addBonusSector:0,
                 }
             }
         }

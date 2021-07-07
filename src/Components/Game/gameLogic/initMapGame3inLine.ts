@@ -8,7 +8,7 @@ export const initMapGame3inLine = (x: number = 10, y: number = 10) => {
     for (let i = 0; i < x; i++) {
         for (let j = 0; j < y; j++) {
             let randomMassState = []
-            for (let s = 0; s < 8; s++) {
+            for (let s = 0; s < 6; s++) { //8
                 if ((map[i - 1]?.[j].date.state === s && map[i - 2]?.[j].date.state === s) ||
                     (map[i][j - 1]?.date.state === s && map[i][j - 2]?.date.state === s)) {
 
@@ -27,6 +27,8 @@ export const initMapGame3inLine = (x: number = 10, y: number = 10) => {
                     color: "red",
                     state: randomMassState[getRandomInt(randomMassState.length)],
                     isBum: false,
+                    score:0,
+                    addBonusSector:0,
                 }
             }
         }

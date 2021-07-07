@@ -5,7 +5,7 @@ export const checkMapOnMove = (map: MapsGameType) => {
     let isMove = false
     for (let i = 0; i < map.length; i++) {
         if (isMove) break
-        for (let j = 0; j < map.length; j++) {
+        for (let j = 0; j < map[i].length; j++) {
 
             if (map[i][j].date.state === map[i][j + 1]?.date.state) {
                 if (map[i][j].date.state === map[i][j + 3]?.date.state) { //поиск по оси х  Ххох

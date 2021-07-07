@@ -21,6 +21,8 @@ export  type SectorGameType = {
         color: "red" | "blue" | "black" | "green",
         state: number,
         isBum: boolean,
+        score: number,
+        addBonusSector: number,
     }
 }
 
@@ -34,7 +36,7 @@ type PropsType = {
 }
 
 export const Sector: FC<PropsType> = ({sector, returnMouseDown, returnMouseUp, returnMouseOver}) => {
-    const imgMass = [sw0, sw1, sw2, sw3, sw4,sw5,sw6,sw7,]
+    const imgMass = [sw0, sw1, sw2, sw3, sw4, sw5, sw6, sw7,]
 
     const handlerMouseDown = () => {
         returnMouseDown(sector)
@@ -48,12 +50,14 @@ export const Sector: FC<PropsType> = ({sector, returnMouseDown, returnMouseUp, r
         }
     }
 
-    return <div className={sector.sectorState.isSelected && s.active }
+    return <div className={sector.sectorState.isSelected ? s.active : s.noActive}
                 onMouseDown={handlerMouseDown}
                 onMouseUp={handlerMouseUp}
                 onMouseOver={handlerMouseOver}>
 
-            <img  className={sector.date.isBum?s.isBum : s.img} draggable={"false"} src={imgMass[sector.date.state]}/>
+        <img className={sector.date.isBum ? s.isBum : s.img} draggable={"false"} src={imgMass[sector.date.state]}/>
+        {sector.date.score >0 &&<div>{sector.date.score}</div>}
+        {sector.date.addBonusSector >0 &&<div  style={{paddingTop:20}}>{sector.date.addBonusSector}</div>}
 
 
     </div>

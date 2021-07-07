@@ -23,6 +23,7 @@ export const Game: FC = () => {
     const [isEndTurn, setIsEndTurn] = useState<boolean>(false)
     const [isBoom, setIsBoom] = useState<boolean>(false)
     const [endMove, setEndMove] = useState<boolean>(false)
+    const [score, setScore] = useState(0)
 
 
     const onMouseDown = (sector: SectorGameType) => {
@@ -86,6 +87,7 @@ export const Game: FC = () => {
 
     const onClickBum = () => {
         setMap(boomFunc(map))
+        setIsEndTurn(false)
     }
     const checkIsBum = () => {
         const newMap = checkMap(map)
@@ -126,12 +128,12 @@ export const Game: FC = () => {
             ))
         }
     }
-    const changeSizeSector = (add:boolean) => {
-        if(add){
+    const changeSizeSector = (add: boolean) => {
+        if (add) {
             setDeskState({
                 ...deskState, length: deskState.length + 1
             })
-        }else if(deskState.length>10){
+        } else if (deskState.length > 10) {
             setDeskState({
                 ...deskState, length: deskState.length - 1
             })
@@ -139,37 +141,39 @@ export const Game: FC = () => {
 
     }
 
-
-    useEffect(() => {
-        /* console.log("boomFunc")*/
+// уничтожение секторов
+  /*  useEffect(() => {
+        /!* console.log("boomFunc")*!/
         setTimeout(() => {
             if (isEndTurn && !isBoom) {
-                /* console.log("boomFunc ==> is bum")*/
+                /!* console.log("boomFunc ==> is bum")*!/
                 setMap(boomFunc(map))
                 setIsBoom(true)
             } else {
-                /*console.log("boomFunc ==> new turn")*/
+                /!*console.log("boomFunc ==> new turn")*!/
                 setIsBoom(false)
             }
         }, 800);
-    }, [isEndTurn, isBoom])
+    }, [isEndTurn, isBoom])*/
 
-    useEffect(() => {
-        /* console.log("checkMap")*/
+// нахождение секторов для уничтожения
+   /* useEffect(() => {
+        /!* console.log("checkMap")*!/
         if (isBoom) {
             const newMap = checkMap(map)
             if (newMap.isBum) {
-                /* console.log("checkMap ==> isBum")*/
+                /!* console.log("checkMap ==> isBum")*!/
                 setMap(newMap.map)
                 setIsBoom(false)
             } else {
-                /*console.log("checkMap ==> new turn")*/
+                /!*console.log("checkMap ==> new turn")*!/
                 setIsEndTurn(false)
                 setIsBoom(false)
             }
         }
-    }, [isBoom])
+    }, [isBoom])*/
 
+// проверка карты на возможность хода
     useEffect(() => {
         /*console.log("checkMapOnMove")*/
         if (!isEndTurn) {
@@ -184,34 +188,40 @@ export const Game: FC = () => {
     }, [isEndTurn])
 
 
-    return <div style={{display:"inline-flex"}} >
+    return <div style={{display: "inline-flex"}}>
         <div>
-            <div> по вертикали:
-                <button onClick={() => {
-                    add("x")
-                }}>+</button>
-                <button onClick={() => {
-                    takeAway("x")
-                }}>-
-                </button>
+            <div>
+                <div> по вертикали:
+                    <button onClick={() => {
+                        add("x")
+                    }}>+</button>
+                    <button onClick={() => {
+                        takeAway("x")
+                    }}>-
+                    </button>
+                </div>
+                <div> по горизонтали:
+                    <button onClick={() => {
+                        add("y")
+                    }}>+</button>
+                    <button onClick={() => {
+                        takeAway("y")
+                    }}>-
+                    </button>
+                </div>
+                <div> маштаб:
+                    <button onClick={() => {
+                        changeSizeSector(true)
+                    }}>+</button>
+                    <button onClick={() => {
+                        changeSizeSector(false)
+                    }}>-
+                    </button>
+                </div>
             </div>
-            <div> по горизонтали:
-                <button onClick={() => {
-                    add("y")
-                }}>+</button>
-                <button onClick={() => {
-                    takeAway("y")
-                }}>-
-                </button>
-            </div>
-            <div> маштаб:
-                <button onClick={() => {
-                    changeSizeSector(true)
-                }}>+</button>
-                <button onClick={() => {
-                    changeSizeSector(false)
-                }}>-
-                </button>
+            <div>
+                <div>очки:</div>
+                <div></div>
             </div>
         </div>
         <div className={s.mainDisplay}>
@@ -228,12 +238,11 @@ export const Game: FC = () => {
                       isEndTurn={isEndTurn}
                       deskState={deskState}
                 />
-                {/* {endMove && <div>нет ходов</div>}*/}
-
-                {/*  <button onClick={onClickBum}>bum</button>
-                <button onClick={checkIsBum}>check is bum</button>*/}
-                {/* <button onClick={newMap}>new map</button>*/}
-                {/*<button onClick={setMapOnClick}>set map</button>*/}
+                 {endMove && <div>нет ходов</div>}
+                  <button onClick={onClickBum}>bum</button>
+                  <button onClick={checkIsBum}>check is bum</button>
+                {/*  <button onClick={newMap}>new map</button>*/}
+                {/*  <button onClick={setMapOnClick}>set map</button>*/}
             </div>
 
         </div>
