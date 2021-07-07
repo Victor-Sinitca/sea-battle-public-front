@@ -8,6 +8,7 @@ import sw4 from "../../assets/img/G5.png"
 import sw5 from "../../assets/img/G6.png"
 import sw6 from "../../assets/img/G7.png"
 import sw7 from "../../assets/img/G8.png"
+import bw8 from "../../assets/img/fire.png"
 
 
 export  type SectorGameType = {
@@ -23,6 +24,7 @@ export  type SectorGameType = {
         isBum: boolean,
         score: number,
         addBonusSector: number,
+        bonusSector: number,
     }
 }
 
@@ -36,7 +38,7 @@ type PropsType = {
 }
 
 export const Sector: FC<PropsType> = ({sector, returnMouseDown, returnMouseUp, returnMouseOver}) => {
-    const imgMass = [sw0, sw1, sw2, sw3, sw4, sw5, sw6, sw7,]
+    const imgMass = [sw0, sw1, sw2, sw3, sw4, sw5, sw6, sw7,bw8]
 
     const handlerMouseDown = () => {
         returnMouseDown(sector)
@@ -57,7 +59,8 @@ export const Sector: FC<PropsType> = ({sector, returnMouseDown, returnMouseUp, r
 
         <img className={sector.date.isBum ? s.isBum : s.img} draggable={"false"} src={imgMass[sector.date.state]}/>
         {sector.date.score >0 &&<div>{sector.date.score}</div>}
-        {sector.date.addBonusSector >0 &&<div  style={{paddingTop:20}}>{sector.date.addBonusSector}</div>}
+       {/* {sector.date.addBonusSector >0 &&<div  style={{paddingTop:20}}>{sector.date.addBonusSector}</div>}*/}
+        {sector.date.bonusSector >0 &&<div  style={{paddingTop:20, paddingLeft:20, color:"red"}}>{sector.date.bonusSector}</div>}
 
 
     </div>

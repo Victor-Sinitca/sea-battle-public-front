@@ -25,6 +25,7 @@ export const initMapGame3inLineFalseGame = (x: number = 10, y: number = 10) => {
                     isBum: false,
                     score:0,
                     addBonusSector:0,
+                    bonusSector: 0,
                 }
             }
         }

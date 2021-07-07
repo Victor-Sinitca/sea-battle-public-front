@@ -91,7 +91,7 @@ export const Game: FC = () => {
         setIsEndTurn(false)
     }
     const checkIsBum = () => {
-        const newMap = checkMapUpdate(map)
+        const newMap = checkMap(map)
         if (newMap.isBum) {
             setMap(newMap.map)
         }

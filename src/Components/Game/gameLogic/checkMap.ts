@@ -10,15 +10,6 @@ export const checkMap = (Map: MapsGameType,) => {
     function fasteningH(jj: number, i: number, j: number, bufferSector: SectorGameType) {
         if (map[i][j].date.state === map[i][jj]?.date.state) {
             map[i][jj].date.isBum = true
-            if (jj-j === 3){
-                bufferSector.date.score=100
-                bufferSector.date.addBonusSector=1
-            }
-            if (jj-j === 4){
-                bufferSector= JSON.parse(JSON.stringify(map[i][j +2]))
-                bufferSector.date.score=200
-                bufferSector.date.addBonusSector=4
-            }
             ++jj
             fasteningH(jj, i, j, bufferSector)
         }
@@ -59,7 +50,7 @@ export const checkMap = (Map: MapsGameType,) => {
                     bufferSector = JSON.parse(JSON.stringify(map[i+1][j]))
                     bufferSector.date.score = 50
                     isBum = true
-                    let ii = j + 3
+                    let ii = i + 3
                     fasteningV(ii, i, j, bufferSector)
                 }
             }
