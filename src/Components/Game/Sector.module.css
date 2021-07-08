@@ -1,6 +1,6 @@
 .active {
     display: grid;
-    grid-template-rows: 0px 0px 0px 0px 0px;
+    grid-template-rows: 0px 0px;
     border-radius: 5px;
     border: solid 1px black;
 }
@@ -19,4 +19,8 @@
     background-color: #10ac05;
     height: 97%;
     width: 97%;
+}
+.devInf{
+    display: inline-flex;
+
 }

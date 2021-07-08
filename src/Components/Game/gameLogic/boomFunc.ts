@@ -1,16 +1,26 @@
 import {MapsGameType} from "../DeskGame";
 import {SectorGameType} from "../Sector";
-import {replaceSectors} from "./replaceSectors";
 import {getRandomInt} from "../../../commen/logics/getRandom/getRandom";
 
 
-const setSectorH = (Map: MapsGameType, i: number, j: number, I: number) => {
-    let map = Map
+
+
+
+
+function setSectorH  (map: MapsGameType, i: number, j: number, I: number)  {
+
+    function replaceSectors (map: MapsGameType, firstSector: SectorGameType, secondSector: SectorGameType){
+        let i = firstSector.sectorState.y, j = firstSector.sectorState.x;
+        map[i][j].sectorState.isSelected = false
+        map[i][j].sectorState.isFirstClick = false
+        map[i][j].date = secondSector.date
+    }
+
     if (map[I]?.[j]) {
         let sectorInMemory = JSON.parse(JSON.stringify(map[i][j])) as SectorGameType
         let selectSectorInMemory = JSON.parse(JSON.stringify(map[I][j])) as SectorGameType
-        map = replaceSectors(map, sectorInMemory, selectSectorInMemory)
-        map = replaceSectors(map, selectSectorInMemory, sectorInMemory)
+        replaceSectors(map, sectorInMemory, selectSectorInMemory)
+        replaceSectors(map, selectSectorInMemory, sectorInMemory)
     } else {
         let randomMassState = []
         for (let s = 0; s < 4; s++) {
@@ -39,53 +49,116 @@ const setSectorH = (Map: MapsGameType, i: number, j: number, I: number) => {
             }
         }
     }
-    return map
 }
 
 export const boomFunc = (Map: MapsGameType,) => {
     let map = [...Map]
+    let score = 0
+
 
     function fastening(ii: number, i: number, j: number) {
         --ii
-        if (map[ii]?.[j].date.isBum) {
-            if(map[ii][j].date.addBonusSector === 1
+        if (map[ii]?.[j].date.isBum) { //сектор есть и он взорван
+            if (map[ii][j].date.addBonusSector === 1
                 || map[ii][j].date.addBonusSector === 2
-                || map[ii][j].date.addBonusSector === 3){
+                || map[ii][j].date.addBonusSector === 3) { // добавляем бонусный сектор если он есть
+
+
                 map[i][j].date.isBum = false
                 map[i][j].date.bonusSector = map[ii][j].date.addBonusSector
+                map[i][j].date.state = map[ii][j].date.state
                 map[ii][j].date.addBonusSector = 0
-            }else if(map[ii][j].date.addBonusSector === 4){
+
+
+                if (map[ii][j].date.score) {
+                    score = score + map[ii][j].date.score
+                    map[ii][j].date.score = 0
+                }
+            } else if (map[ii][j].date.addBonusSector === 4) {// добавляем новый  сектор если он есть
                 map[i][j].date.isBum = false
                 map[i][j].date.state = 8
                 map[ii][j].date.addBonusSector = 0
-            } else fastening(ii, i, j)
-        } else map = setSectorH(map, i, j, ii)
+                if (map[ii][j].date.score) {
+                    score = score + map[ii][j].date.score
+                    map[ii][j].date.score = 0
+                }
+            } else fastening(ii, i, j) // поднимаемся выше
+        } else {
+            if (map[i][j].date.score) {
+                score = score + map[i][j].date.score
+                map[i][j].date.score = 0
+            }
+            setSectorH(map, i, j, ii)
+
+        } //сектор не взорван - меняемся, сектора нет - генерируем новый сектор
     }
 
-
-    for (let i = map.length - 1; i >= 0; i--) {
-        for (let j = map[i].length - 1; j >= 0; j--) {
-
-        }
-    }
-
-
-    for (let i = map.length - 1; i >= 0; i--) {
-        for (let j = map[i].length - 1; j >= 0; j--) {
-            let ii = i
-            if (map[i][j].date.isBum) {
-                if (map[i][j].date.addBonusSector === 1
-                    || map[i][j].date.addBonusSector === 2
-                    || map[i][j].date.addBonusSector === 3) {
-                    map[i][j].date.isBum = false
-                    map[i][j].date.bonusSector = map[i][j].date.addBonusSector
-                    map[i][j].date.addBonusSector = 0
-                } else fastening(ii, i, j)
-
+    function onHor(i: number) {
+        for (let J = map[i].length - 1; J >= 0; J--) { // пройти по горизонту
+            if (!map[i][J].date.isBum) { // взорвать сектора без взрыва
+                map[i][J].date.isBum = true
+                if (map[i][J].date.bonusSector === 1) { // в секторе был гор бонус
+                    map[i][J].date.score = 100
+                } else if (map[i][J].date.bonusSector === 2) {   // в секторе был верт бонус
+                    map[i][J].date.score = 100
+                } else if (map[i][J].date.bonusSector === 3) {   // в секторе был двойной бонус
+                    map[i][J].date.score = 150
+                } else { // без бонусов
+                    map[i][J].date.score = 20
+                }
             }
         }
     }
-    return map
+    function onVert(j: number) {
+        for (let I = map.length - 1; I >= 0; I--) { // пройти по верт
+            if (!map[I][j].date.isBum) { // взорвать сектора без взрыва
+                map[I][j].date.isBum = true
+                if (map[I][j].date.bonusSector === 1) { // в секторе был гор бонус
+                    map[I][j].date.score = 100
+                } else if (map[I][j].date.bonusSector === 2) {   // в секторе был верт бонус
+                    map[I][j].date.score = 100
+                } else if (map[I][j].date.bonusSector === 3) {   // в секторе был двойной бонус
+                    map[I][j].date.score = 150
+                } else { // без бонусов
+                    map[I][j].date.score = 20
+                }
+            }
+        }
+    }
+
+
+// уничтожение и замещение секторов, подсчет очков
+    for (let i = map.length - 1; i >= 0; i--) {
+        for (let j = map[i].length - 1; j >= 0; j--) {
+            let ii = i
+            if (map[i][j].date.isBum) { // сектор взорван
+                if (map[i][j].date.addBonusSector === 1
+                    || map[i][j].date.addBonusSector === 2
+                    || map[i][j].date.addBonusSector === 3) { // добавляем бонусный сектор если он есть
+                    map[i][j].date.isBum = false
+                    map[i][j].date.bonusSector = map[i][j].date.addBonusSector
+                    map[i][j].date.addBonusSector = 0
+                    if (map[i][j].date.score) {
+                        score = score + map[i][j].date.score
+                        map[i][j].date.score = 0
+                    }
+                }else if (map[i][j].date.addBonusSector === 4) {// добавляем новый  сектор если он есть
+                    map[i][j].date.isBum = false
+                    map[i][j].date.state = 8
+                    map[i][j].date.addBonusSector = 0
+                    if (map[i][j].date.score) {
+                        score = score + map[i][j].date.score
+                        map[i][j].date.score = 0
+                    }
+                } else fastening(ii, i, j) // поднимаемся выше
+            }
+        }
+    }
+    console.log("очки:" + score)
+    return {
+        map,
+        score
+    }
 }
 
 
