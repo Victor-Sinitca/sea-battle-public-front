@@ -9,7 +9,7 @@ import store from "./redux/redux-store";
 
 ReactDOM.render(
   <React.StrictMode>
-      {/*<BrowserRouter>
+     {/* <BrowserRouter>
           <Provider store={store}>
               <App/>
           </Provider>

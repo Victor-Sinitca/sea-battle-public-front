@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Form, Formik, FormikHelpers} from "formik";
 import {createFieldFormik} from "../../commen/FormikControls/FormikControls";
 import s from "./Authorization.module.css"
-import {Redirect, useHistory} from "react-router-dom";
+import {NavLink, Redirect, useHistory} from "react-router-dom";
 import {login} from "../../redux/authHttp-reducer";
 import {getIsAuthorization} from "../../redux/authHttp-selectors";
 
@@ -64,7 +64,7 @@ export const Authorization: FC = () => {
                         <button type="submit" disabled={isSubmitting || !isValid}>
                             войти
                         </button>
-                        <a href={'/registration'} > регистрация</a>
+                        <NavLink to='/registration'>регистрация</NavLink>
                     </div>
 
                 </Form>
