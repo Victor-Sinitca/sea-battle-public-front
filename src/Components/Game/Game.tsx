@@ -15,6 +15,10 @@ import s from "./Game.module.css"
 import {sectorsNotEqual} from "./gameLogic/sectorsNotEqual";
 import {findBonusBumFunc} from "./gameLogic/findBonusBumFunc";
 import {checkMapUpdate} from "./gameLogic/checkMapUpdate";
+import {blowUpSelectedSectors} from "./gameLogic/blowUpSelectedSectors";
+import {blowUpAllMap} from "./gameLogic/blowUpAllMap";
+import {blowUpCrosshair} from "./gameLogic/blowUpСrosshair";
+import {blowUpBigCrosshair} from "./gameLogic/blowUpBigСrosshair";
 
 
 export const Game: FC = () => {
@@ -34,35 +38,72 @@ export const Game: FC = () => {
     const onMouseDown = (sector: SectorGameType) => {
         if (!isEndTurn) {
             if (selectSector) {
+                // есть выделенный сектор
+                // клик рядом с выделеным сектором
                 if (isNearbyWithSector(selectSector, sector)) {
+                    //создание копии и перестановка секторов в новой карте
                     let sectorInMemory = JSON.parse(JSON.stringify(sector)) as SectorGameType
                     let selectSectorInMemory = JSON.parse(JSON.stringify(selectSector)) as SectorGameType
                     let newMap = replaceSectors(map, sectorInMemory, selectSectorInMemory)
                     let newMap1 = replaceSectors(newMap, selectSectorInMemory, sectorInMemory)
                     setSelectSector(null)
-                    const isLineInMap = isSectorInLine(newMap1, sectorInMemory, selectSectorInMemory)
-                    if (isLineInMap) {
-                        /*console.log("onMouseDown isLineInMap")*/
-                        setMap(findBonusBumFunc(isLineInMap))
-                        /* setMap(isLineInMap)*/
+                    // выделен алмаз
+                    if (selectSector.date.state === 8) {
+                        // выделены два алмаза
+                        if (sector.date.state === 8) {
+                            setMap(blowUpAllMap(map))
+                            setIsEndTurn(true)
+                        } else {
+                            setMap(blowUpSelectedSectors(map, selectSector, sector))
+                            setIsEndTurn(true)
+                        }
+                    } else if (sector.date.state === 8) {
+                        setMap(blowUpSelectedSectors(map, sector, selectSector))
+                        setIsEndTurn(true)
+
+                    } else if ((sector.date.bonusSector === 1 || sector.date.bonusSector === 2)
+                        && (selectSector.date.bonusSector === 1 || selectSector.date.bonusSector === 2)) {
+                        setMap(blowUpCrosshair(map, sector))
+                        setIsEndTurn(true)
+                    } else if (sector.date.bonusSector === 3 || sector.date.bonusSector === 3) {
+                        setMap(blowUpBigCrosshair(map, sector))
                         setIsEndTurn(true)
                     } else {
-                        setMap(deleteSectorSelection(map, selectSector))
+                        //нет двух бонусных секторов в выделении
+                        const isLineInMap = isSectorInLine(newMap1, sectorInMemory, selectSectorInMemory)
+                        // есть комбинация из трех и более
+                        if (isLineInMap) {
+                            /*console.log("onMouseDown isLineInMap")*/
+                            //проверяем на бонусные сектора в секторах для взрыва
+                            setMap(findBonusBumFunc(isLineInMap))
+                            /* setMap(isLineInMap)*/
+                            setIsEndTurn(true)
+                        } else {
+                            // нет комбинаций из трех и более, снятие выделения
+                            setMap(deleteSectorSelection(map, selectSector))
+                        }
                     }
                 } else if (sector.sectorState.isSelected) {
+                    // если сектор был выделен  установка флага на снятие выделения
                     setMap(SetIsFirstClickSector(map, sector))
                 } else {
+                    // выбран сектор не рядомб выделение сектора
                     let newMap = selectSectorFunc(map, sector)
+                    // удаление старого выдления
                     newMap = deleteSectorSelection(newMap, selectSector)
+                    //запись карты
                     setMap(newMap)
+                    // установка выбранного сектора
                     setSelectSector(sector)
                 }
             } else {
+                // сохранение выделенного сектора
                 setMap(selectSectorFunc(map, sector))
                 setSelectSector(sector)
             }
         }
     }
+
     const onMouseDownDev = (sector: SectorGameType) => {
         if (selectSector) {
             if (sector.sectorState.isSelected) {
@@ -73,12 +114,26 @@ export const Game: FC = () => {
                 let newMap = replaceSectors(map, sectorInMemory, selectSectorInMemory)
                 let newMap1 = replaceSectors(newMap, selectSectorInMemory, sectorInMemory)
                 setSelectSector(null)
-                const isLineInMap = isSectorInLine(newMap1, sectorInMemory, selectSectorInMemory)
-                if (isLineInMap) {
-                    setMap(findBonusBumFunc(isLineInMap))
-                    /*setMap(isLineInMap)*/
+                if (selectSector.date.state === 8) {
+                    if (sector.date.state === 8) {
+                        setMap(blowUpAllMap(map))
+                    } else {
+                        setMap(blowUpSelectedSectors(map, selectSector, sector))
+                    }
+                } else if (sector.date.state === 8) {
+                    setMap(blowUpSelectedSectors(map, sector, selectSector))
+                } else if ((sector.date.bonusSector === 1 || sector.date.bonusSector === 2)
+                    && (selectSector.date.bonusSector === 1 || selectSector.date.bonusSector === 2)) {
+                    setMap(blowUpCrosshair(map, sector))
+                } else if (sector.date.bonusSector === 3 || sector.date.bonusSector === 3) {
+                    setMap(blowUpBigCrosshair(map, sector))
                 } else {
-                    setMap(newMap1)
+                    const isLineInMap = isSectorInLine(newMap1, sectorInMemory, selectSectorInMemory)
+                    if (isLineInMap) {
+                        setMap(findBonusBumFunc(isLineInMap))
+                    } else {
+                        setMap(newMap1)
+                    }
                 }
             }
         } else {
@@ -288,7 +343,7 @@ export const Game: FC = () => {
                 <div>+{addScore}</div>
             </div>
             <div>
-                <div style={{paddingTop: 40, paddingBottom:40}}>
+                <div style={{paddingTop: 40, paddingBottom: 40}}>
                     <button onClick={() => setIsDevMode(!isDevMode)}>установка режима</button>
                 </div>
                 {isDevMode && <>
