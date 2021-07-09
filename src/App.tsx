@@ -1,11 +1,10 @@
 import './App.css';
 import React, {useEffect} from "react";
-import {Redirect, Route} from "react-router-dom";
+import {Route} from "react-router-dom";
 import NavBar from "./Components/NavBar/NavBar";
 import PlaceBattle from "./Components/PlaceBattle/PlaceBattle";
 import {Header} from "./Components/Header/Header";
 import {useDispatch, useSelector} from "react-redux";
-
 
 
 import {ChatPage} from "./Components/pages/Chat/ChatPage";
@@ -17,7 +16,7 @@ import {Authorization} from "./Components/Authorization/Authorization";
 import {Registration} from "./Components/Registration/Registration";
 import {Profile} from "./Components/Profile/Profile";
 import {DragDrop} from "./Components/Grag&Drop/Drag&Drop";
-import {Game} from "./Components/Game/Game";
+import {GameContainer} from "./Components/Game/GameContainer";
 
 
 function App() {
@@ -37,7 +36,7 @@ function App() {
                {/* <Route path='/' render={() => <Redirect to={"/placeBattleMan"}/>}/>*/}
                 <Route path='/placeBattleMan' render={() => <PlaceBattle/>}/>
                 <Route path='/dragDrop' render={() => <DragDrop/>}/>
-                <Route path='/game' render={() => <Game/>}/>
+                <Route path='/game' render={() => <GameContainer/>}/>
                 {isAuthorization && <Route path='/profile/:userID?' render={() => <Profile/>}/>}
                 {/*{isAuthorization && <Route path='/battle' render={() => <Battle/>}/>}*/}
                 {isAuthorization && <Route path='/battleRoom' render={() => <BattleRoom/>}/>}

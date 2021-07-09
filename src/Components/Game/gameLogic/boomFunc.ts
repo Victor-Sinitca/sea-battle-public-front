@@ -62,94 +62,53 @@ export const boomFunc = (Map: MapsGameType,) => {
             if (map[ii][j].date.addBonusSector === 1
                 || map[ii][j].date.addBonusSector === 2
                 || map[ii][j].date.addBonusSector === 3) { // добавляем бонусный сектор если он есть
-
-
                 map[i][j].date.isBum = false
                 map[i][j].date.bonusSector = map[ii][j].date.addBonusSector
                 map[i][j].date.state = map[ii][j].date.state
                 map[ii][j].date.addBonusSector = 0
-
-
-                if (map[ii][j].date.score) {
+              /*  if (map[ii][j].date.score) {
                     score = score + map[ii][j].date.score
                     map[ii][j].date.score = 0
-                }
+                }*/
             } else if (map[ii][j].date.addBonusSector === 4) {// добавляем новый  сектор если он есть
                 map[i][j].date.isBum = false
                 map[i][j].date.state = 8
                 map[ii][j].date.addBonusSector = 0
-                if (map[ii][j].date.score) {
+               /* if (map[ii][j].date.score) {
                     score = score + map[ii][j].date.score
                     map[ii][j].date.score = 0
-                }
+                }*/
             } else fastening(ii, i, j) // поднимаемся выше
         } else {
-            if (map[i][j].date.score) {
+           /* if (map[i][j].date.score) {
                 score = score + map[i][j].date.score
                 map[i][j].date.score = 0
-            }
+            }*/
             setSectorH(map, i, j, ii)
 
         } //сектор не взорван - меняемся, сектора нет - генерируем новый сектор
     }
 
-    function onHor(i: number) {
-        for (let J = map[i].length - 1; J >= 0; J--) { // пройти по горизонту
-            if (!map[i][J].date.isBum) { // взорвать сектора без взрыва
-                map[i][J].date.isBum = true
-                if (map[i][J].date.bonusSector === 1) { // в секторе был гор бонус
-                    map[i][J].date.score = 100
-                } else if (map[i][J].date.bonusSector === 2) {   // в секторе был верт бонус
-                    map[i][J].date.score = 100
-                } else if (map[i][J].date.bonusSector === 3) {   // в секторе был двойной бонус
-                    map[i][J].date.score = 150
-                } else { // без бонусов
-                    map[i][J].date.score = 20
-                }
-            }
-        }
-    }
-    function onVert(j: number) {
-        for (let I = map.length - 1; I >= 0; I--) { // пройти по верт
-            if (!map[I][j].date.isBum) { // взорвать сектора без взрыва
-                map[I][j].date.isBum = true
-                if (map[I][j].date.bonusSector === 1) { // в секторе был гор бонус
-                    map[I][j].date.score = 100
-                } else if (map[I][j].date.bonusSector === 2) {   // в секторе был верт бонус
-                    map[I][j].date.score = 100
-                } else if (map[I][j].date.bonusSector === 3) {   // в секторе был двойной бонус
-                    map[I][j].date.score = 150
-                } else { // без бонусов
-                    map[I][j].date.score = 20
-                }
-            }
-        }
-    }
-
-
 // уничтожение и замещение секторов, подсчет очков
+    // бонусные сектора: 1 - горизонтальный взрыв, 2 - вертикальный взрыв, 3 - г+в взрыв, 4 - алмаз
     for (let i = map.length - 1; i >= 0; i--) {
         for (let j = map[i].length - 1; j >= 0; j--) {
             let ii = i
             if (map[i][j].date.isBum) { // сектор взорван
+                if (map[i][j].date.score) {
+                    score = score + map[i][j].date.score
+                    map[i][j].date.score = 0
+                }
                 if (map[i][j].date.addBonusSector === 1
                     || map[i][j].date.addBonusSector === 2
                     || map[i][j].date.addBonusSector === 3) { // добавляем бонусный сектор если он есть
                     map[i][j].date.isBum = false
                     map[i][j].date.bonusSector = map[i][j].date.addBonusSector
                     map[i][j].date.addBonusSector = 0
-                    if (map[i][j].date.score) {
-                        score = score + map[i][j].date.score
-                        map[i][j].date.score = 0
-                    }
                 }else if (map[i][j].date.addBonusSector === 4) {// добавляем новый  сектор если он есть
                     map[i][j].date.isBum = false
                     map[i][j].date.state = 8
                     map[i][j].date.addBonusSector = 0
-                    if (map[i][j].date.score) {
-                        score = score + map[i][j].date.score
-                        map[i][j].date.score = 0
-                    }
                 } else fastening(ii, i, j) // поднимаемся выше
             }
         }

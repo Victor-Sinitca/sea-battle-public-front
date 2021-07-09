@@ -1,105 +1,71 @@
 import React, {FC, useEffect, useState} from "react";
 import Desk, {MapsGameType} from "./DeskGame";
 import {SectorGameType} from "./Sector";
-import {isSectorInLine} from "./gameLogic/isSectorInLine";
 import {isNearbyWithSector} from "./gameLogic/isNearbyWithSector";
-import {replaceSectors} from "./gameLogic/replaceSectors";
-import {deleteSectorSelection} from "./gameLogic/deleteSectorSelection";
-import {selectSectorFunc} from "./gameLogic/selectSector";
 import {SetIsFirstClickSector} from "./gameLogic/setIsFirstClickSector";
 import {initMapGame3inLine} from "./gameLogic/initMapGame3inLine";
 import {boomFunc} from "./gameLogic/boomFunc";
 import {checkMapOnMove} from "./gameLogic/checkMapOnMove";
-import {initMapGame3inLineFalseGame} from "./gameLogic/initMapGame3inLineFalseGame";
 import s from "./Game.module.css"
 import {sectorsNotEqual} from "./gameLogic/sectorsNotEqual";
 import {findBonusBumFunc} from "./gameLogic/findBonusBumFunc";
-import {checkMapUpdate} from "./gameLogic/checkMapUpdate";
-import {blowUpSelectedSectors} from "./gameLogic/blowUpSelectedSectors";
-import {blowUpAllMap} from "./gameLogic/blowUpAllMap";
-import {blowUpCrosshair} from "./gameLogic/blowUpСrosshair";
-import {blowUpBigCrosshair} from "./gameLogic/blowUpBigСrosshair";
+import {checkMap} from "./gameLogic/checkMap";
+import {LeftBar3inLine} from "./gameLogic/LeftBar3inLine";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    checkOnLineInSelectSectorsThink, replacementSectorsThink,
+    selectNewSectorThink,
+    threeInLineAction,
+    unselectNewSectorThink
+} from "../../redux/threeInLine-reduser";
+import {
+    getDeskState,
+    getIsDevMode,
+    getIsEndTurn,
+    getPrevMap,
+    getScore,
+    getSelectSector
+} from "../../redux/threeInLine-selectors";
 
 
-export const Game: FC = () => {
-    const [deskState, setDeskState] = useState({x: 10, y: 10, length: 50})
-    const [map, setMap] = useState<MapsGameType>(initMapGame3inLine(deskState.x, deskState.y))
-    const [prevMap, setPrevMap] = useState<MapsGameType>(initMapGame3inLine(deskState.x, deskState.y))
-    const [selectSector, setSelectSector] = useState<SectorGameType | null>(null)
-    const [isEndTurn, setIsEndTurn] = useState<boolean>(false)
+export type deskStateType = {
+    x: number, y: number, length: number
+}
+type PropsType ={
+    map: MapsGameType
+}
+export const Game: FC<PropsType> = ({map}) => {
+    const dispatch = useDispatch()
     const [isBoom, setIsBoom] = useState<boolean>(false)
     const [endMove, setEndMove] = useState<boolean>(false)
-    const [score, setScore] = useState(0)
-    const [addScore, setAddScore] = useState(0)
+    const deskState = useSelector(getDeskState)
+    const prevMap = useSelector(getPrevMap)
+    const score = useSelector(getScore)
+    const isDevMode = useSelector(getIsDevMode)
+    const selectSector = useSelector(getSelectSector)
+    const isEndTurn = useSelector(getIsEndTurn)
 
 
-    const [isDevMode, setIsDevMode] = useState(false)
 
     const onMouseDown = (sector: SectorGameType) => {
         if (!isEndTurn) {
             if (selectSector) {
                 // есть выделенный сектор
-                // клик рядом с выделеным сектором
-                if (isNearbyWithSector(selectSector, sector)) {
-                    //создание копии и перестановка секторов в новой карте
-                    let sectorInMemory = JSON.parse(JSON.stringify(sector)) as SectorGameType
-                    let selectSectorInMemory = JSON.parse(JSON.stringify(selectSector)) as SectorGameType
-                    let newMap = replaceSectors(map, sectorInMemory, selectSectorInMemory)
-                    let newMap1 = replaceSectors(newMap, selectSectorInMemory, sectorInMemory)
-                    setSelectSector(null)
-                    // выделен алмаз
-                    if (selectSector.date.state === 8) {
-                        // выделены два алмаза
-                        if (sector.date.state === 8) {
-                            setMap(blowUpAllMap(map))
-                            setIsEndTurn(true)
-                        } else {
-                            setMap(blowUpSelectedSectors(map, selectSector, sector))
-                            setIsEndTurn(true)
-                        }
-                    } else if (sector.date.state === 8) {
-                        setMap(blowUpSelectedSectors(map, sector, selectSector))
-                        setIsEndTurn(true)
-
-                    } else if ((sector.date.bonusSector === 1 || sector.date.bonusSector === 2)
-                        && (selectSector.date.bonusSector === 1 || selectSector.date.bonusSector === 2)) {
-                        setMap(blowUpCrosshair(map, sector))
-                        setIsEndTurn(true)
-                    } else if (sector.date.bonusSector === 3 || sector.date.bonusSector === 3) {
-                        setMap(blowUpBigCrosshair(map, sector))
-                        setIsEndTurn(true)
-                    } else {
-                        //нет двух бонусных секторов в выделении
-                        const isLineInMap = isSectorInLine(newMap1, sectorInMemory, selectSectorInMemory)
-                        // есть комбинация из трех и более
-                        if (isLineInMap) {
-                            /*console.log("onMouseDown isLineInMap")*/
-                            //проверяем на бонусные сектора в секторах для взрыва
-                            setMap(findBonusBumFunc(isLineInMap))
-                            /* setMap(isLineInMap)*/
-                            setIsEndTurn(true)
-                        } else {
-                            // нет комбинаций из трех и более, снятие выделения
-                            setMap(deleteSectorSelection(map, selectSector))
-                        }
-                    }
-                } else if (sector.sectorState.isSelected) {
+                if (sector.sectorState.isSelected) {
                     // если сектор был выделен  установка флага на снятие выделения
-                    setMap(SetIsFirstClickSector(map, sector))
+                    dispatch(threeInLineAction.setMap(SetIsFirstClickSector(map, sector)))
+                } else if (isNearbyWithSector(selectSector, sector)) {
+                    dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector,))
                 } else {
-                    // выбран сектор не рядомб выделение сектора
-                    let newMap = selectSectorFunc(map, sector)
-                    // удаление старого выдления
-                    newMap = deleteSectorSelection(newMap, selectSector)
-                    //запись карты
-                    setMap(newMap)
-                    // установка выбранного сектора
-                    setSelectSector(sector)
+                    // выбран сектор не рядом выделение сектора
+                    // удаление старого выдления, установка нового выделения
+                    // запись карты
+                    dispatch(replacementSectorsThink(map, sector,selectSector))
+                    dispatch(threeInLineAction.setSelectSector(sector))
                 }
             } else {
-                // сохранение выделенного сектора
-                setMap(selectSectorFunc(map, sector))
-                setSelectSector(sector)
+                // выделение и сохранение выделенного сектора как  выделенный
+                dispatch(selectNewSectorThink(map, sector))
             }
         }
     }
@@ -107,134 +73,28 @@ export const Game: FC = () => {
     const onMouseDownDev = (sector: SectorGameType) => {
         if (selectSector) {
             if (sector.sectorState.isSelected) {
-                setMap(SetIsFirstClickSector(map, sector))
+                dispatch(threeInLineAction.setMap(SetIsFirstClickSector(map, sector)))
             } else {
-                let sectorInMemory = JSON.parse(JSON.stringify(sector)) as SectorGameType
-                let selectSectorInMemory = JSON.parse(JSON.stringify(selectSector)) as SectorGameType
-                let newMap = replaceSectors(map, sectorInMemory, selectSectorInMemory)
-                let newMap1 = replaceSectors(newMap, selectSectorInMemory, sectorInMemory)
-                setSelectSector(null)
-                if (selectSector.date.state === 8) {
-                    if (sector.date.state === 8) {
-                        setMap(blowUpAllMap(map))
-                    } else {
-                        setMap(blowUpSelectedSectors(map, selectSector, sector))
-                    }
-                } else if (sector.date.state === 8) {
-                    setMap(blowUpSelectedSectors(map, sector, selectSector))
-                } else if ((sector.date.bonusSector === 1 || sector.date.bonusSector === 2)
-                    && (selectSector.date.bonusSector === 1 || selectSector.date.bonusSector === 2)) {
-                    setMap(blowUpCrosshair(map, sector))
-                } else if (sector.date.bonusSector === 3 || sector.date.bonusSector === 3) {
-                    setMap(blowUpBigCrosshair(map, sector))
-                } else {
-                    const isLineInMap = isSectorInLine(newMap1, sectorInMemory, selectSectorInMemory)
-                    if (isLineInMap) {
-                        setMap(findBonusBumFunc(isLineInMap))
-                    } else {
-                        setMap(newMap1)
-                    }
-                }
+                dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector, true))
             }
-        } else {
-            setMap(selectSectorFunc(map, sector))
-            setSelectSector(sector)
+        } else if(map) {
+            dispatch(selectNewSectorThink(map, sector))
         }
 
     }
     const onMouseUp = (sector: SectorGameType) => {
         if (sector.sectorState.isFirstClick && sector.sectorState.isSelected && !isEndTurn) {
-            setMap(deleteSectorSelection(map, sector))
-            setSelectSector(null)
+            dispatch(unselectNewSectorThink(map, sector))
         }
     }
     const onMouseOver = (sector: SectorGameType) => {
         if (selectSector && !isEndTurn && sectorsNotEqual(sector, selectSector)) {
             if (isNearbyWithSector(selectSector, sector)) {
-                let sectorInMemory = JSON.parse(JSON.stringify(sector)) as SectorGameType
-                let selectSectorInMemory = JSON.parse(JSON.stringify(selectSector)) as SectorGameType
-                let newMap = replaceSectors(map, sectorInMemory, selectSectorInMemory)
-                let newMap1 = replaceSectors(newMap, selectSectorInMemory, sectorInMemory)
-                setSelectSector(null)
-                const isLineInMap = isSectorInLine(newMap1, sectorInMemory, selectSectorInMemory)
-                if (isLineInMap) {
-                    setMap(findBonusBumFunc(isLineInMap))
-                    /* setMap(isLineInMap)*/
-                    setIsEndTurn(true)
-                } else {
-                    setMap(deleteSectorSelection(map, selectSector))
-                }
+                dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector,))
             } else {
-                setMap(deleteSectorSelection(map, selectSector))
-                setSelectSector(null)
+                dispatch(unselectNewSectorThink(map, selectSector))
             }
         }
-    }
-
-
-    const onClickBum = () => {
-        setPrevMap(JSON.parse(JSON.stringify(map)))
-        let boomFuncState = boomFunc(map)
-        setMap(boomFuncState.map)
-        setAddScore(boomFuncState.score)
-        setScore(score + boomFuncState.score)
-        setIsEndTurn(false)
-    }
-    const onClickFindBonus = () => {
-        setPrevMap(JSON.parse(JSON.stringify(map)))
-        setMap(findBonusBumFunc(map))
-    }
-    const onClickCheckIsBum = () => {
-        const newMap = checkMapUpdate(map)
-        if (newMap.isBum) {
-            setPrevMap(JSON.parse(JSON.stringify(map)))
-            setMap(newMap.map)
-        }
-    }
-
-    const newMap = () => {
-        if (!checkMapOnMove(map)) {
-            setMap(initMapGame3inLine(deskState.x, deskState.y))
-            setEndMove(false)
-        }
-    }
-    const setMapOnClick = () => {
-        setMap(initMapGame3inLineFalseGame(10, 10))
-    }
-
-    const addLine = (value: "x" | "y" | "length") => {
-        let x = deskState[value] as number
-        setDeskState({
-            ...deskState, [value]: x + 1
-        })
-        setMap(initMapGame3inLine(
-            value === "x" ? deskState.x + 1 : deskState.x,
-            value === "y" ? deskState.y + 1 : deskState.y
-        ))
-    }
-    const takeAwayLine = (value: "x" | "y" | "length") => {
-        if (deskState[value] > 5) {
-            let x = deskState[value] as number
-            setDeskState({
-                ...deskState, [value]: x - 1
-            })
-            setMap(initMapGame3inLine(
-                value === "x" ? deskState.x - 1 : deskState.x,
-                value === "y" ? deskState.y - 1 : deskState.y
-            ))
-        }
-    }
-    const changeSizeSector = (add: boolean) => {
-        if (add) {
-            setDeskState({
-                ...deskState, length: deskState.length + 1
-            })
-        } else if (deskState.length > 10) {
-            setDeskState({
-                ...deskState, length: deskState.length - 1
-            })
-        }
-
     }
 
 // уничтожение секторов
@@ -245,9 +105,9 @@ export const Game: FC = () => {
                 if (isEndTurn && !isBoom) {
                     /* console.log("boomFunc ==> is bum")*/
                     let boomFuncState = boomFunc(map)
-                    setMap(boomFuncState.map)
-                    setAddScore(boomFuncState.score)
-                    setScore(score + boomFuncState.score)
+                    dispatch(threeInLineAction.setMap(boomFuncState.map))
+                    dispatch(threeInLineAction.setAddScore(boomFuncState.score))
+                    dispatch(threeInLineAction.setScore(score + boomFuncState.score))
                     setIsBoom(true)
                 } else {
                     /*console.log("boomFunc ==> new turn")*/
@@ -262,17 +122,14 @@ export const Game: FC = () => {
     useEffect(() => {
         /* console.log("checkMap")*/
         if (isBoom && !isDevMode) {
-            const newMap = checkMapUpdate(map)
+            const newMap = checkMap(map)
             if (newMap.isBum) {
-                console.log("checkMap ==> isBum")
-                /*setMap(newMap.map)
-                setMap(findBonusBumFunc(map))*/
-
-                setMap(findBonusBumFunc(map))
+               /* console.log("checkMap ==> isBum")  */
+                dispatch(threeInLineAction.setMap(findBonusBumFunc(map)))
                 setIsBoom(false)
             } else {
                 /*console.log("checkMap ==> new turn")*/
-                setIsEndTurn(false)
+                dispatch(threeInLineAction.setIsEndTurn(false))
                 setIsBoom(false)
             }
         }
@@ -285,87 +142,16 @@ export const Game: FC = () => {
             if (!checkMapOnMove(map)) {
                 setTimeout(() => {
                     /* console.log("checkMapOnMove ==> init map")*/
-                    setMap(initMapGame3inLine(deskState.x, deskState.y))
-                    /* setEndMove(true)*/
+                    dispatch(threeInLineAction.setMap(initMapGame3inLine(deskState.x, deskState.y)))
                 }, 1000)
             }
         }
     }, [isEndTurn])
 
 
+
     return <div className={s.displayMap}>
-        <div>
-            <div>
-                <div> по вертикали:
-                    <div>
-                        <button onClick={() => {
-                            addLine("x")
-                        }}>+
-                        </button>
-                        <button onClick={() => {
-                            takeAwayLine("x")
-                        }}>-
-                        </button>
-
-                    </div>
-
-                </div>
-                <div> по горизонтали:
-                    <div>
-                        <button onClick={() => {
-                            addLine("y")
-                        }}>+
-                        </button>
-                        <button onClick={() => {
-                            takeAwayLine("y")
-                        }}>-
-                        </button>
-                    </div>
-
-                </div>
-                <div> маштаб:
-                    <div>
-                        <button onClick={() => {
-                            changeSizeSector(true)
-                        }}>+
-                        </button>
-                        <button onClick={() => {
-                            changeSizeSector(false)
-                        }}>-
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-            <div>
-                <div>очки:</div>
-                <div>{score}</div>
-                <div>+{addScore}</div>
-            </div>
-            <div>
-                <div style={{paddingTop: 40, paddingBottom: 40}}>
-                    <button onClick={() => setIsDevMode(!isDevMode)}>установка режима</button>
-                </div>
-                {isDevMode && <>
-                    <div>
-                        <button onClick={onClickCheckIsBum}>check is bum</button>
-                    </div>
-                    <div>
-                        <button onClick={onClickFindBonus}>find bonus</button>
-                    </div>
-                    <div>
-                        <button onClick={onClickBum}>bum</button>
-                    </div>
-                    {/*  <button onClick={newMap}>new map</button>*/}
-                    {/*  <button onClick={setMapOnClick}>set map</button>*/}
-
-                </>}
-
-
-            </div>
-        </div>
-
-
+        <LeftBar3inLine map ={map} setEndMove={setEndMove}/>
         <div className={s.mainDisplay}>
             <div style={{display: "grid"}}>
                 <div className={s.header}>
@@ -390,7 +176,7 @@ export const Game: FC = () => {
 
         </div>
         <div className={s.mainDisplay}>
-            {isDevMode && <>
+            {isDevMode && prevMap && <>
                 <div style={{height: 90}}></div>
                 <div>
                     <Desk userMap={prevMap} selectSector={selectSector}
