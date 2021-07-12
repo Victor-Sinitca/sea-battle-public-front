@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/sea-battle-public-front/static/css/main.a1ee479a.chunk.css",
-    "main.js": "/sea-battle-public-front/static/js/main.082341f0.chunk.js",
-    "main.js.map": "/sea-battle-public-front/static/js/main.082341f0.chunk.js.map",
+    "main.js": "/sea-battle-public-front/static/js/main.cdb66ef7.chunk.js",
+    "main.js.map": "/sea-battle-public-front/static/js/main.cdb66ef7.chunk.js.map",
     "runtime-main.js": "/sea-battle-public-front/static/js/runtime-main.cdb36def.js",
     "runtime-main.js.map": "/sea-battle-public-front/static/js/runtime-main.cdb36def.js.map",
-    "static/js/2.23bc193f.chunk.js": "/sea-battle-public-front/static/js/2.23bc193f.chunk.js",
-    "static/js/2.23bc193f.chunk.js.map": "/sea-battle-public-front/static/js/2.23bc193f.chunk.js.map",
+    "static/js/2.8e7bf1c8.chunk.js": "/sea-battle-public-front/static/js/2.8e7bf1c8.chunk.js",
+    "static/js/2.8e7bf1c8.chunk.js.map": "/sea-battle-public-front/static/js/2.8e7bf1c8.chunk.js.map",
     "static/js/3.c514c5c9.chunk.js": "/sea-battle-public-front/static/js/3.c514c5c9.chunk.js",
     "static/js/3.c514c5c9.chunk.js.map": "/sea-battle-public-front/static/js/3.c514c5c9.chunk.js.map",
     "index.html": "/sea-battle-public-front/index.html",
     "static/css/main.a1ee479a.chunk.css.map": "/sea-battle-public-front/static/css/main.a1ee479a.chunk.css.map",
-    "static/js/2.23bc193f.chunk.js.LICENSE.txt": "/sea-battle-public-front/static/js/2.23bc193f.chunk.js.LICENSE.txt",
+    "static/js/2.8e7bf1c8.chunk.js.LICENSE.txt": "/sea-battle-public-front/static/js/2.8e7bf1c8.chunk.js.LICENSE.txt",
     "static/media/G1.eed52ca1.png": "/sea-battle-public-front/static/media/G1.eed52ca1.png",
     "static/media/G2.eb86452d.png": "/sea-battle-public-front/static/media/G2.eb86452d.png",
     "static/media/G3.f01f86a6.png": "/sea-battle-public-front/static/media/G3.f01f86a6.png",
@@ -20,7 +20,7 @@
     "static/media/G6.28d59f4f.png": "/sea-battle-public-front/static/media/G6.28d59f4f.png",
     "static/media/G7.7c84f0d6.png": "/sea-battle-public-front/static/media/G7.7c84f0d6.png",
     "static/media/G8.6ba469a6.png": "/sea-battle-public-front/static/media/G8.6ba469a6.png",
-    "static/media/fire.013722dd.png": "/sea-battle-public-front/static/media/fire.013722dd.png",
+    "static/media/G9.23e3121b.png": "/sea-battle-public-front/static/media/G9.23e3121b.png",
     "static/media/fire1.e49e9f57.png": "/sea-battle-public-front/static/media/fire1.e49e9f57.png",
     "static/media/fireShip.c988b0f9.png": "/sea-battle-public-front/static/media/fireShip.c988b0f9.png",
     "static/media/shield.90239123.png": "/sea-battle-public-front/static/media/shield.90239123.png",
@@ -30,8 +30,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.cdb36def.js",
-    "static/js/2.23bc193f.chunk.js",
+    "static/js/2.8e7bf1c8.chunk.js",
     "static/css/main.a1ee479a.chunk.css",
-    "static/js/main.082341f0.chunk.js"
+    "static/js/main.cdb66ef7.chunk.js"
   ]
 }
