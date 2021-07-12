@@ -204,8 +204,10 @@ export const checkOnSectorInLine = (Map: MapsGameType, IsLine: boolean, i: numbe
         }
     }
     if (isLine) {
-        // была линия, проверяем на бонус центральную клетку
-        bonusScore = checkOnBonusScore(map[i][j], bonusScore)
+        // была линия, проверяем на бонус центральную клетку и !!проверяем была ли она взорвана!!
+        if(map[i][j].date.isBum){
+            bonusScore = checkOnBonusScore(map[i][j], bonusScore)
+        }
     }
     if(bonusScore){
         //добавляем полученные бонусные очки

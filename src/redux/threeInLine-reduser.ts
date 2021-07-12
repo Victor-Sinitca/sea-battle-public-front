@@ -172,7 +172,7 @@ export const checkOnLineInSelectSectorsThink = (Map: MapsGameType, selectSector:
             map = blowUpCrosshair(blowUpCrosshair(map, sector ), selectSector )
             !isDevMode && dispatch(threeInLineAction.setIsEndTurn(true))
         } else {
-            //нет бонусных секторов в секторах для замены
+            //нет двух бонусных секторов или алмаза/ов  в секторах для замены
             //создание копий и перестановка секторов в новой карте
             let sectorInMemory = JSON.parse(JSON.stringify(sector)) as SectorGameType
             let selectSectorInMemory = JSON.parse(JSON.stringify(selectSector)) as SectorGameType
