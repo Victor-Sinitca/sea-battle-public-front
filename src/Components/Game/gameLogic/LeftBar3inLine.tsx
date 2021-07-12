@@ -6,26 +6,34 @@ import {findBonusBumFunc} from "./findBonusBumFunc";
 import {checkMapOnMove} from "./checkMapOnMove";
 import {initMapGame3inLineFalseGame} from "./initMapGame3inLineFalseGame";
 import {useDispatch, useSelector} from "react-redux";
-import {getAddScore, getDeskState, getIsDevMode, getMap, getScore} from "../../../redux/threeInLine-selectors";
+import {
+    getAddScore,
+    getDeskState,
+    getGemsCount,
+    getIsDevMode,
+    getMap,
+    getScore
+} from "../../../redux/threeInLine-selectors";
 import {threeInLineAction} from "../../../redux/threeInLine-reduser";
 import {MapsGameType} from "../DeskGame";
 
-type PropsType={
+type PropsType = {
     map: MapsGameType
+    gemsCount: number
     setEndMove: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const LeftBar3inLine: FC<PropsType> = ({map,setEndMove}) => {
+export const LeftBar3inLine: FC<PropsType> = ({map, setEndMove, gemsCount}) => {
     const dispatch = useDispatch()
     const score = useSelector(getScore)
     const addScore = useSelector(getAddScore)
-   /* const map = useSelector(getMap)*/
+    /* const map = useSelector(getMap)*/
     const deskState = useSelector(getDeskState)
     const isDevMode = useSelector(getIsDevMode)
 
     const onClickBum = () => {
         dispatch(threeInLineAction.setPrevMap(JSON.parse(JSON.stringify(map))))
-        let boomFuncState = boomFunc(map)
+        let boomFuncState = boomFunc(map, gemsCount)
         dispatch(threeInLineAction.setMap(boomFuncState.map))
         dispatch(threeInLineAction.setAddScore(boomFuncState.score))
         dispatch(threeInLineAction.setScore(score + boomFuncState.score))
@@ -36,16 +44,16 @@ export const LeftBar3inLine: FC<PropsType> = ({map,setEndMove}) => {
         dispatch(threeInLineAction.setMap(findBonusBumFunc(map)))
     }
     const onClickCheckIsBum = () => {
+        dispatch(threeInLineAction.setPrevMap(JSON.parse(JSON.stringify(map))))
         const newMap = checkMap(map)
         if (newMap.isBum) {
-            dispatch(threeInLineAction.setPrevMap(JSON.parse(JSON.stringify(map))))
             dispatch(threeInLineAction.setMap(newMap.map))
         }
     }
 
     const newMap = () => {
         if (!checkMapOnMove(map)) {
-            dispatch(threeInLineAction.setMap(initMapGame3inLine(deskState.x, deskState.y)))
+            dispatch(threeInLineAction.setMap(initMapGame3inLine(deskState.x, deskState.y , gemsCount)))
             setEndMove(false)
         }
     }
@@ -62,7 +70,8 @@ export const LeftBar3inLine: FC<PropsType> = ({map,setEndMove}) => {
             }))
             dispatch(threeInLineAction.setMap(initMapGame3inLine(
                 value === "x" ? deskState.x - 1 : deskState.x,
-                value === "y" ? deskState.y - 1 : deskState.y
+                value === "y" ? deskState.y - 1 : deskState.y,
+                gemsCount
             )))
         }
     }
@@ -74,7 +83,8 @@ export const LeftBar3inLine: FC<PropsType> = ({map,setEndMove}) => {
         }))
         dispatch(threeInLineAction.setMap(initMapGame3inLine(
             value === "x" ? deskState.x + 1 : deskState.x,
-            value === "y" ? deskState.y + 1 : deskState.y
+            value === "y" ? deskState.y + 1 : deskState.y,
+            gemsCount
         )))
     }
     const changeSizeSector = (add: boolean) => {
@@ -88,6 +98,13 @@ export const LeftBar3inLine: FC<PropsType> = ({map,setEndMove}) => {
             }))
         }
 
+    }
+    const changeCountGems = (add: boolean) => {
+        if (add) {
+            dispatch(threeInLineAction.setGemsCount(gemsCount + 1))
+        } else if (deskState.length > 10) {
+            dispatch(threeInLineAction.setGemsCount(gemsCount - 1))
+        }
     }
 
 
@@ -103,6 +120,18 @@ export const LeftBar3inLine: FC<PropsType> = ({map,setEndMove}) => {
                     </button>
                     <button onClick={() => {
                         changeSizeSector(false)
+                    }}>-
+                    </button>
+                </div>
+            </div>
+            <div> оличество камней: {gemsCount}
+                <div>
+                    <button disabled={gemsCount > 7} onClick={() => {
+                        changeCountGems(true)
+                    }}>+
+                    </button>
+                    <button disabled={gemsCount < 5} onClick={() => {
+                        changeCountGems(false)
                     }}>-
                     </button>
                 </div>
@@ -127,8 +156,8 @@ export const LeftBar3inLine: FC<PropsType> = ({map,setEndMove}) => {
                 <div>
                     <button onClick={onClickBum}>bum</button>
                 </div>
-                {/*  <button onClick={newMap}>new map</button>*/}
-                {/*  <button onClick={setMapOnClick}>set map</button>*/}
+                  <button onClick={newMap}>new map</button>
+                  <button onClick={setMapOnClick}>set map</button>
             </>}
         </div>
     </div>

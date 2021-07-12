@@ -1,31 +1,29 @@
 import {BaseActionType, InferActionsTypes} from "./redux-store";
 import {MapsGameType} from "../Components/Game/DeskGame";
-import {initMapGame3inLine} from "../Components/Game/gameLogic/initMapGame3inLine";
 import {deskStateType} from "../Components/Game/Game";
-import {SectorType} from "../../Types/Types";
-import {getRandomInt} from "../commen/logics/getRandom/getRandom";
-import {checkForShipInput} from "../commen/logics/checkForShipInput/checkForSingleShipInput";
-import {actionBattleMap} from "./battleMap-reduсer";
 import {Dispatch} from "redux";
 import {SectorGameType} from "../Components/Game/Sector";
 import {replaceSectors} from "../Components/Game/gameLogic/replaceSectors";
-import {blowUpAllMap} from "../Components/Game/gameLogic/blowUpAllMap";
-import {blowUpSelectedSectors} from "../Components/Game/gameLogic/blowUpSelectedSectors";
-import {blowUpCrosshair} from "../Components/Game/gameLogic/blowUpСrosshair";
-import {blowUpBigCrosshair} from "../Components/Game/gameLogic/blowUpBigСrosshair";
 import {isSectorInLine} from "../Components/Game/gameLogic/isSectorInLine";
 import {findBonusBumFunc} from "../Components/Game/gameLogic/findBonusBumFunc";
 import {deleteSectorSelection} from "../Components/Game/gameLogic/deleteSectorSelection";
 import {selectSectorFunc} from "../Components/Game/gameLogic/selectSector";
+import {
+    blowUpAllMap,
+    blowUpBigCrosshair,
+    blowUpCrosshair,
+    blowUpSelectedSectors
+} from "../Components/Game/gameLogic/blowUpFunc";
 
 
 let initialState = {
-    map : null as null| MapsGameType,
-    deskState:{x: 10, y: 10, length: 50} as deskStateType,
-    prevMap: null as null| MapsGameType,
-    score:0 as number,
-    addScore:0 as number,
-    isDevMode:false as boolean,
+    map: null as null | MapsGameType,
+    deskState: {x: 10 as number, y: 10 as number, length: 50 as number},
+    gemsCount : 5 as number,
+    prevMap: null as null | MapsGameType,
+    score: 0 as number,
+    addScore: 0 as number,
+    isDevMode: false as boolean,
     selectSector: null as null | SectorGameType,
     isEndTurn: false as boolean
 }
@@ -73,6 +71,13 @@ const threeInLineReducer = (state = initialState as initialStateType, action: Ac
                 ...state,
                 isEndTurn: action.IsEndTurn
             }
+        case "threeInLine_SET_GEMS_COUNT":
+            if (action.count > 3 && action.count < 9){
+                return {
+                    ...state,
+                    gemsCount: action.count
+                }
+            }else return state;
         default:
             return state;
     }
@@ -105,9 +110,9 @@ export const threeInLineAction = {
     setIsEndTurn: (IsEndTurn: boolean) => {
         return ({type: "threeInLine_SET_IS_END_TURN", IsEndTurn,} as const)
     },
-
-
-
+    setGemsCount: (count: number) => {
+        return ({type: "threeInLine_SET_GEMS_COUNT", count,} as const)
+    },
 
 
 }
@@ -124,7 +129,7 @@ export const unselectNewSectorThink = (map: MapsGameType, sector: SectorGameType
         dispatch(threeInLineAction.setSelectSector(null))
     }
 }
-export const replacementSectorsThink = (Map: MapsGameType, sector: SectorGameType , selectSector: SectorGameType) => {
+export const replacementSectorsThink = (Map: MapsGameType, sector: SectorGameType, selectSector: SectorGameType) => {
     return (dispatch: DispatchType) => {
         let map = selectSectorFunc(Map, sector)
         dispatch(threeInLineAction.setMap(deleteSectorSelection(map, selectSector)))
@@ -133,7 +138,7 @@ export const replacementSectorsThink = (Map: MapsGameType, sector: SectorGameTyp
     }
 }
 
-export const checkOnLineInSelectSectorsThink = (Map: MapsGameType, selectSector: SectorGameType, sector: SectorGameType, isDevMode= false) => {
+export const checkOnLineInSelectSectorsThink = (Map: MapsGameType, selectSector: SectorGameType, sector: SectorGameType, isDevMode = false) => {
     return (dispatch: DispatchType) => {
         // клик рядом с выделеным сектором
         let map = [...Map]
@@ -158,8 +163,13 @@ export const checkOnLineInSelectSectorsThink = (Map: MapsGameType, selectSector:
             map = blowUpCrosshair(map, sector)
             !isDevMode && dispatch(threeInLineAction.setIsEndTurn(true))
         } else if (sector.date.bonusSector === 3 && selectSector.date.bonusSector === 3) {
-            //рядом два бонксных сектора в+г
+            //рядом два бонусных сектора в+г
             map = blowUpBigCrosshair(map, sector)
+            !isDevMode && dispatch(threeInLineAction.setIsEndTurn(true))
+        } else if ((sector.date.bonusSector === 3 && (selectSector.date.bonusSector === 1 || selectSector.date.bonusSector === 2))
+            || (selectSector.date.bonusSector === 3 && (sector.date.bonusSector === 1 || sector.date.bonusSector === 2))) {
+            //рядом бонусный сектор в+г и бонусный сектор верт или гориз
+            map = blowUpCrosshair(blowUpCrosshair(map, sector ), selectSector )
             !isDevMode && dispatch(threeInLineAction.setIsEndTurn(true))
         } else {
             //нет бонусных секторов в секторах для замены
@@ -185,18 +195,12 @@ export const checkOnLineInSelectSectorsThink = (Map: MapsGameType, selectSector:
                 }
             }
         }
-        dispatch(threeInLineAction.setMap(map))
+        dispatch(threeInLineAction.setMap(findBonusBumFunc(map)))
     }
 }
 
 
-
-
-
-
 type ThunkActionType = BaseActionType<ActionType>
-
-
 
 
 export default threeInLineReducer;

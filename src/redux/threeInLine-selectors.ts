@@ -24,3 +24,6 @@ export const getSelectSector =(state:AppStateType)=>{
 export const getIsEndTurn =(state:AppStateType)=>{
     return state.threeInLine.isEndTurn
 }
+export const getGemsCount =(state:AppStateType)=>{
+    return state.threeInLine.gemsCount
+}

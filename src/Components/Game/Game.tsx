@@ -19,7 +19,7 @@ import {
     unselectNewSectorThink
 } from "../../redux/threeInLine-reduser";
 import {
-    getDeskState,
+    getDeskState, getGemsCount,
     getIsDevMode,
     getIsEndTurn,
     getPrevMap,
@@ -33,8 +33,9 @@ export type deskStateType = {
 }
 type PropsType ={
     map: MapsGameType
+    gemsCount: number
 }
-export const Game: FC<PropsType> = ({map}) => {
+export const Game: FC<PropsType> = ({map,gemsCount}) => {
     const dispatch = useDispatch()
     const [isBoom, setIsBoom] = useState<boolean>(false)
     const [endMove, setEndMove] = useState<boolean>(false)
@@ -44,8 +45,6 @@ export const Game: FC<PropsType> = ({map}) => {
     const isDevMode = useSelector(getIsDevMode)
     const selectSector = useSelector(getSelectSector)
     const isEndTurn = useSelector(getIsEndTurn)
-
-
 
     const onMouseDown = (sector: SectorGameType) => {
         if (!isEndTurn) {
@@ -69,7 +68,6 @@ export const Game: FC<PropsType> = ({map}) => {
             }
         }
     }
-
     const onMouseDownDev = (sector: SectorGameType) => {
         if (selectSector) {
             if (sector.sectorState.isSelected) {
@@ -104,7 +102,7 @@ export const Game: FC<PropsType> = ({map}) => {
             setTimeout(() => {
                 if (isEndTurn && !isBoom) {
                     /* console.log("boomFunc ==> is bum")*/
-                    let boomFuncState = boomFunc(map)
+                    let boomFuncState = boomFunc(map,gemsCount)
                     dispatch(threeInLineAction.setMap(boomFuncState.map))
                     dispatch(threeInLineAction.setAddScore(boomFuncState.score))
                     dispatch(threeInLineAction.setScore(score + boomFuncState.score))
@@ -136,22 +134,28 @@ export const Game: FC<PropsType> = ({map}) => {
     }, [isBoom])
 
 // проверка карты на возможность хода
-    useEffect(() => {
-        /*console.log("checkMapOnMove")*/
+   /* useEffect(() => {
+        /!*console.log("checkMapOnMove")*!/
         if (!isEndTurn) {
             if (!checkMapOnMove(map)) {
                 setTimeout(() => {
-                    /* console.log("checkMapOnMove ==> init map")*/
-                    dispatch(threeInLineAction.setMap(initMapGame3inLine(deskState.x, deskState.y)))
-                }, 1000)
+                    /!* console.log("checkMapOnMove ==> init map")*!/
+                    dispatch(threeInLineAction.setMap(initMapGame3inLine(deskState.x, deskState.y , gemsCount)))
+                }, 2000)
             }
         }
     }, [isEndTurn])
+*/
+
+    useEffect(() => {
+        setEndMove(!checkMapOnMove(map))
+
+    } )
 
 
 
     return <div className={s.displayMap}>
-        <LeftBar3inLine map ={map} setEndMove={setEndMove}/>
+        <LeftBar3inLine map ={map} setEndMove={setEndMove} gemsCount={gemsCount}/>
         <div className={s.mainDisplay}>
             <div style={{display: "grid"}}>
                 <div className={s.header}>

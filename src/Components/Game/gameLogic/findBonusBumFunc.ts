@@ -3,8 +3,6 @@ import {SectorGameType} from "../Sector";
 import {getRandomInt} from "../../../commen/logics/getRandom/getRandom";
 
 
-
-
 export const findBonusBumFunc = (Map: MapsGameType,) => {
     let map = [...Map]
 
@@ -12,6 +10,9 @@ export const findBonusBumFunc = (Map: MapsGameType,) => {
         for (let J = map[i].length - 1; J >= 0; J--) { // пройти по горизонту
             if (!map[i][J].date.isBum) { // взорвать сектора без взрыва
                 map[i][J].date.isBum = true
+                /*map[i][J].date.score = 20*/
+
+
                 if (map[i][J].date.bonusSector === 1) { // в секторе был гор бонус
                     map[i][J].date.score = 100
                 } else if (map[i][J].date.bonusSector === 2) {   // в секторе был верт бонус
@@ -24,10 +25,16 @@ export const findBonusBumFunc = (Map: MapsGameType,) => {
             }
         }
     }
+
     function onVert(j: number) {
         for (let I = map.length - 1; I >= 0; I--) { // пройти по верт
             if (!map[I][j].date.isBum) { // взорвать сектора без взрыва
                 map[I][j].date.isBum = true
+
+             /*   map[I][j].date.score = 20*/
+
+
+
                 if (map[I][j].date.bonusSector === 1) { // в секторе был гор бонус
                     map[I][j].date.score = 100
                 } else if (map[I][j].date.bonusSector === 2) {   // в секторе был верт бонус
@@ -49,13 +56,23 @@ export const findBonusBumFunc = (Map: MapsGameType,) => {
         for (let i = map.length - 1; i >= 0; i--) {
             for (let j = map[i].length - 1; j >= 0; j--) {
                 if (map[i][j].date.isBum) { // сектор взорван
-                    if (map[i][j].date.bonusSector === 1) { // в секторе гор. бонус
+                    if (map[i][j].date.bonusSector === 1) {
+                        // в секторе гор. бонус
+
+                       /* map[i][j].date.score = 100*/
+
                         counter++// счетчик добавить
                         onHor(i)
-                    } else if (map[i][j].date.bonusSector === 2) { // в секторе верт. бонус
+                    } else if (map[i][j].date.bonusSector === 2) {
+                        // в секторе верт. бонус
+                       /* map[i][j].date.score = 100*/
+
                         counter++// счетчик добавить
                         onVert(j)
-                    } else if (map[i][j].date.bonusSector === 3) {// в секторе дойной бонус
+                    } else if (map[i][j].date.bonusSector === 3) {
+                        // в секторе дойной бонус
+                        /*map[i][j].date.score = 150*/
+
                         counter++// счетчик добавить
                         onHor(i)
                         onVert(j)
@@ -63,14 +80,14 @@ export const findBonusBumFunc = (Map: MapsGameType,) => {
                 }
             }
         }
-         if(counter)console.log("set count")
+        if (counter) console.log("set count")
         if (bonusCount !== counter) {
             bonusCount = counter
             counter = 0
         }
 
     } while (bonusCount !== counter)
-    return  map
+    return map
 
 }
 
