@@ -1,5 +1,5 @@
 import {MapsGameType} from "../DeskGame";
-import {SectorGameType} from "../Sector";
+import {SectorGameType} from "../Sector/Sector";
 import {getRandomInt} from "../../../commen/logics/getRandom/getRandom";
 
 

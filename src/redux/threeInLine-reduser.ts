@@ -2,7 +2,7 @@ import {BaseActionType, InferActionsTypes} from "./redux-store";
 import {MapsGameType} from "../Components/Game/DeskGame";
 import {deskStateType} from "../Components/Game/Game";
 import {Dispatch} from "redux";
-import {SectorGameType} from "../Components/Game/Sector";
+import {SectorGameType} from "../Components/Game/Sector/Sector";
 import {replaceSectors} from "../Components/Game/gameLogic/replaceSectors";
 import {isSectorInLine} from "../Components/Game/gameLogic/isSectorInLine";
 import {findBonusBumFunc} from "../Components/Game/gameLogic/findBonusBumFunc";
@@ -14,18 +14,21 @@ import {
     blowUpCrosshair,
     blowUpSelectedSectors
 } from "../Components/Game/gameLogic/blowUpFunc";
+import {boomFunc1} from "../Components/Game/gameLogic/boomFunc1";
 
 
 let initialState = {
     map: null as null | MapsGameType,
     deskState: {x: 10 as number, y: 10 as number, length: 50 as number},
-    gemsCount : 5 as number,
+    gemsCount: 5 as number,
     prevMap: null as null | MapsGameType,
     score: 0 as number,
     addScore: 0 as number,
     isDevMode: false as boolean,
     selectSector: null as null | SectorGameType,
-    isEndTurn: false as boolean
+    isEndTurn: false as boolean,
+    isBoom: false as boolean
+
 }
 
 type initialStateType = typeof initialState
@@ -71,13 +74,29 @@ const threeInLineReducer = (state = initialState as initialStateType, action: Ac
                 ...state,
                 isEndTurn: action.IsEndTurn
             }
+        case "threeInLine_SET_IS_BUM":
+            return {
+                ...state,
+                isBoom: action.value
+            }
+        case "threeInLine_DELETE_ANIMATION_IN_SECTOR":
+            if (state.map) {
+                console.log("DELETE_ANIMATION_IN_SECTOR")
+                let copyState = {...state}
+                copyState.map = [...state.map]
+                copyState.map[action.i] = [...state.map[action.i]]
+                copyState.map[action.i][action.j] = {...state.map[action.i][action.j]}
+                copyState.map[action.i][action.j].sectorState = {...state.map[action.i][action.j].sectorState}
+                copyState.map[action.i][action.j].sectorState.animateMove = null
+                return copyState
+            } else return state
         case "threeInLine_SET_GEMS_COUNT":
-            if (action.count > 3 && action.count < 9){
+            if (action.count > 3 && action.count < 9) {
                 return {
                     ...state,
                     gemsCount: action.count
                 }
-            }else return state;
+            } else return state;
         default:
             return state;
     }
@@ -113,6 +132,12 @@ export const threeInLineAction = {
     setGemsCount: (count: number) => {
         return ({type: "threeInLine_SET_GEMS_COUNT", count,} as const)
     },
+    setIsBoom: (value: boolean) => {
+        return ({type: "threeInLine_SET_IS_BUM", value,} as const)
+    },
+    deleteAnimationInSector: (i: number, j: number) => {
+        return ({type: "threeInLine_DELETE_ANIMATION_IN_SECTOR", i, j} as const)
+    },
 
 
 }
@@ -137,6 +162,35 @@ export const replacementSectorsThink = (Map: MapsGameType, sector: SectorGameTyp
         dispatch(threeInLineAction.setSelectSector(null))
     }
 }
+export const boomEffectThink = (map: MapsGameType, gemsCount: number, score: number) => {
+    return async (dispatch: DispatchType) => {
+        await setTimeout(() => {
+            /* console.log("boomFunc ==> is bum")*/
+            let boomFuncState = boomFunc1(map, gemsCount)
+            dispatch(threeInLineAction.setMap(boomFuncState.map))
+            dispatch(threeInLineAction.setAddScore(boomFuncState.score))
+            dispatch(threeInLineAction.setScore(score + boomFuncState.score))
+        }, 1500);
+        dispatch(threeInLineAction.setIsBoom(true))
+    }
+}
+const setHandleAnimation = (Map: MapsGameType, sector1: SectorGameType, sector2: SectorGameType, isLine: boolean,) => {
+    let map = [...Map]
+    map[sector1.sectorState.y][sector1.sectorState.x].sectorState.animateMove = {
+        j: sector2.sectorState.x - sector1.sectorState.x,
+        i: sector2.sectorState.y - sector1.sectorState.y,
+        shift: isLine,
+        isMove: isLine
+
+    }
+    map[sector2.sectorState.y][sector2.sectorState.x].sectorState.animateMove = {
+        j: sector1.sectorState.x - sector2.sectorState.x,
+        i: sector1.sectorState.y - sector2.sectorState.y,
+        shift: isLine,
+        isMove: isLine
+    }
+}
+
 
 export const checkOnLineInSelectSectorsThink = (Map: MapsGameType, selectSector: SectorGameType, sector: SectorGameType, isDevMode = false) => {
     return (dispatch: DispatchType) => {
@@ -169,7 +223,7 @@ export const checkOnLineInSelectSectorsThink = (Map: MapsGameType, selectSector:
         } else if ((sector.date.bonusSector === 3 && (selectSector.date.bonusSector === 1 || selectSector.date.bonusSector === 2))
             || (selectSector.date.bonusSector === 3 && (sector.date.bonusSector === 1 || sector.date.bonusSector === 2))) {
             //рядом бонусный сектор в+г и бонусный сектор верт или гориз
-            map = blowUpCrosshair(blowUpCrosshair(map, sector ), selectSector )
+            map = blowUpCrosshair(blowUpCrosshair(map, sector), selectSector)
             !isDevMode && dispatch(threeInLineAction.setIsEndTurn(true))
         } else {
             //нет двух бонусных секторов или алмаза/ов  в секторах для замены
@@ -183,6 +237,7 @@ export const checkOnLineInSelectSectorsThink = (Map: MapsGameType, selectSector:
                 /*console.log("onMouseDown isLineInMap")*/
                 //проверяем на бонусные сектора в секторах для взрыва
                 map = findBonusBumFunc(isLineInMap)
+                setHandleAnimation(map,sectorInMemory,selectSectorInMemory,true)
                 //установка конца хода
                 !isDevMode && dispatch(threeInLineAction.setIsEndTurn(true))
             } else {
@@ -190,12 +245,13 @@ export const checkOnLineInSelectSectorsThink = (Map: MapsGameType, selectSector:
                 if (isDevMode) {
                     map = newMap
                 } else {
-                    console.log("deleteSectorSelection")
+                    /*console.log("deleteSectorSelection")*/
                     map = deleteSectorSelection(map, selectSector)
+                    setHandleAnimation(map,sectorInMemory,selectSectorInMemory,false)
                 }
             }
         }
-        dispatch(threeInLineAction.setMap(findBonusBumFunc(map)))
+        dispatch(threeInLineAction.setMap(map))
     }
 }
 

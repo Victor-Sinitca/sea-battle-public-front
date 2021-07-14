@@ -1,4 +1,4 @@
-import {SectorGameType} from "../Sector";
+import {SectorGameType} from "../Sector/Sector";
 
 export const isNearbyWithSector = (selectSector: SectorGameType |null, sector: SectorGameType) => {
     return ((selectSector?.sectorState.x === sector.sectorState.x - 1 && selectSector?.sectorState.y === sector.sectorState.y)

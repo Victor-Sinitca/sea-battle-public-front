@@ -1,6 +1,6 @@
 import React, {FC} from "react";
 import s from "./DeskGame.module.css"
-import {Sector, SectorGameType} from "./Sector";
+import {Sector, SectorGameType} from "./Sector/Sector";
 
 export type MapsGameType = Array<Array<SectorGameType>>
 type PropsType = {
@@ -27,7 +27,7 @@ const Desk: FC<PropsType> = ({userMap,deskState, returnMouseDown,selectSector,re
     }
 
     return (
-        <div style={{display:"grid", gridTemplateColumns: repeat(deskState.y), gridTemplateRows:repeat(deskState.x)}}>
+        <div style={{display:"grid", overflow:"hidden", gridTemplateColumns: repeat(deskState.y), gridTemplateRows:repeat(deskState.x)}}>
             {userMap.map(a => a.map(b =>
                 <Sector returnMouseDown={returnMouseDown}
                         returnMouseUp={returnMouseUp}

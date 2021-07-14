@@ -22,6 +22,8 @@ export const initMapGame3inLine = (x: number = 10, y: number = 10 , gemsCount = 
                     y: i,
                     isSelected: false,
                     isFirstClick: false,
+                    animateMove:  null,
+                    animateStart:false,
                 },
                 date: {
                     color: "red",

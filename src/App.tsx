@@ -33,7 +33,7 @@ function App() {
             <div className="displayHeader"><Header/></div>
             <div className="displayNavBar"><NavBar/></div>
             <div className="displayPlace">
-               {/* <Route path='/' render={() => <Redirect to={"/placeBattleMan"}/>}/>*/}
+                {/* <Route path='/' render={() => <Redirect to={"/placeBattleMan"}/>}/>*/}
                 <Route path='/placeBattleMan' render={() => <PlaceBattle/>}/>
                 <Route path='/dragDrop' render={() => <DragDrop/>}/>
                 <Route path='/game' render={() => <GameContainer/>}/>

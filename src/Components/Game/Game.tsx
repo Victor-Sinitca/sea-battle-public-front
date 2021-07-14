@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from "react";
 import Desk, {MapsGameType} from "./DeskGame";
-import {SectorGameType} from "./Sector";
+import {SectorGameType} from "./Sector/Sector";
 import {isNearbyWithSector} from "./gameLogic/isNearbyWithSector";
 import {SetIsFirstClickSector} from "./gameLogic/setIsFirstClickSector";
 import {initMapGame3inLine} from "./gameLogic/initMapGame3inLine";
@@ -13,31 +13,33 @@ import {checkMap} from "./gameLogic/checkMap";
 import {LeftBar3inLine} from "./gameLogic/LeftBar3inLine";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    boomEffectThink,
     checkOnLineInSelectSectorsThink, replacementSectorsThink,
     selectNewSectorThink,
     threeInLineAction,
     unselectNewSectorThink
 } from "../../redux/threeInLine-reduser";
 import {
-    getDeskState, getGemsCount,
+    getDeskState, getGemsCount, getIsBoom,
     getIsDevMode,
     getIsEndTurn,
     getPrevMap,
     getScore,
     getSelectSector
 } from "../../redux/threeInLine-selectors";
+import {boomFunc1} from "./gameLogic/boomFunc1";
 
 
 export type deskStateType = {
     x: number, y: number, length: number
 }
-type PropsType ={
+type PropsType = {
     map: MapsGameType
     gemsCount: number
 }
-export const Game: FC<PropsType> = ({map,gemsCount}) => {
+export const Game: FC<PropsType> = ({map, gemsCount}) => {
     const dispatch = useDispatch()
-    const [isBoom, setIsBoom] = useState<boolean>(false)
+    /* const [isBoom, setIsBoom] = useState<boolean>(false)*/
     const [endMove, setEndMove] = useState<boolean>(false)
     const deskState = useSelector(getDeskState)
     const prevMap = useSelector(getPrevMap)
@@ -45,6 +47,7 @@ export const Game: FC<PropsType> = ({map,gemsCount}) => {
     const isDevMode = useSelector(getIsDevMode)
     const selectSector = useSelector(getSelectSector)
     const isEndTurn = useSelector(getIsEndTurn)
+    const isBoom = useSelector(getIsBoom)
 
     const onMouseDown = (sector: SectorGameType) => {
         if (!isEndTurn) {
@@ -59,7 +62,7 @@ export const Game: FC<PropsType> = ({map,gemsCount}) => {
                     // выбран сектор не рядом выделение сектора
                     // удаление старого выдления, установка нового выделения
                     // запись карты
-                    dispatch(replacementSectorsThink(map, sector,selectSector))
+                    dispatch(replacementSectorsThink(map, sector, selectSector))
                     dispatch(threeInLineAction.setSelectSector(sector))
                 }
             } else {
@@ -75,7 +78,7 @@ export const Game: FC<PropsType> = ({map,gemsCount}) => {
             } else {
                 dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector, true))
             }
-        } else if(map) {
+        } else if (map) {
             dispatch(selectNewSectorThink(map, sector))
         }
 
@@ -99,19 +102,22 @@ export const Game: FC<PropsType> = ({map,gemsCount}) => {
     useEffect(() => {
         if (!isDevMode) {
             /* console.log("boomFunc")*/
-            setTimeout(() => {
-                if (isEndTurn && !isBoom) {
+
+            if (isEndTurn && !isBoom) {
+              /*  dispatch(boomEffectThink(map,gemsCount,score))*/
+                setTimeout(() => {
                     /* console.log("boomFunc ==> is bum")*/
-                    let boomFuncState = boomFunc(map,gemsCount)
+                    let boomFuncState = boomFunc1(map, gemsCount)
                     dispatch(threeInLineAction.setMap(boomFuncState.map))
                     dispatch(threeInLineAction.setAddScore(boomFuncState.score))
                     dispatch(threeInLineAction.setScore(score + boomFuncState.score))
-                    setIsBoom(true)
-                } else {
-                    /*console.log("boomFunc ==> new turn")*/
-                    setIsBoom(false)
-                }
-            }, 800);
+                    dispatch(threeInLineAction.setIsBoom(true))
+                }, 800);
+            } else {
+                /*console.log("boomFunc ==> new turn")*/
+                dispatch(threeInLineAction.setIsBoom(false))
+            }
+
         }
 
     }, [isEndTurn, isBoom])
@@ -120,42 +126,43 @@ export const Game: FC<PropsType> = ({map,gemsCount}) => {
     useEffect(() => {
         /* console.log("checkMap")*/
         if (isBoom && !isDevMode) {
+            /*setTimeout(() => {*/
             const newMap = checkMap(map)
             if (newMap.isBum) {
-               /* console.log("checkMap ==> isBum")  */
+                /* console.log("checkMap ==> isBum")  */
                 dispatch(threeInLineAction.setMap(findBonusBumFunc(map)))
-                setIsBoom(false)
+                dispatch(threeInLineAction.setIsBoom(false))
             } else {
                 /*console.log("checkMap ==> new turn")*/
                 dispatch(threeInLineAction.setIsEndTurn(false))
-                setIsBoom(false)
+                dispatch(threeInLineAction.setIsBoom(false))
             }
+            /* }, 1500);*/
         }
     }, [isBoom])
 
 // проверка карты на возможность хода
-   /* useEffect(() => {
-        /!*console.log("checkMapOnMove")*!/
-        if (!isEndTurn) {
-            if (!checkMapOnMove(map)) {
-                setTimeout(() => {
-                    /!* console.log("checkMapOnMove ==> init map")*!/
-                    dispatch(threeInLineAction.setMap(initMapGame3inLine(deskState.x, deskState.y , gemsCount)))
-                }, 2000)
-            }
-        }
-    }, [isEndTurn])
-*/
+    /* useEffect(() => {
+         /!*console.log("checkMapOnMove")*!/
+         if (!isEndTurn) {
+             if (!checkMapOnMove(map)) {
+                 setTimeout(() => {
+                     /!* console.log("checkMapOnMove ==> init map")*!/
+                     dispatch(threeInLineAction.setMap(initMapGame3inLine(deskState.x, deskState.y , gemsCount)))
+                 }, 2000)
+             }
+         }
+     }, [isEndTurn])
+ */
 
     useEffect(() => {
         setEndMove(!checkMapOnMove(map))
 
-    } )
-
+    })
 
 
     return <div className={s.displayMap}>
-        <LeftBar3inLine map ={map} setEndMove={setEndMove} gemsCount={gemsCount}/>
+        <LeftBar3inLine map={map} setEndMove={setEndMove} gemsCount={gemsCount}/>
         <div className={s.mainDisplay}>
             <div style={{display: "grid"}}>
                 <div className={s.header}>

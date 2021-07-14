@@ -18,6 +18,8 @@ export const initMapGame3inLineFalseGame = (x: number = 10, y: number = 10) => {
                     y: i,
                     isSelected: false,
                     isFirstClick: false,
+                    animateMove:  null,
+                    animateStart:false,
                 },
                 date: {
                     color: "red",

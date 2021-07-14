@@ -1,6 +1,6 @@
 import {MapsGameType} from "../DeskGame";
 import {checkOnBonusScore} from "./isSectorInLine";
-import {SectorGameType} from "../Sector";
+import {SectorGameType} from "../Sector/Sector";
 
 function blowUpSector(sector: SectorGameType) {
     sector.date.isBum = true

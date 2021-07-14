@@ -1,5 +1,5 @@
 import {MapsGameType} from "../DeskGame";
-import {SectorGameType} from "../Sector";
+import {SectorGameType} from "../Sector/Sector";
 
 
 export const SetIsFirstClickSector =(map: MapsGameType, sector: SectorGameType)=>{

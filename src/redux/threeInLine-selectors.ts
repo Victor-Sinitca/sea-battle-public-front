@@ -27,3 +27,6 @@ export const getIsEndTurn =(state:AppStateType)=>{
 export const getGemsCount =(state:AppStateType)=>{
     return state.threeInLine.gemsCount
 }
+export const getIsBoom =(state:AppStateType)=>{
+    return state.threeInLine.isBoom
+}

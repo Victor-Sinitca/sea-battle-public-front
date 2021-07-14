@@ -1,4 +1,4 @@
-import {SectorGameType} from "../Sector";
+import {SectorGameType} from "../Sector/Sector";
 
 
 export const sectorsNotEqual =(sector1:SectorGameType,sector2:SectorGameType )=>{

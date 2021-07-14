@@ -1,5 +1,5 @@
 import {MapsGameType} from "../DeskGame";
-import {SectorGameType} from "../Sector";
+import {SectorGameType} from "../Sector/Sector";
 
 
 export const replaceSectors =(map: MapsGameType, firstSector: SectorGameType, secondSector: SectorGameType)=>{

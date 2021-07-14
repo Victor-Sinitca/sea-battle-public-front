@@ -3,10 +3,10 @@ import {SectorGameType} from "../Sector/Sector";
 import {getRandomInt} from "../../../commen/logics/getRandom/getRandom";
 
 
-export const boomFunc = (Map: MapsGameType, gemsCount = 4 as number) => {
+export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number) => {
     let map = [...Map]
     let score = 0
-
+    let pozNewSector = 0
 
     function setSectorH(map: MapsGameType, i: number, j: number, I: number) {
         if (map[I]?.[j]) {
@@ -43,7 +43,7 @@ export const boomFunc = (Map: MapsGameType, gemsCount = 4 as number) => {
                     animateMove: {
                         isMove:false,
                         shift: true,
-                        i: I - i,
+                        i: I - i - pozNewSector ,
                         j: 0
                     },
                     animateStart: false,
@@ -57,6 +57,7 @@ export const boomFunc = (Map: MapsGameType, gemsCount = 4 as number) => {
                     bonusSector: 0,
                 }
             }
+            pozNewSector++
         }
     }
 
@@ -101,10 +102,12 @@ export const boomFunc = (Map: MapsGameType, gemsCount = 4 as number) => {
         } //сектор не взорван - меняемся, сектора нет - генерируем новый сектор
     }
 
+
 // уничтожение и замещение секторов, подсчет очков
     // бонусные сектора: 1 - горизонтальный взрыв, 2 - вертикальный взрыв, 3 - г+в взрыв, 4 - алмаз
-    for (let i = map.length - 1; i >= 0; i--) {
-        for (let j = map[i].length - 1; j >= 0; j--) {
+    for (let j = map[0].length - 1; j >= 0; j--) {
+        pozNewSector = 0
+        for (let i = map.length - 1; i >= 0; i--) {
             if (map[i][j].date.isBum) { // сектор взорван
                 if (map[i][j].date.score) {
                     score = score + map[i][j].date.score //собираем очки
