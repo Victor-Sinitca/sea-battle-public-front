@@ -1,118 +1,27 @@
-.active {
-    display: grid;
-    grid-template-rows: 0px 0px;
-    border-radius: 5px;
-    /* border: solid 1px black;*/
-    box-shadow: inset 2px 2px 5px #374884, inset -2px -2px 5px #374884;
-}
-
-.noActive {
-    display: grid;
-    grid-template-rows: 0px 0px;
-}
-
 .img {
     border-radius: 5px;
     height: 95%;
     width: 95%;
+    -moz-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none;
+    pointer-events: none;
 }
-
+.imgBonus {
+    position: relative;
+    bottom: 50px;
+    border-radius: 5px;
+    height: 95%;
+    width: 95%;
+    -moz-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none;
+    pointer-events: none;
+}
 .isBum {
     border-radius: 5px;
    /* background-color: #10ac05;*/
     height: 95%;
     width: 95%;
 }
-
-.devInf {
-    display: inline-flex;
+.score{
+    position: relative;
+    bottom: 50px;
 }
 
-.active :active {
-    /*animation: shiftD-B 500ms reverse;*/
-   /* animation: shiftR 500ms reverse;*/
-
-        animation:  sectorDown 1000ms reverse ;
-}
-
-.active.isNav {
-    animation: shiftL-B 500ms reverse;
-}
-.noActive.isNav {
-    animation: shiftL-B 500ms reverse linear;
-}
-@keyframes sectorDown {
-    100% {
-        transform: translate(0, -1100%);
-    }
-}
-
-@keyframes shiftL-B {
-    50% {
-        /*transform: translate(-100%, 0);*/
-
-    }
-}
-
-
-
-.animateShift {
-    animation: shift 500ms reverse;
-}
-.animateShift-Back {
-    animation: shift-back 5000ms reverse;
-}
-
-@keyframes shift-back {
-    50% {
-        transform: translate(100%, 0);
-    }
-}
-@keyframes shift {
-    100% {
-        transform: translate(100%, 0);
-    }
-}
-
-
-
-@keyframes shiftR-B {
-    50% {
-        transform: translate(100%, 0);
-    }
-}
-@keyframes shiftU-B {
-    50% {
-        transform: translate(0,-100%);
-    }
-}
-@keyframes shiftD-B {
-    50% {
-        transform: translate(0,100%);
-    }
-}
-
-
-@keyframes shiftL {
-    100% {
-        transform: translate(-100%, 0);
-    }
-}
-
-@keyframes shiftR {
-    100% {
-        transform: translate(100%, 0);
-    }
-}
-
-@keyframes shiftU {
-    100% {
-        transform: translate(0, -100%);
-    }
-}
-
-@keyframes shiftD {
-    100% {
-        transform: translate(0, 100%);
-    }
-}

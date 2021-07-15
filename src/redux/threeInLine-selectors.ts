@@ -1,32 +1,39 @@
 import {AppStateType} from "./redux-store";
+import {initAnimationList} from "../Components/Game/gameLogic/initMapGame3inLine";
 
-export const getIsDevMode =(state:AppStateType)=>{
+export const getIsDevMode = (state: AppStateType) => {
     return state.threeInLine.isDevMode
 }
-export const getMap =(state:AppStateType)=>{
+export const getMap = (state: AppStateType) => {
     return state.threeInLine.map
 }
-export const getPrevMap =(state:AppStateType)=>{
+export const getPrevMap = (state: AppStateType) => {
     return state.threeInLine.prevMap
 }
-export const getScore =(state:AppStateType)=>{
+export const getScore = (state: AppStateType) => {
     return state.threeInLine.score
 }
-export const getAddScore =(state:AppStateType)=>{
+export const getAddScore = (state: AppStateType) => {
     return state.threeInLine.addScore
 }
-export const getDeskState =(state:AppStateType)=>{
+export const getDeskState = (state: AppStateType) => {
     return state.threeInLine.deskState
 }
-export const getSelectSector =(state:AppStateType)=>{
+export const getSelectSector = (state: AppStateType) => {
     return state.threeInLine.selectSector
 }
-export const getIsEndTurn =(state:AppStateType)=>{
+export const getIsEndTurn = (state: AppStateType) => {
     return state.threeInLine.isEndTurn
 }
-export const getGemsCount =(state:AppStateType)=>{
+export const getGemsCount = (state: AppStateType) => {
     return state.threeInLine.gemsCount
 }
-export const getIsBoom =(state:AppStateType)=>{
+export const getIsBoom = (state: AppStateType) => {
     return state.threeInLine.isBoom
+}
+export const getAnimationCount = (state: AppStateType) => {
+    return state.threeInLine.animationCount
+}
+export const getAnimationList = (state: AppStateType) => {
+    return state.threeInLine.animationList
 }

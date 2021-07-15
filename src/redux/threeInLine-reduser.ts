@@ -14,7 +14,8 @@ import {
     blowUpCrosshair,
     blowUpSelectedSectors
 } from "../Components/Game/gameLogic/blowUpFunc";
-import {boomFunc1} from "../Components/Game/gameLogic/boomFunc1";
+import {boomFunc1, setAnimationCSS} from "../Components/Game/gameLogic/boomFunc1";
+import {initAnimationList} from "../Components/Game/gameLogic/initMapGame3inLine";
 
 
 let initialState = {
@@ -27,13 +28,15 @@ let initialState = {
     isDevMode: false as boolean,
     selectSector: null as null | SectorGameType,
     isEndTurn: false as boolean,
-    isBoom: false as boolean
-
+    isBoom: false as boolean,
+    animationCount:0 as number,
+    animationList:null as null | Array<Array<string>>
 }
 
 type initialStateType = typeof initialState
 const threeInLineReducer = (state = initialState as initialStateType, action: ActionType): initialStateType => {
     switch (action.type) {
+
         case "threeInLine_SET_ADD_SCORE":
             return {
                 ...state,
@@ -78,6 +81,29 @@ const threeInLineReducer = (state = initialState as initialStateType, action: Ac
             return {
                 ...state,
                 isBoom: action.value
+            }
+        case "threeInLine_SET_ANIMATION_COUNT":
+            return {
+                ...state,
+               animationCount: action.count
+            }
+        case "threeInLine_SET_ANIMATION_LIST":
+            return {
+                ...state,
+                animationList: action.animationList
+            }
+        case "threeInLine_CHANGE_ANIMATION_LIST":
+            if(state.animationList){
+                let copyState = {...state}
+                copyState.animationList =[...state.animationList]
+                copyState.animationList[action.i]= [...state.animationList[action.i]]
+                copyState.animationList[action.i][action.j] = action.animation
+                return copyState
+            } else  return state
+        case "threeInLine_DECREASE_ANIMATION_COUNT":
+            return {
+                ...state,
+                animationCount:state.animationCount-1
             }
         case "threeInLine_DELETE_ANIMATION_IN_SECTOR":
             if (state.map) {
@@ -138,8 +164,18 @@ export const threeInLineAction = {
     deleteAnimationInSector: (i: number, j: number) => {
         return ({type: "threeInLine_DELETE_ANIMATION_IN_SECTOR", i, j} as const)
     },
-
-
+    setAnimationCount: (count: number) => {
+        return ({type: "threeInLine_SET_ANIMATION_COUNT", count} as const)
+    },
+    decreaseAnimationCount: () => {
+        return ({type: "threeInLine_DECREASE_ANIMATION_COUNT"} as const)
+    },
+    setAnimationList: ( animationList:Array<Array<string>>) => {
+        return ({type: "threeInLine_SET_ANIMATION_LIST",animationList} as const)
+    },
+    changeAnimationList: (i: number, j: number, animation:string) => {
+        return ({type: "threeInLine_CHANGE_ANIMATION_LIST",i, j,animation} as const)
+    },
 }
 
 export const selectNewSectorThink = (map: MapsGameType, sector: SectorGameType) => {
@@ -162,19 +198,21 @@ export const replacementSectorsThink = (Map: MapsGameType, sector: SectorGameTyp
         dispatch(threeInLineAction.setSelectSector(null))
     }
 }
-export const boomEffectThink = (map: MapsGameType, gemsCount: number, score: number) => {
+/*export const boomEffectThink = (map: MapsGameType, gemsCount: number, score: number,animationList:Array<Array<string>>) => {
     return async (dispatch: DispatchType) => {
         await setTimeout(() => {
-            /* console.log("boomFunc ==> is bum")*/
-            let boomFuncState = boomFunc1(map, gemsCount)
+            /!* console.log("boomFunc ==> is bum")*!/
+            let boomFuncState = boomFunc1(map, gemsCount,animationList)
             dispatch(threeInLineAction.setMap(boomFuncState.map))
+            dispatch(threeInLineAction.setAnimationList(boomFuncState.animationList))
             dispatch(threeInLineAction.setAddScore(boomFuncState.score))
             dispatch(threeInLineAction.setScore(score + boomFuncState.score))
         }, 1500);
         dispatch(threeInLineAction.setIsBoom(true))
     }
-}
-const setHandleAnimation = (Map: MapsGameType, sector1: SectorGameType, sector2: SectorGameType, isLine: boolean,) => {
+}*/
+const setHandleAnimation = (Map: MapsGameType, sector1: SectorGameType, sector2: SectorGameType,
+                            isLine: boolean, animationList:Array<Array<string>>) => {
     let map = [...Map]
     map[sector1.sectorState.y][sector1.sectorState.x].sectorState.animateMove = {
         j: sector2.sectorState.x - sector1.sectorState.x,
@@ -183,18 +221,32 @@ const setHandleAnimation = (Map: MapsGameType, sector1: SectorGameType, sector2:
         isMove: isLine
 
     }
+    setAnimationCSS(sector1.sectorState.y, sector1.sectorState.x,
+        sector2.sectorState.y - sector1.sectorState.y,
+        sector2.sectorState.x - sector1.sectorState.x,
+        isLine,isLine,animationList
+    )
     map[sector2.sectorState.y][sector2.sectorState.x].sectorState.animateMove = {
         j: sector1.sectorState.x - sector2.sectorState.x,
         i: sector1.sectorState.y - sector2.sectorState.y,
         shift: isLine,
         isMove: isLine
     }
+    setAnimationCSS(sector2.sectorState.y, sector2.sectorState.x,
+        sector1.sectorState.y - sector2.sectorState.y,
+        sector1.sectorState.x - sector2.sectorState.x,
+        isLine,isLine,animationList
+    )
 }
 
 
-export const checkOnLineInSelectSectorsThink = (Map: MapsGameType, selectSector: SectorGameType, sector: SectorGameType, isDevMode = false) => {
+export const checkOnLineInSelectSectorsThink = (Map: MapsGameType,
+                                                selectSector: SectorGameType, sector: SectorGameType,
+                                                isDevMode = false,
+                                                AnimationList:Array<Array<string>>) => {
     return (dispatch: DispatchType) => {
         // клик рядом с выделеным сектором
+        let animationList=[...AnimationList]
         let map = [...Map]
         dispatch(threeInLineAction.setSelectSector(null))
         if (selectSector.date.state === 8) {
@@ -237,7 +289,8 @@ export const checkOnLineInSelectSectorsThink = (Map: MapsGameType, selectSector:
                 /*console.log("onMouseDown isLineInMap")*/
                 //проверяем на бонусные сектора в секторах для взрыва
                 map = findBonusBumFunc(isLineInMap)
-                setHandleAnimation(map,sectorInMemory,selectSectorInMemory,true)
+                setHandleAnimation(map,sectorInMemory,selectSectorInMemory,true , animationList )
+                dispatch(threeInLineAction.setAnimationCount(2))
                 //установка конца хода
                 !isDevMode && dispatch(threeInLineAction.setIsEndTurn(true))
             } else {
@@ -247,7 +300,9 @@ export const checkOnLineInSelectSectorsThink = (Map: MapsGameType, selectSector:
                 } else {
                     /*console.log("deleteSectorSelection")*/
                     map = deleteSectorSelection(map, selectSector)
-                    setHandleAnimation(map,sectorInMemory,selectSectorInMemory,false)
+                    setHandleAnimation(map,sectorInMemory,selectSectorInMemory,false , animationList )
+
+                    dispatch(threeInLineAction.setAnimationCount(2))
                 }
             }
         }

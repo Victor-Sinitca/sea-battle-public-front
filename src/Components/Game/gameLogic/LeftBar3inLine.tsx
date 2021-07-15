@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {initMapGame3inLine} from "./initMapGame3inLine";
+import {initAnimationList, initMapGame3inLine} from "./initMapGame3inLine";
 import {checkMap} from "./checkMap";
 import {boomFunc} from "./boomFunc";
 import {findBonusBumFunc} from "./findBonusBumFunc";
@@ -73,6 +73,10 @@ export const LeftBar3inLine: FC<PropsType> = ({map, setEndMove, gemsCount}) => {
                 value === "y" ? deskState.y - 1 : deskState.y,
                 gemsCount
             )))
+            dispatch(threeInLineAction.setAnimationList(initAnimationList(
+                value === "x" ? deskState.x - 1 : deskState.x,
+                value === "y" ? deskState.y - 1 : deskState.y,
+            )))
         }
     }
 
@@ -85,6 +89,10 @@ export const LeftBar3inLine: FC<PropsType> = ({map, setEndMove, gemsCount}) => {
             value === "x" ? deskState.x + 1 : deskState.x,
             value === "y" ? deskState.y + 1 : deskState.y,
             gemsCount
+        )))
+        dispatch(threeInLineAction.setAnimationList(initAnimationList(
+            value === "x" ? deskState.x + 1 : deskState.x,
+            value === "y" ? deskState.y + 1 : deskState.y,
         )))
     }
     const changeSizeSector = (add: boolean) => {

@@ -3,7 +3,10 @@ import {MapsGameType} from "../DeskGame";
 
 
 export const initMapGame3inLine = (x: number = 10, y: number = 10 , gemsCount = 4 as number) => {
-    let map = Array.from(Array(x), () => new Array(y)) as MapsGameType
+    let map = Array.from(Array(x),
+        () => new Array(y)
+
+    ) as MapsGameType
 
     for (let i = 0; i < x; i++) {
         for (let j = 0; j < y; j++) {
@@ -39,4 +42,16 @@ export const initMapGame3inLine = (x: number = 10, y: number = 10 , gemsCount = 
 
 
     return map
+}
+
+
+export const initAnimationList = (x: number = 10, y: number = 10 ) => {
+    let list = Array.from(Array(x),() => new Array(y) ) as Array<Array<string>>
+
+    for (let i = 0; i < x; i++) {
+        for (let j = 0; j < y; j++) {
+            list[i][j]=""
+        }
+    }
+    return list
 }

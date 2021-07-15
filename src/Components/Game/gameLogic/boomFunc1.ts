@@ -3,10 +3,30 @@ import {SectorGameType} from "../Sector/Sector";
 import {getRandomInt} from "../../../commen/logics/getRandom/getRandom";
 
 
-export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number) => {
+
+export function setAnimationCSS(i:number, j:number, ii: number, jj:number,
+                                isMove:boolean, shift:boolean,
+                                animationList:Array<Array<string>> ) {
+    let styleSheet = document.styleSheets[0];
+    let animationName = `keyframe${i}${j}${ii}${jj}${isMove}${shift}`
+    let keyframes =
+        `@-webkit-keyframes ${animationName} {
+                     ${shift? "100%" :"50%"} {transform: translate(${j * 100}%, ${i * 100}%)}
+                 }`
+    styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+    animationList[i][j]=animationName
+}
+
+
+
+
+export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number, AnimationList:Array<Array<string>>) => {
     let map = [...Map]
+    let animationList = [...AnimationList]
+
     let score = 0
     let pozNewSector = 0
+    let animationsCount = 0
 
     function setSectorH(map: MapsGameType, i: number, j: number, I: number) {
         if (map[I]?.[j]) {
@@ -16,11 +36,13 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number) => {
             map[i][j].date.bonusSector = map[I][j].date.bonusSector
             map[i][j].date.state = map[I][j].date.state
             map[i][j].sectorState.animateMove = {
-                isMove:false,
+                isMove: false,
                 shift: true,
                 i: I - i,
                 j: 0
             }
+            setAnimationCSS(i,j,I - i,0,false,true,animationList)
+            animationsCount++
             map[I][j].date.isBum = true
         } else {
             //сектора нет - создаем новый сектор
@@ -41,9 +63,9 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number) => {
                     isSelected: false,
                     isFirstClick: false,
                     animateMove: {
-                        isMove:false,
+                        isMove: false,
                         shift: true,
-                        i: I - i - pozNewSector ,
+                        i: I - i - pozNewSector,
                         j: 0
                     },
                     animateStart: false,
@@ -57,6 +79,8 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number) => {
                     bonusSector: 0,
                 }
             }
+            setAnimationCSS(i,j,I - i - pozNewSector,0,false,true,animationList)
+            animationsCount++
             pozNewSector++
         }
     }
@@ -75,12 +99,17 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number) => {
                 map[i][j].date.state = map[ii][j].date.state
                 map[ii][j].date.addBonusSector = 0
 
+
+                setAnimationCSS(i,j,ii-i,0,false,true,animationList)
+
                 map[i][j].sectorState.animateMove = {
-                    isMove:false,
+                    isMove: false,
                     shift: true,
                     i: ii - i,
                     j: 0
                 }
+
+                animationsCount++
 
 
             } else if (map[ii][j].date.addBonusSector === 4) {// добавляем новый  сектор если он есть
@@ -88,12 +117,18 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number) => {
                 map[i][j].date.state = 8
                 map[ii][j].date.addBonusSector = 0
 
+
+                setAnimationCSS(i,j,ii-i, 0,false,true,animationList)
                 map[i][j].sectorState.animateMove = {
-                    isMove:false,
+                    isMove: false,
                     shift: true,
                     i: ii - i,
                     j: 0
                 }
+
+
+
+                animationsCount++
 
 
             } else fastening(ii, i, j) // поднимаемся выше
@@ -130,7 +165,9 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number) => {
     console.log("очки:" + score)
     return {
         map,
-        score
+        score,
+        animationsCount,
+        animationList,
     }
 }
 
