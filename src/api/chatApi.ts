@@ -118,12 +118,12 @@ export const chatApi = {
         subscribers[eventName].push(callback)
         return () => {
             // @ts-ignore
-            subscribers[eventName] = subscribers[eventName].filter(s => s != callback)
+            subscribers[eventName] = subscribers[eventName].filter(s => s !== callback)
         }
     },
     unSubscribe(eventName: eventName, callback: callbackType) {
         // @ts-ignore
-        subscribers[eventName] = subscribers[eventName].filter(s => s != callback)
+        subscribers[eventName] = subscribers[eventName].filter(s => s !== callback)
     },
     sendMessage(message: any) {
         ws?.send(JSON.stringify(message))

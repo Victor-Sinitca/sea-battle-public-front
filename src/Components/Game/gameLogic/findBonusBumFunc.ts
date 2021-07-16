@@ -1,6 +1,4 @@
 import {MapsGameType} from "../DeskGame";
-import {SectorGameType} from "../Sector/Sector";
-import {getRandomInt} from "../../../commen/logics/getRandom/getRandom";
 
 
 export const findBonusBumFunc = (Map: MapsGameType,) => {

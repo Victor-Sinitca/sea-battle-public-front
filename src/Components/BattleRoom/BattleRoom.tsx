@@ -43,7 +43,7 @@ const BattleRoom: FC = () => {
         return () => {
             dispatch(stopMessagesListening())
         }
-    }, [])
+    }, [dispatch])
     return <div>
         <div className={s.displayWindow}>
             <div className={s.window1}>

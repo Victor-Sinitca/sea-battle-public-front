@@ -1,29 +1,22 @@
 import {MapsGameType} from "../DeskGame";
-import {SectorGameType} from "../Sector/Sector";
 import {getRandomInt} from "../../../commen/logics/getRandom/getRandom";
 
 
-
-export function setAnimationCSS(i:number, j:number, ii: number, jj:number,
-                                isMove:boolean, shift:boolean,
-                                animationList:Array<Array<string>> ) {
+export function setAnimationCSS(i: number, j: number, ii: number, jj: number,
+                                fall: boolean, shift: boolean,) {
     let styleSheet = document.styleSheets[0];
-    let animationName = `keyframe${i}${j}${ii}${jj}${isMove}${shift}`
+    let animationName = `keyframe${i}${j}${ii}${jj}${fall}${shift}`
     let keyframes =
         `@-webkit-keyframes ${animationName} {
-                     ${shift? "100%" :"50%"} {transform: translate(${j * 100}%, ${i * 100}%)}
+                     ${shift ? "100%" : "50%"} {transform: translate(${jj * 100}%, ${ii * 100}%)}
                  }`
     styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
-    animationList[i][j]=animationName
+    return animationName
 }
 
 
-
-
-export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number, AnimationList:Array<Array<string>>) => {
+export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number,) => {
     let map = [...Map]
-    let animationList = [...AnimationList]
-
     let score = 0
     let pozNewSector = 0
     let animationsCount = 0
@@ -35,13 +28,11 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number, AnimationL
             map[i][j].date.isBum = false
             map[i][j].date.bonusSector = map[I][j].date.bonusSector
             map[i][j].date.state = map[I][j].date.state
+            // устанавливаем анимацию сдвига сектора
             map[i][j].sectorState.animateMove = {
-                isMove: false,
-                shift: true,
-                i: I - i,
-                j: 0
+                name: setAnimationCSS(i, j, I - i, 0, true, true),
             }
-            setAnimationCSS(i,j,I - i,0,false,true,animationList)
+            // увеличиваем счетчик анимаций
             animationsCount++
             map[I][j].date.isBum = true
         } else {
@@ -63,10 +54,7 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number, AnimationL
                     isSelected: false,
                     isFirstClick: false,
                     animateMove: {
-                        isMove: false,
-                        shift: true,
-                        i: I - i - pozNewSector,
-                        j: 0
+                        name: setAnimationCSS(i, j, I - i - pozNewSector, 0, true, true),
                     },
                     animateStart: false,
                 },
@@ -79,7 +67,7 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number, AnimationL
                     bonusSector: 0,
                 }
             }
-            setAnimationCSS(i,j,I - i - pozNewSector,0,false,true,animationList)
+            // увеличиваем счетчик анимаций
             animationsCount++
             pozNewSector++
         }
@@ -98,39 +86,23 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number, AnimationL
                 map[i][j].date.bonusSector = map[ii][j].date.addBonusSector
                 map[i][j].date.state = map[ii][j].date.state
                 map[ii][j].date.addBonusSector = 0
-
-
-                setAnimationCSS(i,j,ii-i,0,false,true,animationList)
-
+                // устанавливаем анимацию сдвига сектора
                 map[i][j].sectorState.animateMove = {
-                    isMove: false,
-                    shift: true,
-                    i: ii - i,
-                    j: 0
+                    name: setAnimationCSS(i, j, ii - i, 0, true, true),
                 }
-
+                // увеличиваем счетчик анимаций
                 animationsCount++
-
 
             } else if (map[ii][j].date.addBonusSector === 4) {// добавляем новый  сектор если он есть
                 map[i][j].date.isBum = false
                 map[i][j].date.state = 8
                 map[ii][j].date.addBonusSector = 0
-
-
-                setAnimationCSS(i,j,ii-i, 0,false,true,animationList)
+                // устанавливаем анимацию сдвига сектора
                 map[i][j].sectorState.animateMove = {
-                    isMove: false,
-                    shift: true,
-                    i: ii - i,
-                    j: 0
+                    name: setAnimationCSS(i, j, ii - i, 0, true, true),
                 }
-
-
-
+                // увеличиваем счетчик анимаций
                 animationsCount++
-
-
             } else fastening(ii, i, j) // поднимаемся выше
         } else {
             setSectorH(map, i, j, ii)
@@ -162,12 +134,11 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number, AnimationL
             }
         }
     }
-    console.log("очки:" + score)
+    /*console.log("очки:" + score)*/
     return {
         map,
         score,
         animationsCount,
-        animationList,
     }
 }
 

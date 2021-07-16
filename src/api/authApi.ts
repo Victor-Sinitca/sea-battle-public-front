@@ -1,5 +1,5 @@
 import $api, {API_URL} from "./index";
-import axios, {AxiosRequestConfig} from "axios";
+import axios from "axios";
 
 export  type UserType={
     email: string,

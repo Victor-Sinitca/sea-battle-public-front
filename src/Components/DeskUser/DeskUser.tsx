@@ -3,13 +3,9 @@ import s from "./DeskUser.module.css";
 import Desk from "./Desk/Desk";
 import ShipBar from "./ShipBar/ShipBar";
 import SetShipBar from "./SetShipBar/SetShipBar";
-import user from "../../assets/img/human-head.png";
-import user1 from "../../assets/img/human-head1.png";
-import compPhoto from "../../assets/img/intelligence-brain.png";
 import {useDispatch} from "react-redux";
 import {actionBattleMap, setShipsRandom,} from "../../redux/battleMap-reduсer";
 import {compType, MapsType, SectorType, settingShipUserType, ShipsType} from "../../../Types/Types";
-import {startGameUserOnWS} from "../../redux/chat-reducer";
 import {deleteSaveBattleMap} from "../../redux/saveBattleMap-reduсer";
 
 type PropsType = {
@@ -70,9 +66,7 @@ const DeskUser: FC<PropsType> = ({
     const clearMapDispatch = (): void => {
         dispatch(actionBattleMap.clearTheMap(firstUser))
     }
-    const compGameDispatch = (): void => {
-        dispatch(actionBattleMap.toggleGameWithComp())
-    }
+
     const startNewGameDispatch = (): void => {
         dispatch(actionBattleMap.startNewGame());
         dispatch(deleteSaveBattleMap());

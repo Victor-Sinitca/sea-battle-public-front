@@ -1,8 +1,7 @@
 import React, {FC} from "react";
 import s from "./Battle.module.css"
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import DeskUserWithMan from "../DeskUser/DeskUserWithMan";
-import {getStartGame} from "../../redux/chat-selectors";
 import {getAuthUser} from "../../redux/authHttp-selectors";
 import {StartGameType} from "../../api/chatApi";
 

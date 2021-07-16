@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getActiveStartGameId, getListGamesRoom, getStartGame, getStatus} from "../../redux/chat-selectors";
 import {
     actionChat,
-    leaveGameRoomOfId, sendMessage,
+    leaveGameRoomOfId,
     sendMessageMB,
     startGameListening,
     startGameReducer,
@@ -13,7 +13,7 @@ import {
 import Battle from "../Battle/Battle";
 import {getAuthUser} from "../../redux/authHttp-selectors";
 import {ListStartedGames} from "./ListStartedGames/ListStartedGames";
-import {Chat, ChatInBattle} from "../pages/Chat/ChatPage";
+import {ChatInBattle} from "../pages/Chat/ChatPage";
 
 
 export const BattleList: FC = React.memo(() => {
@@ -43,7 +43,7 @@ export const BattleList: FC = React.memo(() => {
         return () => {
             dispatch(stopGameListening())
         }
-    }, [])
+    }, [dispatch])
 
 
     if (gameRoom.length < 1) {

@@ -1,5 +1,4 @@
 import {AppStateType} from "./redux-store";
-import {initAnimationList} from "../Components/Game/gameLogic/initMapGame3inLine";
 
 export const getIsDevMode = (state: AppStateType) => {
     return state.threeInLine.isDevMode
@@ -33,7 +32,4 @@ export const getIsBoom = (state: AppStateType) => {
 }
 export const getAnimationCount = (state: AppStateType) => {
     return state.threeInLine.animationCount
-}
-export const getAnimationList = (state: AppStateType) => {
-    return state.threeInLine.animationList
 }

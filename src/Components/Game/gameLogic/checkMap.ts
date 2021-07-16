@@ -18,7 +18,7 @@ export const checkMap = (Map: MapsGameType) => {
             if (!map[i][j].date.isBum) {
                 let isLine = false
                 // была ли линия по вертикали
-                let bonusScore = 0
+                /*let bonusScore = 0*/
                 // бонусные очки
                 if (map[i][j].date.state === map[i][j + 1]?.date.state
                     && map[i][j].date.state === map[i][j + 2]?.date.state) {

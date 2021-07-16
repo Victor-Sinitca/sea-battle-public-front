@@ -1,4 +1,4 @@
-import React, {FC, DragEvent, DragEventHandler} from "react";
+import React, {DragEvent, FC} from "react";
 import s from "./DragDrop.module.css"
 
 

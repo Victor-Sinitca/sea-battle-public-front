@@ -1,21 +1,14 @@
 import React, {FC} from "react";
-import {initAnimationList, initMapGame3inLine} from "./initMapGame3inLine";
+import {initMapGame3inLine} from "./initMapGame3inLine";
 import {checkMap} from "./checkMap";
-import {boomFunc} from "./boomFunc";
 import {findBonusBumFunc} from "./findBonusBumFunc";
 import {checkMapOnMove} from "./checkMapOnMove";
 import {initMapGame3inLineFalseGame} from "./initMapGame3inLineFalseGame";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    getAddScore,
-    getDeskState,
-    getGemsCount,
-    getIsDevMode,
-    getMap,
-    getScore
-} from "../../../redux/threeInLine-selectors";
+import {getAddScore, getDeskState, getIsDevMode, getScore} from "../../../redux/threeInLine-selectors";
 import {threeInLineAction} from "../../../redux/threeInLine-reduser";
 import {MapsGameType} from "../DeskGame";
+import {boomFunc1} from "./boomFunc1";
 
 type PropsType = {
     map: MapsGameType
@@ -33,7 +26,7 @@ export const LeftBar3inLine: FC<PropsType> = ({map, setEndMove, gemsCount}) => {
 
     const onClickBum = () => {
         dispatch(threeInLineAction.setPrevMap(JSON.parse(JSON.stringify(map))))
-        let boomFuncState = boomFunc(map, gemsCount)
+        let boomFuncState = boomFunc1(map, gemsCount)
         dispatch(threeInLineAction.setMap(boomFuncState.map))
         dispatch(threeInLineAction.setAddScore(boomFuncState.score))
         dispatch(threeInLineAction.setScore(score + boomFuncState.score))
@@ -73,10 +66,6 @@ export const LeftBar3inLine: FC<PropsType> = ({map, setEndMove, gemsCount}) => {
                 value === "y" ? deskState.y - 1 : deskState.y,
                 gemsCount
             )))
-            dispatch(threeInLineAction.setAnimationList(initAnimationList(
-                value === "x" ? deskState.x - 1 : deskState.x,
-                value === "y" ? deskState.y - 1 : deskState.y,
-            )))
         }
     }
 
@@ -89,10 +78,6 @@ export const LeftBar3inLine: FC<PropsType> = ({map, setEndMove, gemsCount}) => {
             value === "x" ? deskState.x + 1 : deskState.x,
             value === "y" ? deskState.y + 1 : deskState.y,
             gemsCount
-        )))
-        dispatch(threeInLineAction.setAnimationList(initAnimationList(
-            value === "x" ? deskState.x + 1 : deskState.x,
-            value === "y" ? deskState.y + 1 : deskState.y,
         )))
     }
     const changeSizeSector = (add: boolean) => {

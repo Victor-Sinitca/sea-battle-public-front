@@ -35,9 +35,8 @@ export type deskStateType = {
 type PropsType = {
     map: MapsGameType
     gemsCount: number
-    animationList : Array<Array<string>>
 }
-export const Game: FC<PropsType> = ({map, gemsCount,animationList}) => {
+export const Game: FC<PropsType> = ({map, gemsCount}) => {
     const dispatch = useDispatch()
     const [endMove, setEndMove] = useState<boolean>(false)
     const deskState = useSelector(getDeskState)
@@ -58,7 +57,7 @@ export const Game: FC<PropsType> = ({map, gemsCount,animationList}) => {
                     // если сектор был выделен  установка флага на снятие выделения
                     dispatch(threeInLineAction.setMap(SetIsFirstClickSector(map, sector)))
                 } else if (isNearbyWithSector(selectSector, sector)) {
-                    dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector, false, animationList))
+                    dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector, false))
                 } else {
                     // выбран сектор не рядом выделение сектора
                     // удаление старого выдления, установка нового выделения
@@ -77,7 +76,7 @@ export const Game: FC<PropsType> = ({map, gemsCount,animationList}) => {
             if (sector.sectorState.isSelected) {
                 dispatch(threeInLineAction.setMap(SetIsFirstClickSector(map, sector)))
             } else {
-                dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector, true, animationList))
+                dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector, true))
             }
         } else if (map) {
             dispatch(selectNewSectorThink(map, sector))
@@ -92,7 +91,7 @@ export const Game: FC<PropsType> = ({map, gemsCount,animationList}) => {
     const onMouseOver = (sector: SectorGameType) => {
         if (selectSector && !isEndTurn && sectorsNotEqual(sector, selectSector)) {
             if (isNearbyWithSector(selectSector, sector)) {
-                dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector,false, animationList))
+                dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector,false))
             } else {
                 dispatch(unselectNewSectorThink(map, selectSector))
             }
@@ -108,9 +107,8 @@ export const Game: FC<PropsType> = ({map, gemsCount,animationList}) => {
               /*  dispatch(boomEffectThink(map,gemsCount,score))*/
                 setTimeout(() => {
                     /* console.log("boomFunc ==> is bum")*/
-                    let boomFuncState = boomFunc1(map, gemsCount,animationList)
+                    let boomFuncState = boomFunc1(map, gemsCount)
                     dispatch(threeInLineAction.setMap(boomFuncState.map))
-                    dispatch(threeInLineAction.setAnimationList(boomFuncState.animationList))
                     dispatch(threeInLineAction.setAnimationCount(boomFuncState.animationsCount))
                     dispatch(threeInLineAction.setAddScore(boomFuncState.score))
                     dispatch(threeInLineAction.setScore(score + boomFuncState.score))
@@ -120,16 +118,14 @@ export const Game: FC<PropsType> = ({map, gemsCount,animationList}) => {
                 /*console.log("boomFunc ==> new turn")*/
                 dispatch(threeInLineAction.setIsBoom(false))
             }
-
         }
-
-    }, [isEndTurn, isBoom,animationCount])
+    }, [dispatch,isEndTurn, isBoom,animationCount,
+        /*map,*/gemsCount,isDevMode])
 
 // нахождение секторов для уничтожения
     useEffect(() => {
         /* console.log("checkMap")*/
         if (isBoom && !isDevMode) {
-           /* setTimeout(() => {*/
             const newMap = checkMap(map)
             if (newMap.isBum) {
                 /* console.log("checkMap ==> isBum")  */
@@ -140,9 +136,9 @@ export const Game: FC<PropsType> = ({map, gemsCount,animationList}) => {
                 dispatch(threeInLineAction.setIsEndTurn(false))
                 dispatch(threeInLineAction.setIsBoom(false))
             }
-            /* }, 500);*/
         }
-    }, [isBoom])
+    }, [dispatch,isBoom,
+        isDevMode,map])
 
 
 
@@ -188,7 +184,6 @@ export const Game: FC<PropsType> = ({map, gemsCount,animationList}) => {
                       returnMouseOver={onMouseOver}
                       isEndTurn={isEndTurn}
                       deskState={deskState}
-                      animationList={animationList}
                 />
                 {endMove && <div>нет ходов</div>}
             </div>
@@ -204,7 +199,6 @@ export const Game: FC<PropsType> = ({map, gemsCount,animationList}) => {
                           returnMouseOver={onMouseOver}
                           isEndTurn={isEndTurn}
                           deskState={deskState}
-                          animationList={animationList}
                     />
                 </div>
             </>}

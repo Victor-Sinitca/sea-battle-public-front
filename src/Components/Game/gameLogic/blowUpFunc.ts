@@ -4,6 +4,7 @@ import {SectorGameType} from "../Sector/Sector";
 
 function blowUpSector(sector: SectorGameType) {
     sector.date.isBum = true
+    sector.sectorState.isSelected=false
     sector.date.score = checkOnBonusScore(sector, 0)
     if (!sector.date.score) {
         sector.date.score = 20
