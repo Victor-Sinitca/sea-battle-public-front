@@ -12,7 +12,7 @@ export function createFieldFormik<FieldTypes>(
     props: any = {}
 ) {
     return <div>
-        {text ? <label>{text}</label> : null}
+        {text ? <label htmlFor={name}>{text}</label> : null}
         <Field name={name}{...props}>
             {({
                   field, // { name, value, onChange, onBlur }

@@ -59,20 +59,27 @@ export const toLogout = (): AnyBaseActionType => async (dispatch) => {
 export const login = (email: string, password: string,): AnyBaseActionType =>
     async (dispatch) => {
         try {
+            debugger
             const data = await authAPI.login(email, password)
-            localStorage.setItem('token', data.accessToken);
-            dispatch(actionAuth.setAuth(data.user, true,))
+            if(data){
+                localStorage.setItem('token', data.accessToken);
+                dispatch(actionAuth.setAuth(data.user, true,))
+            }
+
         } catch (e) {
+            debugger
             console.log("error in login" + e.message)
         }
     }
 export const registration = (email: string, password: string, name: string): AnyBaseActionType =>
     async (dispatch) => {
         try {
+            debugger
             const data = await authAPI.registration(email, password, name)
             localStorage.setItem('token', data.accessToken);
             dispatch(actionAuth.setAuth(data.user, true,))
         } catch (e) {
+            debugger
             console.log("error in authorization" + e.message)
         }
     }

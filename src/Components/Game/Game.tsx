@@ -113,7 +113,7 @@ export const Game: FC<PropsType> = ({map, gemsCount}) => {
                     dispatch(threeInLineAction.setAddScore(boomFuncState.score))
                     dispatch(threeInLineAction.setScore(score + boomFuncState.score))
                     dispatch(threeInLineAction.setIsBoom(true))
-                }, 400);
+                }, 200);
             } else {
                 /*console.log("boomFunc ==> new turn")*/
                 dispatch(threeInLineAction.setIsBoom(false))

@@ -24,7 +24,7 @@ export const Header: FC = () => {
 
     return <>
         {authorization ?
-            <div className={s.displayHeader}>
+            <div className={s.headerAuthUser}>
                 <div>
                     userId : {authUser?.id}
                 </div>
@@ -36,7 +36,7 @@ export const Header: FC = () => {
                 </div>
             </div>
             :
-            <div className={s.displayHeader}>
+            <div className={s.header}>
                 <div>Вы не авторизованы</div>
                 <div></div>
                 <div>

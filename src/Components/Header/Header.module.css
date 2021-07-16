@@ -1,7 +1,17 @@
-.displayHeader {
+.headerAuthUser {
     display: grid;
     grid-template-columns: 1fr 1fr 80px;
+    align-items: center;
 }
-.displayHeader div{
+.headerAuthUser div{
+    align-self: center;
+}
+
+.header{
+    display: grid;
+    grid-template-columns: 1fr 1fr 80px;
+    align-items: center;
+}
+.header div{
     align-self: center;
 }

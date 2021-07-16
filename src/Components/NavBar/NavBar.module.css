@@ -9,9 +9,11 @@
     font:bold  18px Arial ;
     text-decoration:none;
     color: white;
+    cursor: pointer;
 
 }
 .item a.active{
     color: gold;
+    cursor: pointer;
 }
 

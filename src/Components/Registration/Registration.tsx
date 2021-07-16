@@ -53,10 +53,11 @@ export const Registration: FC = () => {
     type  InitialValuesType = typeof initialProfile
     const submitForm = (values: InitialValuesType,
                         {setSubmitting}: FormikHelpers<InitialValuesType>,) => {
-        debugger
         dispatch(registration(values.email, values.password , values.name))
         setSubmitting(false)
-        history.push("/placeBattleMan")
+       /* if(isAuthorization){
+            history.push("/placeBattleMan")
+        }*/
     }
     if(isAuthorization){
        return <Redirect to={'/placeBattleMan'}/>
@@ -84,7 +85,6 @@ export const Registration: FC = () => {
                             регистрация
                         </button>
                     </div>
-
                 </Form>
             )}
         </Formik>
