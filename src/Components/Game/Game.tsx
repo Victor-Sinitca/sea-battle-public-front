@@ -7,7 +7,7 @@ import s from "./Game.module.css"
 import {sectorsNotEqual} from "./gameLogic/sectorsNotEqual";
 import {findBonusBumFunc} from "./gameLogic/findBonusBumFunc";
 import {checkMap} from "./gameLogic/checkMap";
-import {LeftBar3inLine} from "./gameLogic/LeftBar3inLine";
+import {LeftBar3inLine} from "./LeftBar3inLine";
 import {useDispatch, useSelector} from "react-redux";
 import {
     checkOnLineInSelectSectorsThink,
@@ -27,6 +27,7 @@ import {
     getSelectSector
 } from "../../redux/threeInLine-selectors";
 import {boomFunc1} from "./gameLogic/boomFunc1";
+import {Header3inLine} from "./Header3inLine";
 
 
 export type deskStateType = {
@@ -91,7 +92,7 @@ export const Game: FC<PropsType> = ({map, gemsCount}) => {
     const onMouseOver = (sector: SectorGameType) => {
         if (selectSector && !isEndTurn && sectorsNotEqual(sector, selectSector)) {
             if (isNearbyWithSector(selectSector, sector)) {
-                dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector,false))
+                dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector, false))
             } else {
                 dispatch(unselectNewSectorThink(map, selectSector))
             }
@@ -104,7 +105,7 @@ export const Game: FC<PropsType> = ({map, gemsCount}) => {
             /* console.log("boomFunc")*/
 
             if (isEndTurn && !isBoom && !animationCount) {
-              /*  dispatch(boomEffectThink(map,gemsCount,score))*/
+                /*  dispatch(boomEffectThink(map,gemsCount,score))*/
                 setTimeout(() => {
                     /* console.log("boomFunc ==> is bum")*/
                     let boomFuncState = boomFunc1(map, gemsCount)
@@ -119,8 +120,8 @@ export const Game: FC<PropsType> = ({map, gemsCount}) => {
                 dispatch(threeInLineAction.setIsBoom(false))
             }
         }
-    }, [dispatch,isEndTurn, isBoom,animationCount,
-        /*map,*/gemsCount,isDevMode])
+    }, [dispatch, isEndTurn, isBoom, animationCount,
+        /*map,*/gemsCount, isDevMode])
 
 // нахождение секторов для уничтожения
     useEffect(() => {
@@ -137,12 +138,8 @@ export const Game: FC<PropsType> = ({map, gemsCount}) => {
                 dispatch(threeInLineAction.setIsBoom(false))
             }
         }
-    }, [dispatch,isBoom,
-        isDevMode,map])
-
-
-
-
+    }, [dispatch, isBoom,
+        isDevMode, map])
 
 
 // проверка карты на возможность хода
@@ -159,35 +156,22 @@ export const Game: FC<PropsType> = ({map, gemsCount}) => {
      }, [isEndTurn])
  */
 
-   /* useEffect(() => {
-        setEndMove(!checkMapOnMove(map))
-    })*/
+    /* useEffect(() => {
+         setEndMove(!checkMapOnMove(map))
+     })*/
 
 
     return <div className={s.displayMap}>
-        <LeftBar3inLine map={map} setEndMove={setEndMove} gemsCount={gemsCount}/>
         <div className={s.mainDisplay}>
-            <div style={{display: "grid"}}>
-                <div className={s.header}>
-                    {isDevMode ? <>режим: РАЗРАБОТЧИК</> : <>режим: ИГРА</>}
-                </div>
-                <div className={s.header}>
-                    {isEndTurn
-                        ? <>ждите</>
-                        : <>ваш ход</>}
-                </div>
-            </div>
-            <div>
-                <Desk userMap={map} selectSector={selectSector}
-                      returnMouseDown={isDevMode ? onMouseDownDev : onMouseDown}
-                      returnMouseUp={onMouseUp}
-                      returnMouseOver={onMouseOver}
-                      isEndTurn={isEndTurn}
-                      deskState={deskState}
-                />
-                {endMove && <div>нет ходов</div>}
-            </div>
-
+            <Header3inLine map={map} setEndMove={setEndMove} gemsCount={gemsCount}/>
+            <Desk userMap={map} selectSector={selectSector}
+                  returnMouseDown={isDevMode ? onMouseDownDev : onMouseDown}
+                  returnMouseUp={onMouseUp}
+                  returnMouseOver={onMouseOver}
+                  isEndTurn={isEndTurn}
+                  deskState={deskState}
+            />
+            {endMove && <div>нет ходов</div>}
         </div>
         <div className={s.mainDisplay}>
             {isDevMode && prevMap && <>

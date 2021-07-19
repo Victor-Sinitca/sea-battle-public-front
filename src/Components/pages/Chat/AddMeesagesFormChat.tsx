@@ -1,6 +1,6 @@
 import {statusType} from "../../../api/chatApi";
 import React, {FC, useRef} from "react";
-import {Form, Formik, FormikHelpers} from "formik";
+import {Field, Form, Formik, FormikHelpers} from "formik";
 import {createFieldFormikTextarea} from "../../../commen/FormikControls/FormikControls";
 
 const validateTerm = (values: any) => {
@@ -47,7 +47,6 @@ export const AddMessagesFormChat: FC<AddMessagesFormType> = ({statusWS, sendMess
                             send
                         </button>
                     </div>
-
                 </Form>
             )}
         </Formik>

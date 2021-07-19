@@ -64,7 +64,7 @@ export const Registration: FC = () => {
     }
 
     return <div className={s.display} >
-        <div style={{padding:10, justifySelf:"center"} } >Регистрация</div>
+        <div style={{justifySelf:"center"} } >Регистрация</div>
         <Formik
             initialValues={initialProfile as InitialValuesType}
             validate={userSearchFormValidate}

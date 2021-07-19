@@ -1,10 +1,12 @@
-
 .display{
+    margin: 10% auto;
     display: grid;
-    grid-template-rows:min-content min-content min-content;
+    grid-template-rows: min-content min-content min-content;
     grid-template-columns: min-content;
-    justify-content: center;
-    padding-top: 20px;
+    width: min-content;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: #41636c 0px 0px 10px 5px, #2e0dd4 0px 0px 1px 5px inset ;
 }
 .displayForm{
     display: grid;

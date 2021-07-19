@@ -12,7 +12,7 @@ import {Dispatch} from "redux";
 import {v1} from "uuid"
 import {checkForShipInput, lockMap} from "../commen/logics/checkForShipInput/checkForSingleShipInput";
 import {SectorType} from "../../Types/Types";
-import {authMe} from "./authHttp-reducer";
+import {refreshAPI} from "./authHttp-reducer";
 
 
 export type MessageType = MessageApiType & { id: string }
@@ -337,7 +337,7 @@ const newLeaveGameRoomOfIdCreator = (dispatch: Dispatch, userId: string | undefi
 
 
 export const startMessagesListening = (): ThunkActionType => async (dispatch, getState) => {
-    await dispatch(authMe())
+    await dispatch(refreshAPI())
     const token = localStorage.getItem("token")
     if (token) {
         chatApi.start(token)
@@ -361,7 +361,7 @@ export const stopMessagesListening = (): ThunkActionType => async (dispatch) => 
 }
 
 export const startGameListening = (): ThunkActionType => async (dispatch, getState) => {
-    await dispatch(authMe())
+    await dispatch(refreshAPI())
     const token = localStorage.getItem("token")
     if (token) {
         chatApi.start(token)

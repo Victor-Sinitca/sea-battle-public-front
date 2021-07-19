@@ -1,14 +1,22 @@
 import React, {FC} from "react";
-import {initMapGame3inLine} from "./initMapGame3inLine";
-import {checkMap} from "./checkMap";
-import {findBonusBumFunc} from "./findBonusBumFunc";
-import {checkMapOnMove} from "./checkMapOnMove";
-import {initMapGame3inLineFalseGame} from "./initMapGame3inLineFalseGame";
+import {initMapGame3inLine} from "./gameLogic/initMapGame3inLine";
+import {checkMap} from "./gameLogic/checkMap";
+import {findBonusBumFunc} from "./gameLogic/findBonusBumFunc";
+import {checkMapOnMove} from "./gameLogic/checkMapOnMove";
+import {initMapGame3inLineFalseGame} from "./gameLogic/initMapGame3inLineFalseGame";
 import {useDispatch, useSelector} from "react-redux";
-import {getAddScore, getDeskState, getIsDevMode, getScore} from "../../../redux/threeInLine-selectors";
-import {threeInLineAction} from "../../../redux/threeInLine-reduser";
-import {MapsGameType} from "../DeskGame";
-import {boomFunc1} from "./boomFunc1";
+import {
+    getAddScore,
+    getDeskState,
+    getIsDevMode,
+    getIsEndTurn,
+    getMap,
+    getScore
+} from "../../redux/threeInLine-selectors";
+import {threeInLineAction} from "../../redux/threeInLine-reduser";
+import {MapsGameType} from "./DeskGame";
+import {boomFunc1} from "./gameLogic/boomFunc1";
+import s from "./Game.module.css";
 
 type PropsType = {
     map: MapsGameType
@@ -16,13 +24,13 @@ type PropsType = {
     setEndMove: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const LeftBar3inLine: FC<PropsType> = ({map, setEndMove, gemsCount}) => {
+export const Header3inLine: FC<PropsType> = React.memo(({map, setEndMove, gemsCount}) => {
     const dispatch = useDispatch()
     const score = useSelector(getScore)
     const addScore = useSelector(getAddScore)
-    /* const map = useSelector(getMap)*/
     const deskState = useSelector(getDeskState)
     const isDevMode = useSelector(getIsDevMode)
+    const isEndTurn = useSelector(getIsEndTurn)
 
     const onClickBum = () => {
         dispatch(threeInLineAction.setPrevMap(JSON.parse(JSON.stringify(map))))
@@ -46,7 +54,7 @@ export const LeftBar3inLine: FC<PropsType> = ({map, setEndMove, gemsCount}) => {
 
     const newMap = () => {
         if (!checkMapOnMove(map)) {
-            dispatch(threeInLineAction.setMap(initMapGame3inLine(deskState.x, deskState.y , gemsCount)))
+            dispatch(threeInLineAction.setMap(initMapGame3inLine(deskState.x, deskState.y, gemsCount)))
             setEndMove(false)
         }
     }
@@ -101,60 +109,73 @@ export const LeftBar3inLine: FC<PropsType> = ({map, setEndMove, gemsCount}) => {
     }
 
 
-    return <div>
-        <div>
-            <FieldChangeButtons label={"по вертикали:"} value={"x"} addLine={addLine} takeAwayLine={takeAwayLine}/>
-            <FieldChangeButtons label={"по горизонтали:"} value={"y"} addLine={addLine} takeAwayLine={takeAwayLine}/>
-            <div> маштаб:
+    return <div className={s.displayHeader}>
+        <div className={s.buttonHeader}>
+            <FieldChangeButtons label={`вертикаль: ${map.length} `} value={"x"} addLine={addLine}
+                                takeAwayLine={takeAwayLine}/>
+            <FieldChangeButtons label={`горизонталь: ${map[0].length}`} value={"y"} addLine={addLine}
+                                takeAwayLine={takeAwayLine}/>
+            <div> масштаб:
                 <div>
-                    <button onClick={() => {
+                    <button style={{width: "50%"}} onClick={() => {
                         changeSizeSector(true)
                     }}>+
                     </button>
-                    <button onClick={() => {
+                    <button style={{width: "50%"}} onClick={() => {
                         changeSizeSector(false)
                     }}>-
                     </button>
                 </div>
             </div>
-            <div> оличество камней: {gemsCount}
+            <div> количество камней: {gemsCount}
                 <div>
-                    <button disabled={gemsCount > 7} onClick={() => {
+                    <button style={{width: "50%"}} disabled={gemsCount > 7} onClick={() => {
                         changeCountGems(true)
                     }}>+
                     </button>
-                    <button disabled={gemsCount < 5} onClick={() => {
+                    <button style={{width: "50%"}} disabled={gemsCount < 5} onClick={() => {
                         changeCountGems(false)
                     }}>-
                     </button>
                 </div>
             </div>
         </div>
-        <div>
-            <div>очки:</div>
-            <div>{score}</div>
-            <div>+{addScore}</div>
-        </div>
-        <div>
-            <div style={{paddingTop: 40, paddingBottom: 40}}>
-                <button onClick={() => dispatch(threeInLineAction.setIsDevMode(!isDevMode))}>установка режима</button>
+        <div className={s.infoBar}>
+            <div>
+                <div className={s.header}>очки:{score}</div>
+                <div className={s.header}>+{addScore}</div>
             </div>
-            {isDevMode && <>
-                <div>
-                    <button onClick={onClickCheckIsBum}>check is bum</button>
+            <div>
+                <div className={s.header}>
+                    {isDevMode ? <>РАЗРАБОТЧИК</> : <>ИГРА</>}
                 </div>
-                <div>
-                    <button onClick={onClickFindBonus}>find bonus</button>
+                <div className={s.header}>
+                    {isEndTurn
+                        ? <>ждите</>
+                        : <>ваш ход</>}
                 </div>
+            </div>
+            <div>
                 <div>
-                    <button onClick={onClickBum}>bum</button>
+                    <button onClick={() => dispatch(threeInLineAction.setIsDevMode(!isDevMode))}>установка режима
+                    </button>
                 </div>
-                  <button onClick={newMap}>new map</button>
-                  <button onClick={setMapOnClick}>set map</button>
-            </>}
+                {isDevMode && <div>
+                    <div>
+                        <button onClick={onClickCheckIsBum}>check bum</button>
+                        <button onClick={onClickFindBonus}>find bonus</button>
+                        <button onClick={onClickBum}>bum</button>
+                    </div>
+                    <div>
+                        <button onClick={newMap}>new map</button>
+                        <button onClick={setMapOnClick}>set map</button>
+                    </div>
+                </div>}
+            </div>
+
         </div>
     </div>
-}
+})
 
 type FieldChangeButtonsType = {
     label: string,
@@ -162,18 +183,17 @@ type FieldChangeButtonsType = {
     takeAwayLine: (value: "x" | "y") => void,
     value: "x" | "y"
 }
-const FieldChangeButtons: FC<FieldChangeButtonsType> = ({label, addLine, takeAwayLine, value}) => {
+const FieldChangeButtons: FC<FieldChangeButtonsType> = React.memo(({label, addLine, takeAwayLine, value}) => {
     return <div> {label}
         <div>
-            <button onClick={() => {
+            <button style={{width: "50%"}} onClick={() => {
                 addLine(value)
             }}>+
             </button>
-            <button onClick={() => {
+            <button style={{width: "50%"}} onClick={() => {
                 takeAwayLine(value)
             }}>-
             </button>
         </div>
-
     </div>
-}
+})

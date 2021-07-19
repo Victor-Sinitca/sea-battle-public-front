@@ -2,11 +2,13 @@ import React, {ChangeEvent, FC, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getIsUpdateProfile, getProfile} from "../../redux/profile-selectors";
 import ava from "../../assets/img/ava.jpeg"
+import pngD from "../../assets/img/png-download.png"
 import {useHistory, useParams} from "react-router-dom";
 import {getProfileThunk, uploadPhotoThink} from "../../redux/profile-reducer";
 import {getAuthUser} from "../../redux/authHttp-selectors";
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import Preloader1 from "../../commen/Preloader1/Preloader1";
+import exp from "constants";
 
 export const Profile: FC = () => {
     const profile = useSelector(getProfile)
@@ -58,8 +60,13 @@ export const Profile: FC = () => {
     return <div>
         {isOwner && <div> твой профиль</div>}
         <div>{profile.name}</div>
-        <img style={{height: 180}} src={profile.photo || ava} alt={"avatar"}/>
-        {isOwner && <input type={"file"} onChange={onMainPhotoSelect}/>}
+        <img style={{height: 180, borderRadius:10}} src={profile.photo || ava} alt={"avatar"}/>
+        <div>
+            {isOwner && <>
+                <input type={"file"}   id="input__file" onChange={onMainPhotoSelect}/>
+                <label htmlFor="input__file"><img src={pngD}/></label>
+            </> }
+        </div>
         <ProfileStatusWithHooks isOwner={isOwner} status={profile.status}/>
 
         <div> number of Game:{profile.gameSBState.numberOfGamesSB} </div>
@@ -67,4 +74,10 @@ export const Profile: FC = () => {
         <div>number of Losses: {profile.gameSBState.numberOfGamesSB - profile.gameSBState.numberOfWinsSB}</div>
     </div>
 
+}
+
+export const ImgPhoto:FC<{}>=()=>{
+    return<div>
+
+    </div>
 }

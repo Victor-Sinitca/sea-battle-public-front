@@ -10,4 +10,8 @@ export const getIsLoading =(state:AppStateType)=>{
     return state.authHttp.isLoading
 }
 
+export const getAuthProfile =(state:AppStateType)=>{
+    return state.authHttp.authProfile
+}
+
 

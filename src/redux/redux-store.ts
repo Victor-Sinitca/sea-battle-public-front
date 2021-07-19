@@ -7,6 +7,7 @@ import chatReducer from "./chat-reducer";
 import profileReducer from "./profile-reducer";
 import authHttpReducer from "./authHttp-reducer";
 import threeInLineReducer from "./threeInLine-reduser";
+import usersHttpReducer from "./users-reducer";
 
 declare global {
     interface Window {
@@ -21,6 +22,7 @@ const rootReducers = combineReducers({
     profilePage:profileReducer,
     authHttp:authHttpReducer,
     threeInLine:threeInLineReducer,
+    users:usersHttpReducer,
 });
 
 type RootReducerType=typeof rootReducers

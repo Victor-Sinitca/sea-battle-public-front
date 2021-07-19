@@ -31,6 +31,9 @@ const NavBar = () => {
                 <div className={`${s.item} ${s.active}`}>
                     <NavLink to='/battleList'  activeClassName={s.active}>комната сражений</NavLink>
                 </div>
+                <div className={`${s.item} ${s.active}`}>
+                    <NavLink to='/users'  activeClassName={s.active}>список игроков</NavLink>
+                </div>
             </>}
             {/*<div>
                 <NavLink to='/authorization' className={s.navLink}>login</NavLink>

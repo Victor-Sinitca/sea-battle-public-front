@@ -1,9 +1,10 @@
 import React, {FC} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import s from "./Header.module.css"
+import ava from "../../assets/img/ava.jpeg"
 
 import {useHistory} from "react-router-dom";
-import {getAuthUser, getIsAuthorization} from "../../redux/authHttp-selectors";
+import {getAuthProfile, getAuthUser, getIsAuthorization} from "../../redux/authHttp-selectors";
 import {toLogout} from "../../redux/authHttp-reducer";
 
 
@@ -11,10 +12,10 @@ export const Header: FC = () => {
     const dispatch = useDispatch()
     let history = useHistory();
     const authUser = useSelector(getAuthUser)
+    const authProfile = useSelector(getAuthProfile)
     const authorization = useSelector(getIsAuthorization)
 
     const handlerLogout = () => {
-        debugger
         dispatch(toLogout())
         history.push('/authorization')
     }
@@ -25,11 +26,14 @@ export const Header: FC = () => {
     return <>
         {authorization ?
             <div className={s.headerAuthUser}>
-                <div>
-                    userId : {authUser?.id}
+                <div >
+                    <img style={{height:40, borderRadius:5}} src={authProfile?.photo || ava }/>
                 </div>
                 <div>
-                    email: {authUser?.email}
+
+                </div>
+                <div>
+
                 </div>
                 <div>
                     <button onClick={handlerLogout}>выйти</button>

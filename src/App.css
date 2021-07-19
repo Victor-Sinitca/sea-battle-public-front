@@ -18,16 +18,14 @@
   border-bottom: 2px #053986 solid;
 }
 .displayNavBar{
-
   border-right: 2px #053986 solid;
   background-color: #0e3e93;
-
 }
 .displayPlace{
   padding-left: 15px;
   padding-top: 10px;
   background-color: #84caf6;
-  box-shadow:  #0e3e93 4px 0px 5px 1px inset  ;
+  box-shadow:  #0e3e93 0px 0px 5px 1px inset  ;
 }
 
 

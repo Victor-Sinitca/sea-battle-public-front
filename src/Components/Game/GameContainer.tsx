@@ -13,10 +13,8 @@ export const GameContainer: FC = () => {
     const gemsCount = useSelector(getGemsCount)
 
     useEffect(() => {
-            /*console.log(`initMapGame3inLine + ${gemsCount}`)*/
             dispatch(threeInLineAction.setMap(initMapGame3inLine(deskState.x, deskState.y,gemsCount)))
     }, [gemsCount,deskState,dispatch])
-
 
 
     return <>

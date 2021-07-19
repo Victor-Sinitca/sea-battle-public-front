@@ -1,0 +1,20 @@
+.userDisplay{
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    grid-template-rows: min-content min-content;
+    grid-gap: 10px;
+    border-bottom: black solid;
+    padding: 5px;
+
+}
+
+
+.userPhoto img{
+    height: 50px;
+}
+.userName{
+
+}
+.userStatus{
+
+}

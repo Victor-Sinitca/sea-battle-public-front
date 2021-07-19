@@ -70,7 +70,6 @@ export const Sector: FC<PropsType> = React.memo(({
         const handleAnimationEnd = () => {
             //выполнить по заершении анимации в секторе
             if (sector.sectorState.animateMove) {
-                debugger
                 //удаление стилей анимации keyframes из document.styleSheets
                 let styleSheet = document.styleSheets[0];
                 let index = null as null | number

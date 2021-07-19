@@ -1,17 +1,33 @@
+.displayHeader{
+    justify-self:center;
+}
+
 .displayMap{
     display: grid;
-    grid-template-columns: 150px 1fr 1fr;
+    grid-template-columns: auto auto;
     grid-gap: 10px;
-
+    justify-content:left;
 }
 .mainDisplay{
     display: grid;
-    grid-template-rows: auto auto ;
-    padding-right: 20px;
-    justify-content: center;
+    grid-template-rows: auto auto auto ;
+    justify-items: left;
+    align-content: center;
 }
+
+
 .header{
     padding: 10px;
     font: 20px Verdana ;
     justify-self: center;
+}
+.infoBar{
+    display: grid;
+    grid-template-columns: 150px 180px 1fr;
+}
+.buttonHeader{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 10px;
+    justify-content:center;
 }

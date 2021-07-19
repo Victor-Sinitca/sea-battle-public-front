@@ -51,8 +51,7 @@ export const Authorization: FC = () => {
     if (isAuthorization) {
         return <Redirect to={'/placeBattleMan'}/>
     }
-    return <div>
-        <div className={s.display}>
+    return <div className={s.display}>
             <div style={{justifySelf: "center"}}>Войти в систему</div>
             <Formik
                 initialValues={initialProfile as InitialValuesType}
@@ -75,8 +74,6 @@ export const Authorization: FC = () => {
                 )}
             </Formik>
         </div>
-    </div>
-
 
 }
 
