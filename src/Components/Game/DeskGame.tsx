@@ -19,7 +19,7 @@ type PropsType = {
 
 
 }
-const Desk: FC<PropsType> = ({userMap,deskState, returnMouseDown,selectSector,
+const Desk: FC<PropsType> =  React.memo( ({userMap,deskState, returnMouseDown,selectSector,
                                  returnMouseUp,returnMouseOver,isEndTurn,}) => {
     const dispatch = useDispatch()
     const repeat =(count:number)=>{
@@ -37,7 +37,15 @@ const Desk: FC<PropsType> = ({userMap,deskState, returnMouseDown,selectSector,
     }
 
     return (
-        <div draggable={"false"} style={{display:"grid", overflow:"hidden", gridTemplateColumns: repeat(deskState.y), gridTemplateRows:repeat(deskState.x)}}>
+        <div draggable={"false"}
+             style={{
+                 display:"grid",
+                 overflow:"hidden",
+                 gridTemplateColumns: repeat(deskState.y),
+                 gridTemplateRows:repeat(deskState.x),
+                 border:"grey solid 2px",
+                 boxShadow:"0px 0px 10px 2px #2244AA"
+             }}>
             {userMap.map(a => a.map(b =>
                 <Sector returnMouseDown={returnMouseDown}
                         returnMouseUp={returnMouseUp}
@@ -49,5 +57,5 @@ const Desk: FC<PropsType> = ({userMap,deskState, returnMouseDown,selectSector,
             ))}
         </div>
     )
-}
+})
 export default Desk

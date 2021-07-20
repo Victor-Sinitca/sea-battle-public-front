@@ -26,7 +26,7 @@ const authHttpReducer = (state = initialState as initialStateType, action: Actio
         case "AUTH_HTTP/DELETE_USER_DATA":
             return {
                 ...state,
-                user: null, isAuthorization: false
+                user: null, isAuthorization: false, authProfile:null
             }
         case "AUTH_HTTP/SET_LOADING": {
             return {...state, isLoading: action.isLoading}
@@ -66,15 +66,14 @@ export const toLogout = (): AnyBaseActionType => async (dispatch) => {
 export const login = (email: string, password: string,): AnyBaseActionType =>
     async (dispatch) => {
         try {
-            debugger
             const data = await authAPI.login(email, password)
             if (data) {
                 localStorage.setItem('token', data.accessToken);
+                const authProfile = await profileAPI.getProfile(data.user.id)
+                dispatch(actionAuth.setAuthProfile(authProfile))
                 dispatch(actionAuth.setAuth(data.user, true,))
             }
-
         } catch (e) {
-            debugger
             console.log("error in login" + e.message)
         }
     }
@@ -83,6 +82,8 @@ export const registration = (email: string, password: string, name: string): Any
         try {
             const data = await authAPI.registration(email, password, name)
             localStorage.setItem('token', data.accessToken);
+            const authProfile = await profileAPI.getProfile(data.user.id)
+            dispatch(actionAuth.setAuthProfile(authProfile))
             dispatch(actionAuth.setAuth(data.user, true,))
         } catch (e) {
             console.log("error in authorization" + e.message)

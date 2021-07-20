@@ -52,7 +52,7 @@ const threeInLineReducer = (state = initialState as initialStateType, action: Ac
         case "threeInLine_SET_MAP":
             return {
                 ...state,
-                map: action.map
+                map: [...action.map]
             }
         case "threeInLine_SET_PREV_MAP":
             return {

@@ -31,7 +31,7 @@ export const ListChatMessages: FC<MessagesType> = ({messages}) => {
     }, [messages])
 
     return <div style={{height: "400px", overflow: "auto"}} onScroll={scrollHandler}>
-        {messages.map((m) => <ChatMessage key={m.id} message={m}/>)}
+        {messages.map((m) => <div key={m.id}><ChatMessage  message={m} height={60}/></div>)}
         <div ref={messagesAnchorRef}></div>
     </div>
 }

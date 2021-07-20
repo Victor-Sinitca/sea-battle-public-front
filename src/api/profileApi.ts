@@ -14,7 +14,6 @@ export type ProfileType = {
 
 export const profileAPI = {
     getProfile(userID: string) {
-        debugger
         return $api.get<ProfileType>(`/profile/` + userID).then(response => response.data)
     },
     updateStatus(status: string) {

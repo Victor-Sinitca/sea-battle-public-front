@@ -1,22 +1,15 @@
 import React, {FC} from "react";
-import {initMapGame3inLine} from "./gameLogic/initMapGame3inLine";
-import {checkMap} from "./gameLogic/checkMap";
-import {findBonusBumFunc} from "./gameLogic/findBonusBumFunc";
-import {checkMapOnMove} from "./gameLogic/checkMapOnMove";
-import {initMapGame3inLineFalseGame} from "./gameLogic/initMapGame3inLineFalseGame";
+import {initMapGame3inLine} from "../gameLogic/initMapGame3inLine";
+import {checkMap} from "../gameLogic/checkMap";
+import {findBonusBumFunc} from "../gameLogic/findBonusBumFunc";
+import {checkMapOnMove} from "../gameLogic/checkMapOnMove";
+import {initMapGame3inLineFalseGame} from "../gameLogic/initMapGame3inLineFalseGame";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    getAddScore,
-    getDeskState,
-    getIsDevMode,
-    getIsEndTurn,
-    getMap,
-    getScore
-} from "../../redux/threeInLine-selectors";
-import {threeInLineAction} from "../../redux/threeInLine-reduser";
-import {MapsGameType} from "./DeskGame";
-import {boomFunc1} from "./gameLogic/boomFunc1";
-import s from "./Game.module.css";
+import {getAddScore, getDeskState, getIsDevMode, getIsEndTurn, getScore} from "../../../redux/threeInLine-selectors";
+import {threeInLineAction} from "../../../redux/threeInLine-reduser";
+import {MapsGameType} from "../DeskGame";
+import {boomFunc1} from "../gameLogic/boomFunc1";
+import s from "./Header3inLine.module.css";
 
 type PropsType = {
     map: MapsGameType
@@ -145,32 +138,34 @@ export const Header3inLine: FC<PropsType> = React.memo(({map, setEndMove, gemsCo
                 <div className={s.header}>очки:{score}</div>
                 <div className={s.header}>+{addScore}</div>
             </div>
-            <div>
-                <div className={s.header}>
+            <div className={s.header}>
+                <div>
                     {isDevMode ? <>РАЗРАБОТЧИК</> : <>ИГРА</>}
                 </div>
-                <div className={s.header}>
+                <div >
                     {isEndTurn
                         ? <>ждите</>
                         : <>ваш ход</>}
                 </div>
             </div>
-            <div>
+            <div className={s.buttonDev} >
                 <div>
-                    <button onClick={() => dispatch(threeInLineAction.setIsDevMode(!isDevMode))}>установка режима
+                    <button onClick={() => dispatch(threeInLineAction.setIsDevMode(!isDevMode))}>
+                        режим
                     </button>
                 </div>
-                {isDevMode && <div>
+                {isDevMode &&<>
                     <div>
-                        <button onClick={onClickCheckIsBum}>check bum</button>
-                        <button onClick={onClickFindBonus}>find bonus</button>
+                        <button onClick={onClickCheckIsBum}>check</button>
+                        <button onClick={onClickFindBonus}>bonus</button>
                         <button onClick={onClickBum}>bum</button>
                     </div>
                     <div>
                         <button onClick={newMap}>new map</button>
                         <button onClick={setMapOnClick}>set map</button>
                     </div>
-                </div>}
+                    </>
+                }
             </div>
 
         </div>

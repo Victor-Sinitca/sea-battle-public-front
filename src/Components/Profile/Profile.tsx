@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useEffect} from "react";
+import React, {ChangeEvent, FC, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getIsUpdateProfile, getProfile} from "../../redux/profile-selectors";
 import ava from "../../assets/img/ava.jpeg"
@@ -9,6 +9,8 @@ import {getAuthUser} from "../../redux/authHttp-selectors";
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import Preloader1 from "../../commen/Preloader1/Preloader1";
 import exp from "constants";
+import {ChatInBattle} from "../pages/Chat/ChatPage";
+import {ProfilePhoto} from "./ProfilePhoto/ProfilePhoto";
 
 export const Profile: FC = () => {
     const profile = useSelector(getProfile)
@@ -58,26 +60,16 @@ export const Profile: FC = () => {
         return <Preloader1/>
     }
     return <div>
-        {isOwner && <div> твой профиль</div>}
         <div>{profile.name}</div>
-        <img style={{height: 180, borderRadius:10}} src={profile.photo || ava} alt={"avatar"}/>
-        <div>
-            {isOwner && <>
-                <input type={"file"}   id="input__file" onChange={onMainPhotoSelect}/>
-                <label htmlFor="input__file"><img src={pngD}/></label>
-            </> }
-        </div>
+        <ProfilePhoto height={150} ava={ava} photo={profile.photo} download={onMainPhotoSelect} isOwner={isOwner}/>
         <ProfileStatusWithHooks isOwner={isOwner} status={profile.status}/>
+        <div>
+            <div>Морской бой, статистика</div>
+            <div>игр:{profile.gameSBState.numberOfGamesSB} </div>
+            <div>побед: {profile.gameSBState.numberOfWinsSB}</div>
+        </div>
 
-        <div> number of Game:{profile.gameSBState.numberOfGamesSB} </div>
-        <div>number of Wins: {profile.gameSBState.numberOfWinsSB}</div>
-        <div>number of Losses: {profile.gameSBState.numberOfGamesSB - profile.gameSBState.numberOfWinsSB}</div>
     </div>
 
 }
 
-export const ImgPhoto:FC<{}>=()=>{
-    return<div>
-
-    </div>
-}

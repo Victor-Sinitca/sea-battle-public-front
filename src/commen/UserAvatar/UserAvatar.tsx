@@ -6,19 +6,22 @@ import {NavLink} from "react-router-dom";
 type PropsType = {
     name: string
     avatar: photosType
-    link:string
+    link: string,
+    height?: number
 }
 
 export type photosType = {
-    readonly small:string|null
-    readonly large:string|null
+    readonly small: string | null
+    readonly large: string | null
 }
-const UserAvatar: FC<PropsType> = ({name, avatar,link}) => {
+const UserAvatar: FC<PropsType> = ({name, avatar, link, height= 60}) => {
     return <div>
-        <NavLink to={link} onClick={()=>{window.scrollTo(0, 0);}}>
+        <NavLink to={link} onClick={() => {
+            window.scrollTo(0, 0);
+        }}>
             {avatar.small ?
-                <img alt="avatar" className={s.ava} src={avatar.small}/>
-                : <img alt="avatar" className={s.ava} src={ava}/>
+                <img alt="avatar" style={{height: height, borderRadius: height / 2}} src={avatar.small}/>
+                : <img alt="avatar" style={{height: height, borderRadius: height / 2}} src={ava}/>
             }
         </NavLink>
         <div> {name} </div>

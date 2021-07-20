@@ -58,7 +58,7 @@ export const ChatInBattle: FC<ChatInBattleType> = ({statusWS, messages, sendMess
         <div style={{paddingTop: 5, paddingBottom: 5}}>
             <AddMessagesFormChat statusWS={statusWS} sendMessageForm={sendMessageForm}/>
         </div>
-        <ListChatMessagesBattle messages={messages}/>
+        <ListChatMessagesBattle messages={messages} heightMessage={200}/>
     </div>
 }
 

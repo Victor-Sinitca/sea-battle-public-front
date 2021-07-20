@@ -2,16 +2,18 @@ import {MessageType} from "../../../redux/chat-reducer";
 import React, {FC, useEffect, useRef, useState} from "react";
 import {ChatMessage} from "./ChatMessage";
 
+
 type MessagesType = {
-    messages: MessageType[]
+    messages: MessageType[],
+    heightMessage?:number
 }
-export const ListChatMessagesBattle: FC<MessagesType> = ({messages}) => {
+export const ListChatMessagesBattle: FC<MessagesType> = ({messages,heightMessage}) => {
     const messagesAnchorRef = useRef<HTMLDivElement>(null)
     const [isAutoScroll, setIsAutoScroll] = useState(true)
 
 
     let CreateMessages = [...messages].reverse().map
-    (m => <ChatMessage key={m.id} message={m}/>)
+    (m => <div key={m.id}><ChatMessage  message={m} height={150}/></div>)
 
 
 

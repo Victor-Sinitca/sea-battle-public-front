@@ -3,21 +3,21 @@ import {useDispatch} from "react-redux";
 import {updateUserStatusThunk} from "../../redux/profile-reducer";
 
 
-type PropsType={
+type PropsType = {
     status: string
     isOwner: boolean
 }
-const ProfileStatusWithHooks:FC<PropsType> = (props) => {
+const ProfileStatusWithHooks: FC<PropsType> = (props) => {
     const dispatch = useDispatch()
-    const [editMode,setEditMode] = useState(false as boolean)
-    const [status,setStatus ]= useState(props.status as string)
+    const [editMode, setEditMode] = useState(false as boolean)
+    const [status, setStatus] = useState(props.status as string)
 
-    useEffect(()=>{
+    useEffect(() => {
         setStatus(props.status)
-    },[props.status])
+    }, [props.status])
 
     const activeEditMode = () => {
-        if(props.isOwner){
+        if (props.isOwner) {
             setEditMode(true)
         }
     }
@@ -28,18 +28,18 @@ const ProfileStatusWithHooks:FC<PropsType> = (props) => {
             dispatch(updateUserStatusThunk(status))
         }
     }
-    const onStatusChange = (e:ChangeEvent<HTMLInputElement>) => {
+    const onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
         setStatus(e.currentTarget.value)
     }
     return (
         <div>
             {editMode
-                ? <div>
-                    <input  onChange={onStatusChange} autoFocus={true} onBlur={deActiveEditMode}
+                ?<div>
+                    <input onChange={onStatusChange} autoFocus={true} onBlur={deActiveEditMode}
                            value={status}/>
                 </div>
-                : <div>
-                    <span  style={{fontSize:24, color: "blue"}}  onDoubleClick={activeEditMode}>{
+                :<div style={{fontSize: 24, color: "blue",cursor: props.isOwner? "pointer":""}}>
+                    <span onDoubleClick={activeEditMode}>{
                         props.status || "empty status"}</span>
                 </div>
             }

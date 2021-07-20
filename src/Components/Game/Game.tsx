@@ -27,7 +27,7 @@ import {
     getSelectSector
 } from "../../redux/threeInLine-selectors";
 import {boomFunc1} from "./gameLogic/boomFunc1";
-import {Header3inLine} from "./Header3inLine";
+import {Header3inLine} from "./Header3inLine/Header3inLine";
 
 
 export type deskStateType = {
@@ -175,7 +175,7 @@ export const Game: FC<PropsType> = ({map, gemsCount}) => {
         </div>
         <div className={s.mainDisplay}>
             {isDevMode && prevMap && <>
-                <div style={{height: 90}}></div>
+                <div style={{height: 150}}></div>
                 <div>
                     <Desk userMap={prevMap} selectSector={selectSector}
                           returnMouseDown={isDevMode ? onMouseDownDev : onMouseDown}
