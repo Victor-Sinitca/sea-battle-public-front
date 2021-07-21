@@ -207,18 +207,18 @@ export const endTurnThink = (): AnyBaseActionType => {
 const setHandleAnimation = (Map: MapsGameType, sector1: SectorGameType, sector2: SectorGameType,
                             isLine: boolean) => {
     let map = [...Map]
-    map[sector1.sectorState.y]=[...Map[sector1.sectorState.y]]
-    map[sector1.sectorState.y][sector1.sectorState.x]={...Map[sector1.sectorState.y][sector1.sectorState.x]}
-    map[sector1.sectorState.y][sector1.sectorState.x].sectorState=Map[sector1.sectorState.y][sector1.sectorState.x].sectorState
+    map[sector1.sectorState.y] = [...Map[sector1.sectorState.y]]
+    map[sector1.sectorState.y][sector1.sectorState.x] = {...Map[sector1.sectorState.y][sector1.sectorState.x]}
+    map[sector1.sectorState.y][sector1.sectorState.x].sectorState = {...Map[sector1.sectorState.y][sector1.sectorState.x].sectorState}
     map[sector1.sectorState.y][sector1.sectorState.x].sectorState.animateMove = {
         name: setAnimationCSS(sector1.sectorState.y, sector1.sectorState.x,
             sector2.sectorState.y - sector1.sectorState.y,
             sector2.sectorState.x - sector1.sectorState.x,
             isLine, isLine),
     }
-    map[sector2.sectorState.y]=[...Map[sector2.sectorState.y]]
-    map[sector2.sectorState.y][sector2.sectorState.x]={...Map[sector2.sectorState.y][sector2.sectorState.x]}
-    map[sector2.sectorState.y][sector2.sectorState.x].sectorState=Map[sector2.sectorState.y][sector2.sectorState.x].sectorState
+    map[sector2.sectorState.y] = [...Map[sector2.sectorState.y]]
+    map[sector2.sectorState.y][sector2.sectorState.x] = {...Map[sector2.sectorState.y][sector2.sectorState.x]}
+    map[sector2.sectorState.y][sector2.sectorState.x].sectorState = {...Map[sector2.sectorState.y][sector2.sectorState.x].sectorState}
     map[sector2.sectorState.y][sector2.sectorState.x].sectorState.animateMove = {
         name: setAnimationCSS(sector2.sectorState.y, sector2.sectorState.x,
             sector1.sectorState.y - sector2.sectorState.y,
