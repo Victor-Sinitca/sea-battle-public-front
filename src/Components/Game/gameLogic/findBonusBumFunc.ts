@@ -3,10 +3,14 @@ import {MapsGameType} from "../DeskGame";
 
 export const findBonusBumFunc = (Map: MapsGameType,) => {
     let map = [...Map]
+    for(let i=0; i<map.length; i++){
+        map[i]=[...Map[i]]
+    }
 
     function onHor(i: number) {
         for (let J = map[i].length - 1; J >= 0; J--) { // пройти по горизонту
             if (!map[i][J].date.isBum) { // взорвать сектора без взрыва
+                map[i][J]={...Map[i][J]}
                 map[i][J].date.isBum = true
                 /*map[i][J].date.score = 20*/
 
@@ -27,6 +31,7 @@ export const findBonusBumFunc = (Map: MapsGameType,) => {
     function onVert(j: number) {
         for (let I = map.length - 1; I >= 0; I--) { // пройти по верт
             if (!map[I][j].date.isBum) { // взорвать сектора без взрыва
+                map[I][j]={...Map[I][j]}
                 map[I][j].date.isBum = true
 
              /*   map[I][j].date.score = 20*/

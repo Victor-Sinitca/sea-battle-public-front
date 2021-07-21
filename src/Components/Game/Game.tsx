@@ -10,7 +10,8 @@ import {checkMap} from "./gameLogic/checkMap";
 import {LeftBar3inLine} from "./LeftBar3inLine";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    checkOnLineInSelectSectorsThink,
+    boomEffectThink, checkMapThink,
+    checkOnLineInSelectSectorsThink, endTurnThink,
     replacementSectorsThink,
     selectNewSectorThink,
     threeInLineAction,
@@ -37,7 +38,7 @@ type PropsType = {
     map: MapsGameType
     gemsCount: number
 }
-export const Game: FC<PropsType> = ({map, gemsCount}) => {
+export const Game: FC<PropsType> =  React.memo( ({map, gemsCount}) => {
     const dispatch = useDispatch()
     const [endMove, setEndMove] = useState<boolean>(false)
     const deskState = useSelector(getDeskState)
@@ -55,11 +56,14 @@ export const Game: FC<PropsType> = ({map, gemsCount}) => {
             if (selectSector) {
                 // есть выделенный сектор
                 if (sector.sectorState.isSelected) {
+                   /* console.log("onMouseDown - old sector selected ")*/
                     // если сектор был выделен  установка флага на снятие выделения
                     dispatch(threeInLineAction.setMap(SetIsFirstClickSector(map, sector)))
                 } else if (isNearbyWithSector(selectSector, sector)) {
+                   /* console.log("onMouseDown -isNearbyWithSector")*/
                     dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector, false))
                 } else {
+                   /* console.log("onMouseDown - new sector selected")*/
                     // выбран сектор не рядом выделение сектора
                     // удаление старого выдления, установка нового выделения
                     // запись карты
@@ -67,6 +71,7 @@ export const Game: FC<PropsType> = ({map, gemsCount}) => {
                     dispatch(threeInLineAction.setSelectSector(sector))
                 }
             } else {
+                /*console.log("onMouseDown -selectNewSectorThink")*/
                 // выделение и сохранение выделенного сектора как  выделенный
                 dispatch(selectNewSectorThink(map, sector))
             }
@@ -86,14 +91,17 @@ export const Game: FC<PropsType> = ({map, gemsCount}) => {
     }
     const onMouseUp = (sector: SectorGameType) => {
         if (sector.sectorState.isFirstClick && sector.sectorState.isSelected && !isEndTurn) {
+            /*console.log("onMouseUp -unselectNewSectorThink")*/
             dispatch(unselectNewSectorThink(map, sector))
         }
     }
     const onMouseOver = (sector: SectorGameType) => {
         if (selectSector && !isEndTurn && sectorsNotEqual(sector, selectSector)) {
             if (isNearbyWithSector(selectSector, sector)) {
+               /* console.log("onMouseOver -isNearbyWithSector")*/
                 dispatch(checkOnLineInSelectSectorsThink(map, selectSector, sector, false))
             } else {
+                /*console.log("onMouseOver -unselectNewSectorThink")*/
                 dispatch(unselectNewSectorThink(map, selectSector))
             }
         }
@@ -103,43 +111,45 @@ export const Game: FC<PropsType> = ({map, gemsCount}) => {
     useEffect(() => {
         if (!isDevMode) {
             /* console.log("boomFunc")*/
-
             if (isEndTurn && !isBoom && !animationCount) {
                 /*  dispatch(boomEffectThink(map,gemsCount,score))*/
                 setTimeout(() => {
                     /* console.log("boomFunc ==> is bum")*/
-                    let boomFuncState = boomFunc1(map, gemsCount)
+                    dispatch(boomEffectThink(map,gemsCount,score))
+                   /* let boomFuncState = boomFunc1(map, gemsCount)
                     dispatch(threeInLineAction.setMap(boomFuncState.map))
                     dispatch(threeInLineAction.setAnimationCount(boomFuncState.animationsCount))
                     dispatch(threeInLineAction.setAddScore(boomFuncState.score))
                     dispatch(threeInLineAction.setScore(score + boomFuncState.score))
-                    dispatch(threeInLineAction.setIsBoom(true))
+                    dispatch(threeInLineAction.setIsBoom(true))*/
                 }, 200);
             } else {
                 /*console.log("boomFunc ==> new turn")*/
                 dispatch(threeInLineAction.setIsBoom(false))
             }
         }
-    }, [dispatch, isEndTurn, isBoom, animationCount,
-        /*map,*/gemsCount, isDevMode])
+    }, [/*dispatch,*/ isEndTurn, isBoom, animationCount,
+        /*gemsCount, isDevMode*/])
 
 // нахождение секторов для уничтожения
     useEffect(() => {
         /* console.log("checkMap")*/
-        if (isBoom && !isDevMode) {
+        if (isBoom && !isDevMode ) {
             const newMap = checkMap(map)
-            if (newMap.isBum) {
+            if (newMap.isBum){
                 /* console.log("checkMap ==> isBum")  */
-                dispatch(threeInLineAction.setMap(findBonusBumFunc(map)))
-                dispatch(threeInLineAction.setIsBoom(false))
+                dispatch(checkMapThink(newMap.map))
+                /*dispatch(threeInLineAction.setMap(findBonusBumFunc(map)))
+                dispatch(threeInLineAction.setIsBoom(false))*/
             } else {
                 /*console.log("checkMap ==> new turn")*/
-                dispatch(threeInLineAction.setIsEndTurn(false))
-                dispatch(threeInLineAction.setIsBoom(false))
+                dispatch(endTurnThink())
+                /*dispatch(threeInLineAction.setIsEndTurn(false))
+                dispatch(threeInLineAction.setIsBoom(false))*/
             }
         }
-    }, [dispatch, isBoom,
-        isDevMode, map])
+    }, [/*dispatch,*/ isBoom,
+        isDevMode, /*map*/])
 
 
 // проверка карты на возможность хода
@@ -189,4 +199,4 @@ export const Game: FC<PropsType> = ({map, gemsCount}) => {
         </div>
     </div>
 
-}
+})

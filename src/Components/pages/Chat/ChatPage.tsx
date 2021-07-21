@@ -23,12 +23,10 @@ export const ChatPage: FC = () => {
             dispatch(stopMessagesListening())
         }
     }, [])
-    return <div style={{paddingTop:20}}>
+    return <div style={{paddingTop: 20}}>
         <Chat statusWS={statusWS} messages={messages} sendMessageForm={sendMessageForm}/>
     </div>
 }
-
-
 
 
 type ChatType = {
@@ -39,7 +37,7 @@ type ChatType = {
 export const Chat: FC<ChatType> = ({statusWS, messages, sendMessageForm}) => {
     return <div>
         {statusWS === "error" && <div>Some error occurred. Please refresh the page</div>}
-        <ListChatMessages messages={messages}/>
+        <ListChatMessages messages={messages} heightMessage={60}/>
         <div style={{paddingTop: 5, paddingBottom: 5}}>
             <AddMessagesFormChat statusWS={statusWS} sendMessageForm={sendMessageForm}/>
         </div>
@@ -58,7 +56,7 @@ export const ChatInBattle: FC<ChatInBattleType> = ({statusWS, messages, sendMess
         <div style={{paddingTop: 5, paddingBottom: 5}}>
             <AddMessagesFormChat statusWS={statusWS} sendMessageForm={sendMessageForm}/>
         </div>
-        <ListChatMessagesBattle messages={messages} heightMessage={200}/>
+        <ListChatMessagesBattle messages={messages} heightMessage={40}/>
     </div>
 }
 

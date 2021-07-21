@@ -1,6 +1,6 @@
 import {MessageType} from "../../../redux/chat-reducer";
 import React, {FC, useEffect, useRef, useState} from "react";
-import {ChatMessage} from "./ChatMessage";
+import ChatMessage from "./ChatMessage";
 
 
 type MessagesType = {
@@ -12,8 +12,8 @@ export const ListChatMessagesBattle: FC<MessagesType> = ({messages,heightMessage
     const [isAutoScroll, setIsAutoScroll] = useState(true)
 
 
-    let CreateMessages = [...messages].reverse().map
-    (m => <div key={m.id}><ChatMessage  message={m} height={150}/></div>)
+    let CreateMessages = [...messages].reverse().map((m) =>
+        <ChatMessage key={m.id} message={m} height={heightMessage}/>)
 
 
 

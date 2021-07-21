@@ -50,9 +50,10 @@ const Desk: FC<PropsType> =  React.memo( ({userMap,deskState, returnMouseDown,se
                 <Sector returnMouseDown={returnMouseDown}
                         returnMouseUp={returnMouseUp}
                         returnMouseOver={returnMouseOver}
-                        key={b.sectorState.x * 10 + b.sectorState.y} sector={b}
-                        deleteAnimation={deleteAnimation}
-                        decreaseAnimationCount={decreaseAnimationCount}
+                        key={b.sectorState.x * 10 + b.sectorState.y}
+                        sector={b}
+                        /*deleteAnimation={deleteAnimation}
+                        decreaseAnimationCount={decreaseAnimationCount}*/
                 />
             ))}
         </div>

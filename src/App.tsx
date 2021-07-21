@@ -19,6 +19,7 @@ import {DragDrop} from "./Components/Grag&Drop/Drag&Drop";
 import {GameContainer} from "./Components/Game/GameContainer";
 import {Users} from "./Components/Users/Users";
 import Preloader1 from "./commen/Preloader1/Preloader1";
+import {Draft} from "./Components/Draft/Draft";
 
 
 function App() {
@@ -45,8 +46,9 @@ function App() {
             <div className="displayPlace">
                 {/* <Route path='/' render={() => <Redirect to={"/placeBattleMan"}/>}/>*/}
                 <Route path='/placeBattleMan' render={() => <PlaceBattle/>}/>
-                <Route path='/dragDrop' render={() => <DragDrop/>}/>
+                {/*<Route path='/dragDrop' render={() => <DragDrop/>}/>*/}
                 <Route path='/game' render={() => <GameContainer/>}/>
+                <Route path='/1111' render={() => <Draft/>}/>
                 {isAuthorization && <Route path='/profile/:userID?' render={() => <Profile/>}/>}
                 {/*{isAuthorization && <Route path='/battle' render={() => <Battle/>}/>}*/}
                 {isAuthorization && <Route path='/battleRoom' render={() => <BattleRoom/>}/>}

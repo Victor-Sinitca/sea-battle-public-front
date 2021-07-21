@@ -5,7 +5,7 @@ import {getRandomInt} from "../../../commen/logics/getRandom/getRandom";
 export function setAnimationCSS(i: number, j: number, ii: number, jj: number,
                                 fall: boolean, shift: boolean,) {
     let styleSheet = document.styleSheets[0];
-    let animationName = `keyframe${i}${j}${ii}${jj}${fall}${shift}`
+    let animationName = `keyframeS${i}S${j}S${ii}S${jj}S${fall}S${shift}`
     let keyframes =
         `@-webkit-keyframes ${animationName} {
                      ${shift ? "100%" : "50%"} {transform: translate(${jj * 100}%, ${ii * 100}%)}
@@ -17,6 +17,11 @@ export function setAnimationCSS(i: number, j: number, ii: number, jj: number,
 
 export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number,) => {
     let map = [...Map]
+
+    for(let i=0; i<map.length; i++){
+        map[i]=[...Map[i]]
+    }
+
     let score = 0
     let pozNewSector = 0
     let animationsCount = 0
@@ -25,6 +30,9 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number,) => {
         if (map[I]?.[j]) {
             //сектор есть - меняемся местами
             /*console.log("setSectorH")*/
+
+            map[i][j]={...Map[i][j]}
+
             map[i][j].date.isBum = false
             map[i][j].date.bonusSector = map[I][j].date.bonusSector
             map[i][j].date.state = map[I][j].date.state
@@ -82,6 +90,9 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number,) => {
             if (map[ii][j].date.addBonusSector === 1
                 || map[ii][j].date.addBonusSector === 2
                 || map[ii][j].date.addBonusSector === 3) { // добавляем бонусный сектор если он есть
+
+                map[i][j]={...Map[i][j]}
+
                 map[i][j].date.isBum = false
                 map[i][j].date.bonusSector = map[ii][j].date.addBonusSector
                 map[i][j].date.state = map[ii][j].date.state
@@ -94,6 +105,9 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number,) => {
                 animationsCount++
 
             } else if (map[ii][j].date.addBonusSector === 4) {// добавляем новый  сектор если он есть
+
+                map[i][j]={...Map[i][j]}
+
                 map[i][j].date.isBum = false
                 map[i][j].date.state = 8
                 map[ii][j].date.addBonusSector = 0
@@ -123,10 +137,16 @@ export const boomFunc1 = (Map: MapsGameType, gemsCount = 4 as number,) => {
                 if (map[i][j].date.addBonusSector === 1
                     || map[i][j].date.addBonusSector === 2
                     || map[i][j].date.addBonusSector === 3) { // добавляем бонусный сектор если он есть
+
+                    map[i][j]={...Map[i][j]}
+
                     map[i][j].date.isBum = false
                     map[i][j].date.bonusSector = map[i][j].date.addBonusSector
                     map[i][j].date.addBonusSector = 0
                 } else if (map[i][j].date.addBonusSector === 4) {// добавляем новый  сектор если он есть
+
+                    map[i][j]={...Map[i][j]}
+
                     map[i][j].date.isBum = false
                     map[i][j].date.state = 8
                     map[i][j].date.addBonusSector = 0

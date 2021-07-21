@@ -2,7 +2,8 @@ import React, {FC} from "react";
 import {MessageApiType} from "../../../api/chatApi";
 import UserAvatar from "../../../commen/UserAvatar/UserAvatar";
 
-export const ChatMessage: FC<{ message: MessageApiType, height?: number }> = React.memo(({message, height=80 }) => {
+const ChatMessage: FC<{ message: MessageApiType, height?: number }> = React.memo(({message, height = 80}) => {
+
 
     return <div>
         <div style={{display: "inline-flex",}}>
@@ -17,3 +18,5 @@ export const ChatMessage: FC<{ message: MessageApiType, height?: number }> = Rea
         <hr/>
     </div>
 })
+
+export default ChatMessage

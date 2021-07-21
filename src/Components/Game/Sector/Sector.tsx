@@ -12,6 +12,8 @@ import bw8 from "../../../assets/img/G9.png"
 import m1 from "../../../assets/img/молния гор.png"
 import m2 from "../../../assets/img/молния верт.png"
 import m3 from "../../../assets/img/молния в+г.png"
+import {threeInLineAction} from "../../../redux/threeInLine-reduser";
+import {useDispatch} from "react-redux";
 
 
 export  type SectorGameType = {
@@ -39,18 +41,11 @@ type PropsType = {
     returnMouseDown: (sector: SectorGameType) => void
     returnMouseUp: (sector: SectorGameType) => void
     returnMouseOver: (sector: SectorGameType) => void
-    deleteAnimation: (y: number, x: number) => void
-    decreaseAnimationCount: () => void
 }
 export const Sector: FC<PropsType> = React.memo(({
                                                      sector, returnMouseDown, returnMouseUp, returnMouseOver,
-                                                     deleteAnimation, decreaseAnimationCount,
                                                  }) => {
-        const imgMass = [sw0, sw1, sw2, sw3, sw4, sw5, sw6, sw7, bw8]
-        const bonusImgMass = [m1, m2, m3,]
         const index = (sector.sectorState.x + sector.sectorState.y) % 2
-        let boxShadow = sector.sectorState.isSelected ? "inset 2px 2px 5px #374884, inset -2px -2px 5px #374884" : ""
-
         const handlerMouseDown = () => {
             if (!sector.sectorState.animateStart) {
                 returnMouseDown(sector)
@@ -67,67 +62,84 @@ export const Sector: FC<PropsType> = React.memo(({
             }
         }
 
+        return <div style={{height: "100%", backgroundColor: index ? "#11221122" : ""}}
+                    onMouseDown={handlerMouseDown}
+                    onMouseUp={handlerMouseUp}
+                    onMouseOver={handlerMouseOver}>
+            <SectorMemo sector={sector}/>
+        </div>
+    }
+)
 
-        const handleAnimationEnd = () => {
-            //выполнить по заершении анимации в секторе
-            if (sector.sectorState.animateMove) {
-                //удаление стилей анимации keyframes из document.styleSheets
-                let styleSheet = document.styleSheets[0];
-                let index = null as null | number
-                for (let i = 0; i < styleSheet.cssRules.length; i++) {
+
+type SectorImageType = {
+    sector: SectorGameType
+}
+const SectorMemo: FC<SectorImageType> = React.memo(({sector}) => {
+    const imgMass = [sw0, sw1, sw2, sw3, sw4, sw5, sw6, sw7, bw8]
+    const bonusImgMass = [m1, m2, m3,]
+    let boxShadow = sector.sectorState.isSelected ? "inset 2px 2px 5px #374884, inset -2px -2px 5px #374884" : ""
+    const dispatch = useDispatch()
+    let spedAnimation=0
+
+    const shiftAnimationValue = sector.sectorState.animateMove?.name.split("S")
+    /*console.log(shiftAnimationValue)*/
+    if(shiftAnimationValue){
+        spedAnimation=Math.abs(+shiftAnimationValue[3])+Math.abs(+shiftAnimationValue[4])
+    }
+
+
+
+    const handleAnimationEnd = () => {
+        //выполнить по заершении анимации в секторе
+        if (sector.sectorState.animateMove) {
+            //удаление стилей анимации keyframes из document.styleSheets
+            let styleSheet = document.styleSheets[0];
+            let index = null as null | number
+            for (let i = 0; i < styleSheet.cssRules.length; i++) {
+                // @ts-ignore
+                if (styleSheet.rules[i].name) {
                     // @ts-ignore
-                    if (styleSheet.rules[i].name) {
-                        // @ts-ignore
-                        if (styleSheet.rules[i].name === sector.sectorState.animateMove.name) {
-                            /*index.push(i)*/
-                            //нахождение анимации по имени стиля  и опредление его индекса в таблице стилей
-                            index = i
-                        }
+                    if (styleSheet.rules[i].name === sector.sectorState.animateMove.name) {
+                        /*index.push(i)*/
+                        //нахождение анимации по имени стиля  и опредление его индекса в таблице стилей
+                        index = i
                     }
                 }
-                if (index !== null) {
-                    //если стиль найден  - удаляем его из таблице по индексу
-                    styleSheet.deleteRule(index)
-                }
-                //удаляем название анимации в редаксе
-                /*deleteAnimation(sector.sectorState.y, sector.sectorState.x)*/
-                //уменьшаем счетчик анимаций
-                decreaseAnimationCount()
             }
+            if (index !== null) {
+                //если стиль найден  - удаляем его из таблице по индексу
+                styleSheet.deleteRule(index)
+            }
+            //удаляем название анимации в редаксе
+            dispatch(threeInLineAction.deleteAnimationInSector(sector.sectorState.y, sector.sectorState.x))
+            //уменьшаем счетчик анимаций
+            dispatch(threeInLineAction.decreaseAnimationCount())
         }
+    }
 
-    return <div style={{height:"100%",backgroundColor: index? "#11221122": ""}}>
-        <div onAnimationEnd={handleAnimationEnd} draggable={"false"}/*ref={refDiv}*/
-             style={{
-                 height:"100%",
-                 position: "relative",
-                 borderRadius: "5px",
-                 boxShadow: boxShadow,
-                 animationDuration: `400ms`,
-                 animationIterationCount: 1,
-                 animationName: sector.sectorState.animateMove?.name || "",
-                 animationDirection: "reverse",
-             }}
-             onMouseDown={handlerMouseDown}
-             onMouseUp={handlerMouseUp}
-             onMouseOver={handlerMouseOver}>
-            <div className={s.shieldDiv} draggable={"false"}></div>
-            <img alt="fon" className={sector.date.isBum ? s.isBum : s.img} draggable={"false"}
-                 src={imgMass[sector.date.state]}/>
-            {sector.date.bonusSector > 0 &&
-            <img alt="bonus" className={s.imgBonus} draggable={"false"} src={bonusImgMass[sector.date.bonusSector - 1]}/>}
-            <div>
-                {sector.date.score > 0 ? <div className={s.score}>{sector.date.score}</div> : <div></div>}
-                {/*  <div className={s.devInf}>
+    return <div onAnimationEnd={handleAnimationEnd} draggable={"false"}/*ref={refDiv}*/
+                style={{
+                    height: "100%",
+                    position: "relative",
+                    borderRadius: "5px",
+                    boxShadow: boxShadow,
+                    animationDuration: spedAnimation>1? `${spedAnimation*100}ms`:`400ms`,
+                    animationIterationCount: 1,
+                    animationName: sector.sectorState.animateMove?.name || "",
+                    animationDirection: "reverse",
+                }}>
+        <div className={s.shieldDiv} draggable={"false"}></div>
+        <img alt="fon" className={sector.date.isBum ? s.isBum : s.img} draggable={"false"}
+             src={imgMass[sector.date.state]}/>
+        {sector.date.bonusSector > 0 &&
+        <img alt="bonus" className={s.imgBonus} draggable={"false"} src={bonusImgMass[sector.date.bonusSector - 1]}/>}
+        <div>
+            {sector.date.score > 0 ? <div className={s.score}>{sector.date.score}</div> : <div></div>}
+            {/*  <div className={s.devInf}>
                 {sector.date.addBonusSector > 0 ? <div>{sector.date.addBonusSector}</div> : <div></div>}
                 {sector.date.bonusSector > 0 ? <div style={{color: "red"}}>{sector.date.bonusSector}</div> : <div></div>}
             </div>*/}
-            </div>
         </div>
-
-
     </div>
-
-
-    }
-)
+})

@@ -14,15 +14,12 @@ export type photosType = {
     readonly small: string | null
     readonly large: string | null
 }
-const UserAvatar: FC<PropsType> = ({name, avatar, link, height= 60}) => {
+const UserAvatar: FC<PropsType> = ({name, avatar, link, height = 60}) => {
     return <div>
         <NavLink to={link} onClick={() => {
             window.scrollTo(0, 0);
         }}>
-            {avatar.small ?
-                <img alt="avatar" style={{height: height, borderRadius: height / 2}} src={avatar.small}/>
-                : <img alt="avatar" style={{height: height, borderRadius: height / 2}} src={ava}/>
-            }
+            <img alt="avatar" style={{height: height, borderRadius: height / 2}} src={avatar.small || ava}/>
         </NavLink>
         <div> {name} </div>
     </div>

@@ -6,7 +6,7 @@ import {threeInLineAction} from "../../redux/threeInLine-reduser";
 import {Game} from "./Game";
 
 
-export const GameContainer: FC = () => {
+export const GameContainer: FC =  React.memo( () => {
     const dispatch = useDispatch()
     const map = useSelector(getMap)
     const deskState = useSelector(getDeskState)
@@ -21,5 +21,5 @@ export const GameContainer: FC = () => {
         {map && <Game map = {map} gemsCount={gemsCount}/>}
     </>
 
-}
+})
 
