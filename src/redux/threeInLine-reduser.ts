@@ -1,21 +1,21 @@
 import {AnyBaseActionType, InferActionsTypes} from "./redux-store";
-import {MapsGameType} from "../Components/Game/DeskGame";
-import {deskStateType} from "../Components/Game/Game";
+import {MapsGameType} from "../Components/ThreeInLine/DeskThreeInLine";
+import {deskStateType} from "../Components/ThreeInLine/ThreeInLine";
 import {Dispatch} from "redux";
-import {SectorGameType} from "../Components/Game/Sector/Sector";
-import {replaceSectors} from "../Components/Game/gameLogic/replaceSectors";
-import {isSectorInLine} from "../Components/Game/gameLogic/isSectorInLine";
-import {findBonusBumFunc} from "../Components/Game/gameLogic/findBonusBumFunc";
-import {deleteSectorSelection} from "../Components/Game/gameLogic/deleteSectorSelection";
-import {selectSectorFunc} from "../Components/Game/gameLogic/selectSector";
+import {SectorGameType} from "../Components/ThreeInLine/Sector/Sector";
+import {replaceSectors} from "../Components/ThreeInLine/gameLogic/replaceSectors";
+import {isSectorInLine} from "../Components/ThreeInLine/gameLogic/isSectorInLine";
+import {findBonusBumFunc} from "../Components/ThreeInLine/gameLogic/findBonusBumFunc";
+import {deleteSectorSelection} from "../Components/ThreeInLine/gameLogic/deleteSectorSelection";
+import {selectSectorFunc} from "../Components/ThreeInLine/gameLogic/selectSector";
 import {
     blowUpAllMap,
     blowUpBigCrosshair,
     blowUpCrosshair,
     blowUpSelectedSectors
-} from "../Components/Game/gameLogic/blowUpFunc";
-import {boomFunc1, setAnimationCSS} from "../Components/Game/gameLogic/boomFunc1";
-import {checkMap} from "../Components/Game/gameLogic/checkMap";
+} from "../Components/ThreeInLine/gameLogic/blowUpFunc";
+import {boomFunc1, setAnimationCSS} from "../Components/ThreeInLine/gameLogic/boomFunc1";
+import {deleteAnimationNameInMap} from "../Components/ThreeInLine/gameLogic/deleteAnimationNameInMap";
 
 
 let initialState = {
@@ -30,6 +30,10 @@ let initialState = {
     isEndTurn: false as boolean,
     isBoom: false as boolean,
     animationCount: 0 as number,
+    animationCountEnd: {
+        count: 0 as number,
+        sectors: [] as Array<{ i: number, j: number }>
+    }
 }
 
 type initialStateType = typeof initialState
@@ -89,6 +93,24 @@ const threeInLineReducer = (state = initialState as initialStateType, action: Ac
             return {
                 ...state,
                 animationCount: state.animationCount - 1
+            }
+        case "threeInLine_INCREASE_ANIMATION_COUNT_END":
+            return {
+                ...state,
+                animationCountEnd: {
+                    ...state.animationCountEnd,
+                    count: state.animationCountEnd.count + 1,
+                    sectors: [...state.animationCountEnd.sectors, action.sector]
+                }
+            }
+        case "threeInLine_DELETE_ANIMATION_COUNT_END":
+            return {
+                ...state,
+                animationCountEnd: {
+                    ...state.animationCountEnd,
+                    count: 0,
+                    sectors: []
+                }
             }
         case "threeInLine_DELETE_ANIMATION_IN_SECTOR":
             if (state.map) {
@@ -155,6 +177,12 @@ export const threeInLineAction = {
     decreaseAnimationCount: () => {
         return ({type: "threeInLine_DECREASE_ANIMATION_COUNT"} as const)
     },
+    increaseAnimationCountEnd: (sector: { i: number, j: number }) => {
+        return ({type: "threeInLine_INCREASE_ANIMATION_COUNT_END", sector} as const)
+    },
+    deleteAnimationCountEnd: () => {
+        return ({type: "threeInLine_DELETE_ANIMATION_COUNT_END"} as const)
+    },
 }
 
 export const selectNewSectorThink = (map: MapsGameType, sector: SectorGameType): AnyBaseActionType =>
@@ -203,22 +231,34 @@ export const endTurnThink = (): AnyBaseActionType => {
     }
 }
 
+export const deleteAnimationsThink = (Map: MapsGameType,
+                                      animationCountEnd: {
+                                          count: number,
+                                          sectors: Array<{ i: number, j: number }>
+                                      },
+): AnyBaseActionType => {
+    return async (dispatch) => {
+        dispatch(threeInLineAction.setAnimationCount(0))
+        dispatch(threeInLineAction.setMap(deleteAnimationNameInMap(Map, animationCountEnd.sectors)))
+        dispatch(threeInLineAction.deleteAnimationCountEnd())
+    }
+}
+
 
 const setHandleAnimation = (Map: MapsGameType, sector1: SectorGameType, sector2: SectorGameType,
                             isLine: boolean) => {
     let map = [...Map]
-    map[sector1.sectorState.y] = [...Map[sector1.sectorState.y]]
+    for (let i = 0; i < map.length; i++) {
+        map[i] = [...Map[i]]
+    }
     map[sector1.sectorState.y][sector1.sectorState.x] = {...Map[sector1.sectorState.y][sector1.sectorState.x]}
-    map[sector1.sectorState.y][sector1.sectorState.x].sectorState = {...Map[sector1.sectorState.y][sector1.sectorState.x].sectorState}
     map[sector1.sectorState.y][sector1.sectorState.x].sectorState.animateMove = {
         name: setAnimationCSS(sector1.sectorState.y, sector1.sectorState.x,
             sector2.sectorState.y - sector1.sectorState.y,
             sector2.sectorState.x - sector1.sectorState.x,
             isLine, isLine),
     }
-    map[sector2.sectorState.y] = [...Map[sector2.sectorState.y]]
     map[sector2.sectorState.y][sector2.sectorState.x] = {...Map[sector2.sectorState.y][sector2.sectorState.x]}
-    map[sector2.sectorState.y][sector2.sectorState.x].sectorState = {...Map[sector2.sectorState.y][sector2.sectorState.x].sectorState}
     map[sector2.sectorState.y][sector2.sectorState.x].sectorState.animateMove = {
         name: setAnimationCSS(sector2.sectorState.y, sector2.sectorState.x,
             sector1.sectorState.y - sector2.sectorState.y,

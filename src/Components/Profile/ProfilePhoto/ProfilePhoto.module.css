@@ -18,7 +18,7 @@
     right: 5%;
     height: 10%;
     opacity:0;
-    transition: opacity 2s;
+    transition:  opacity 2s;
 }
 .downloadImg1{
     position: absolute;

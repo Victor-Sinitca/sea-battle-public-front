@@ -1,4 +1,4 @@
-import {MapsGameType} from "../DeskGame";
+import {MapsGameType} from "../DeskThreeInLine";
 import {checkOnBonusScore} from "./isSectorInLine";
 import {SectorGameType} from "../Sector/Sector";
 

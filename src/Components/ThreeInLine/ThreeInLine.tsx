@@ -1,9 +1,9 @@
 import React, {FC, useEffect, useState} from "react";
-import Desk, {MapsGameType} from "./DeskGame";
+import DeskThreeInLine, {MapsGameType} from "./DeskThreeInLine";
 import {SectorGameType} from "./Sector/Sector";
 import {isNearbyWithSector} from "./gameLogic/isNearbyWithSector";
 import {SetIsFirstClickSector} from "./gameLogic/setIsFirstClickSector";
-import s from "./Game.module.css"
+import s from "./ThreeInLine.module.css"
 import {sectorsNotEqual} from "./gameLogic/sectorsNotEqual";
 import {findBonusBumFunc} from "./gameLogic/findBonusBumFunc";
 import {checkMap} from "./gameLogic/checkMap";
@@ -37,8 +37,9 @@ export type deskStateType = {
 type PropsType = {
     map: MapsGameType
     gemsCount: number
+    animationCount:number
 }
-export const Game: FC<PropsType> =  React.memo( ({map, gemsCount}) => {
+export const ThreeInLine: FC<PropsType> =  React.memo( ({map, gemsCount,animationCount}) => {
     const dispatch = useDispatch()
     const [endMove, setEndMove] = useState<boolean>(false)
     const deskState = useSelector(getDeskState)
@@ -48,7 +49,7 @@ export const Game: FC<PropsType> =  React.memo( ({map, gemsCount}) => {
     const selectSector = useSelector(getSelectSector)
     const isEndTurn = useSelector(getIsEndTurn)
     const isBoom = useSelector(getIsBoom)
-    const animationCount = useSelector(getAnimationCount)
+
 
 
     const onMouseDown = (sector: SectorGameType) => {
@@ -174,12 +175,12 @@ export const Game: FC<PropsType> =  React.memo( ({map, gemsCount}) => {
     return <div className={s.displayMap}>
         <div className={s.mainDisplay}>
             <Header3inLine map={map} setEndMove={setEndMove} gemsCount={gemsCount}/>
-            <Desk userMap={map} selectSector={selectSector}
-                  returnMouseDown={isDevMode ? onMouseDownDev : onMouseDown}
-                  returnMouseUp={onMouseUp}
-                  returnMouseOver={onMouseOver}
-                  isEndTurn={isEndTurn}
-                  deskState={deskState}
+            <DeskThreeInLine userMap={map} selectSector={selectSector}
+                             returnMouseDown={isDevMode ? onMouseDownDev : onMouseDown}
+                             returnMouseUp={onMouseUp}
+                             returnMouseOver={onMouseOver}
+                             isEndTurn={isEndTurn}
+                             deskState={deskState}
             />
             {endMove && <div>нет ходов</div>}
         </div>
@@ -187,12 +188,12 @@ export const Game: FC<PropsType> =  React.memo( ({map, gemsCount}) => {
             {isDevMode && prevMap && <>
                 <div style={{height: 150}}></div>
                 <div>
-                    <Desk userMap={prevMap} selectSector={selectSector}
-                          returnMouseDown={isDevMode ? onMouseDownDev : onMouseDown}
-                          returnMouseUp={onMouseUp}
-                          returnMouseOver={onMouseOver}
-                          isEndTurn={isEndTurn}
-                          deskState={deskState}
+                    <DeskThreeInLine userMap={prevMap} selectSector={selectSector}
+                                     returnMouseDown={isDevMode ? onMouseDownDev : onMouseDown}
+                                     returnMouseUp={onMouseUp}
+                                     returnMouseOver={onMouseOver}
+                                     isEndTurn={isEndTurn}
+                                     deskState={deskState}
                     />
                 </div>
             </>}

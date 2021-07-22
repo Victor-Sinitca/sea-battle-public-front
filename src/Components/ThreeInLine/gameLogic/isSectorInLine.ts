@@ -1,4 +1,4 @@
-import {MapsGameType} from "../DeskGame";
+import {MapsGameType} from "../DeskThreeInLine";
 import {SectorGameType} from "../Sector/Sector";
 
 
@@ -20,8 +20,8 @@ export const checkOnBonusScore = (sector: SectorGameType, score: number) => {
 
 export const checkOnSectorInLine = (Map: MapsGameType, IsLine: boolean, i: number, j: number) => {
     let map = [...Map]
-    for(let i=0; i<map.length; i++){
-        map[i]=[...Map[i]]
+    for (let i = 0; i < map.length; i++) {
+        map[i] = [...Map[i]]
     }
     let bonusScore = 0
     let isLine = IsLine
@@ -29,9 +29,9 @@ export const checkOnSectorInLine = (Map: MapsGameType, IsLine: boolean, i: numbe
         if (map[i][j].date.state === map[i - 2]?.[j].date.state) {
             //00X v
             isLine = true
-            map[i][j]={...Map[i][j]}
-            map[i-1][j]={...Map[i-1][j]}
-            map[i-2][j]={...Map[i-2][j]}
+            map[i][j] = {...Map[i][j]}
+            map[i - 1][j] = {...Map[i - 1][j]}
+            map[i - 2][j] = {...Map[i - 2][j]}
             map[i][j].date.isBum = true
             map[i - 1][j].date.isBum = true
             map[i - 2][j].date.isBum = true
@@ -45,12 +45,12 @@ export const checkOnSectorInLine = (Map: MapsGameType, IsLine: boolean, i: numbe
              } else*/
             if (map[i][j].date.state === map[i + 1]?.[j].date.state) {
                 //00X0 v
-                map[i+1][j]={...Map[i+1][j]}
+                map[i + 1][j] = {...Map[i + 1][j]}
                 map[i + 1][j].date.isBum = true
                 bonusScore = checkOnBonusScore(map[i + 1][j], bonusScore)
                 if (map[i][j].date.state === map[i + 2]?.[j].date.state) {
                     //00X00 v
-                    map[i+2][j]={...Map[i+2][j]}
+                    map[i + 2][j] = {...Map[i + 2][j]}
                     map[i + 2][j].date.isBum = true
                     bonusScore = checkOnBonusScore(map[i + 2][j], bonusScore)
                     map[i][j].date.score = 200
@@ -67,9 +67,9 @@ export const checkOnSectorInLine = (Map: MapsGameType, IsLine: boolean, i: numbe
         } else if (map[i][j].date.state === map[i + 1]?.[j].date.state) {
             //0X0 v
             isLine = true
-            map[i][j]={...Map[i][j]}
-            map[i-1][j]={...Map[i-1][j]}
-            map[i+1][j]={...Map[i+1][j]}
+            map[i][j] = {...Map[i][j]}
+            map[i - 1][j] = {...Map[i - 1][j]}
+            map[i + 1][j] = {...Map[i + 1][j]}
             map[i][j].date.isBum = true
             map[i - 1][j].date.isBum = true
             map[i + 1][j].date.isBum = true
@@ -77,7 +77,7 @@ export const checkOnSectorInLine = (Map: MapsGameType, IsLine: boolean, i: numbe
             bonusScore = checkOnBonusScore(map[i + 1][j], bonusScore)
             if (map[i][j].date.state === map[i + 2]?.[j].date.state) {
                 //0X00 v
-                map[i+2][j]={...Map[i+2][j]}
+                map[i + 2][j] = {...Map[i + 2][j]}
                 map[i + 2][j].date.isBum = true
                 bonusScore = checkOnBonusScore(map[i + 2][j], bonusScore)
                 map[i][j].date.score = 100
@@ -91,9 +91,9 @@ export const checkOnSectorInLine = (Map: MapsGameType, IsLine: boolean, i: numbe
         if (map[i][j].date.state === map[i + 2]?.[j].date.state) {
             //X00 v
             isLine = true
-            map[i][j]={...Map[i][j]}
-            map[i+1][j]={...Map[i+1][j]}
-            map[i+2][j]={...Map[i+2][j]}
+            map[i][j] = {...Map[i][j]}
+            map[i + 1][j] = {...Map[i + 1][j]}
+            map[i + 2][j] = {...Map[i + 2][j]}
             map[i][j].date.isBum = true
             map[i + 1][j].date.isBum = true
             map[i + 2][j].date.isBum = true
@@ -108,9 +108,9 @@ export const checkOnSectorInLine = (Map: MapsGameType, IsLine: boolean, i: numbe
         if (map[i][j].date.state === map[i][j - 2]?.date.state) {
             //00X g
             isLine = true
-            map[i][j]={...Map[i][j]}
-            map[i][j-1]={...Map[i][j-1]}
-            map[i][j-2]={...Map[i][j-2]}
+            map[i][j] = {...Map[i][j]}
+            map[i][j - 1] = {...Map[i][j - 1]}
+            map[i][j - 2] = {...Map[i][j - 2]}
             map[i][j].date.isBum = true
             map[i][j - 1].date.isBum = true
             map[i][j - 2].date.isBum = true
@@ -123,12 +123,12 @@ export const checkOnSectorInLine = (Map: MapsGameType, IsLine: boolean, i: numbe
             } else*/
             if (map[i][j].date.state === map[i][j + 1]?.date.state) {
                 //00X0 g
-                map[i][j+1]={...Map[i][j+1]}
+                map[i][j + 1] = {...Map[i][j + 1]}
                 map[i][j + 1].date.isBum = true
                 bonusScore = checkOnBonusScore(map[i][j + 1], bonusScore)
                 if (map[i][j].date.state === map[i][j + 2]?.date.state) {
                     //00X00 g
-                    map[i][j+2]={...Map[i][j+2]}
+                    map[i][j + 2] = {...Map[i][j + 2]}
                     map[i][j + 2].date.isBum = true
                     bonusScore = checkOnBonusScore(map[i][j + 2], bonusScore)
                     map[i][j].date.addBonusSector = 4
@@ -173,9 +173,9 @@ export const checkOnSectorInLine = (Map: MapsGameType, IsLine: boolean, i: numbe
         } else if (map[i][j].date.state === map[i][j + 1]?.date.state) {
             //0X0 g
             isLine = true
-            map[i][j]={...Map[i][j]}
-            map[i][j-1]={...Map[i][j-1]}
-            map[i][j+1]={...Map[i][j+1]}
+            map[i][j] = {...Map[i][j]}
+            map[i][j - 1] = {...Map[i][j - 1]}
+            map[i][j + 1] = {...Map[i][j + 1]}
             map[i][j].date.isBum = true
             map[i][j - 1].date.isBum = true
             map[i][j + 1].date.isBum = true
@@ -183,7 +183,7 @@ export const checkOnSectorInLine = (Map: MapsGameType, IsLine: boolean, i: numbe
             bonusScore = checkOnBonusScore(map[i][j + 1], bonusScore)
             if (map[i][j].date.state === map[i][j + 2]?.date.state) {
                 //0X00 g
-                map[i][j+2]={...Map[i][j+2]}
+                map[i][j + 2] = {...Map[i][j + 2]}
                 map[i][j + 2].date.isBum = true
                 bonusScore = checkOnBonusScore(map[i][j + 2], bonusScore)
                 if (map[i][j].date.score === 50) {
@@ -208,9 +208,9 @@ export const checkOnSectorInLine = (Map: MapsGameType, IsLine: boolean, i: numbe
         if (map[i][j].date.state === map[i][j + 2]?.date.state) {
             //X00 g
             isLine = true
-            map[i][j]={...Map[i][j]}
-            map[i][j+1]={...Map[i][j+1]}
-            map[i][j+2]={...Map[i][j+2]}
+            map[i][j] = {...Map[i][j]}
+            map[i][j + 1] = {...Map[i][j + 1]}
+            map[i][j + 2] = {...Map[i][j + 2]}
             map[i][j].date.isBum = true
             map[i][j + 1].date.isBum = true
             map[i][j + 2].date.isBum = true

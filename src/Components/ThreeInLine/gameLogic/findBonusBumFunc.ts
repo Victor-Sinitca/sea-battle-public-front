@@ -1,4 +1,4 @@
-import {MapsGameType} from "../DeskGame";
+import {MapsGameType} from "../DeskThreeInLine";
 
 
 export const findBonusBumFunc = (Map: MapsGameType,) => {

@@ -12,7 +12,7 @@ import bw8 from "../../../assets/img/G9.png"
 import m1 from "../../../assets/img/молния гор.png"
 import m2 from "../../../assets/img/молния верт.png"
 import m3 from "../../../assets/img/молния в+г.png"
-import {threeInLineAction} from "../../../redux/threeInLine-reduser";
+import {deleteAnimationsThink, threeInLineAction} from "../../../redux/threeInLine-reduser";
 import {useDispatch} from "react-redux";
 
 
@@ -111,10 +111,19 @@ const SectorMemo: FC<SectorImageType> = React.memo(({sector}) => {
                 //если стиль найден  - удаляем его из таблице по индексу
                 styleSheet.deleteRule(index)
             }
+
+            // сохраняем счетчик для удаления анимаций после выполнения на всей доске
+            dispatch(threeInLineAction.increaseAnimationCountEnd(
+                {
+                    i:sector.sectorState.y,
+                    j:sector.sectorState.x
+                }))
+
+           /*
             //удаляем название анимации в редаксе
-            dispatch(threeInLineAction.deleteAnimationInSector(sector.sectorState.y, sector.sectorState.x))
             //уменьшаем счетчик анимаций
-            dispatch(threeInLineAction.decreaseAnimationCount())
+            dispatch(threeInLineAction.deleteAnimationInSector(sector.sectorState.y, sector.sectorState.x))
+            dispatch(threeInLineAction.decreaseAnimationCount())*/
         }
     }
 

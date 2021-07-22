@@ -25,11 +25,11 @@ const NavBar = () => {
                     три в ряд
                 </div>
             </NavLink>
-            <NavLink to='/1111' activeClassName={s.active}>
+            {/*<NavLink to='/1111' activeClassName={s.active}>
                 <div className={s.item}>
                    черновик
                 </div>
-            </NavLink>
+            </NavLink>*/}
             {authorization && <>
                 <NavLink to='/profile' activeClassName={s.active}>
                     <div className={s.item}>

@@ -1,4 +1,4 @@
-import {MapsGameType} from "../DeskGame";
+import {MapsGameType} from "../DeskThreeInLine";
 import {SectorGameType} from "../Sector/Sector";
 
 

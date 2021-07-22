@@ -19,7 +19,7 @@ type PropsType = {
 
 
 }
-const Desk: FC<PropsType> =  React.memo( ({userMap,deskState, returnMouseDown,selectSector,
+const DeskThreeInLine: FC<PropsType> =  React.memo( ({userMap,deskState, returnMouseDown,selectSector,
                                  returnMouseUp,returnMouseOver,isEndTurn,}) => {
     const dispatch = useDispatch()
     const repeat =(count:number)=>{
@@ -59,4 +59,4 @@ const Desk: FC<PropsType> =  React.memo( ({userMap,deskState, returnMouseDown,se
         </div>
     )
 })
-export default Desk
+export default DeskThreeInLine

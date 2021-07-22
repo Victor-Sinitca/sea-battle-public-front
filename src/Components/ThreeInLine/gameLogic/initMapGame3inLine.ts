@@ -1,5 +1,5 @@
 import {getRandomInt} from "../../../commen/logics/getRandom/getRandom";
-import {MapsGameType} from "../DeskGame";
+import {MapsGameType} from "../DeskThreeInLine";
 
 
 export const initMapGame3inLine = (x: number = 10, y: number = 10 , gemsCount = 4 as number) => {

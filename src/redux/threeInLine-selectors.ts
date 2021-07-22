@@ -33,3 +33,6 @@ export const getIsBoom = (state: AppStateType) => {
 export const getAnimationCount = (state: AppStateType) => {
     return state.threeInLine.animationCount
 }
+export const getAnimationCountEnd = (state: AppStateType) => {
+    return state.threeInLine.animationCountEnd
+}

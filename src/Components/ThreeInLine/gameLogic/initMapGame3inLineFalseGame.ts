@@ -1,4 +1,4 @@
-import {MapsGameType} from "../DeskGame";
+import {MapsGameType} from "../DeskThreeInLine";
 
 
 export const initMapGame3inLineFalseGame = (x: number = 10, y: number = 10) => {

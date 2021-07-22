@@ -1,4 +1,4 @@
-import {MapsGameType} from "../DeskGame";
+import {MapsGameType} from "../DeskThreeInLine";
 import {getRandomInt} from "../../../commen/logics/getRandom/getRandom";
 
 

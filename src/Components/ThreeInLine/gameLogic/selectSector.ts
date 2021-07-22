@@ -1,13 +1,12 @@
-import {MapsGameType} from "../DeskGame";
+import {MapsGameType} from "../DeskThreeInLine";
 import {SectorGameType} from "../Sector/Sector";
 
 
-export const deleteSectorSelection =(map: MapsGameType, sector: SectorGameType)=>{
+export const selectSectorFunc =(map: MapsGameType, sector: SectorGameType)=>{
     let newMap = [...map]
     newMap[sector.sectorState.y] = [...map[sector.sectorState.y]]
     newMap[sector.sectorState.y][sector.sectorState.x] = {...map[sector.sectorState.y][sector.sectorState.x]}
     newMap[sector.sectorState.y][sector.sectorState.x].sectorState = {...map[sector.sectorState.y][sector.sectorState.x].sectorState}
-    newMap[sector.sectorState.y][sector.sectorState.x].sectorState.isFirstClick = false
-    newMap[sector.sectorState.y][sector.sectorState.x].sectorState.isSelected = false
+    newMap[sector.sectorState.y][sector.sectorState.x].sectorState.isSelected = true
     return newMap
 }
