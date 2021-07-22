@@ -1,15 +1,12 @@
-import React, {ChangeEvent, FC, useEffect, useState} from "react";
+import React, {ChangeEvent, FC, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getIsUpdateProfile, getProfile} from "../../redux/profile-selectors";
 import ava from "../../assets/img/ava.jpeg"
-import pngD from "../../assets/img/png-download.png"
 import {useHistory, useParams} from "react-router-dom";
-import {getProfileThunk, uploadPhotoThink} from "../../redux/profile-reducer";
+import {actionProfile, getProfileThunk, uploadPhotoThink} from "../../redux/profile-reducer";
 import {getAuthUser} from "../../redux/authHttp-selectors";
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import Preloader1 from "../../commen/Preloader1/Preloader1";
-import exp from "constants";
-import {ChatInBattle} from "../pages/Chat/ChatPage";
 import {ProfilePhoto} from "./ProfilePhoto/ProfilePhoto";
 
 export const Profile: FC = () => {
@@ -22,6 +19,8 @@ export const Profile: FC = () => {
     const {userID} = useParams<{ userID: string }>();
     let userId = userID || null;
     const isOwner = !userID || userID === authUser?.id
+
+
 
     const refreshProfile = () => {
         if (!userId) {
@@ -44,7 +43,9 @@ export const Profile: FC = () => {
 
 
     useEffect(() => {
-        refreshProfile()
+        return()=>{
+            dispatch(actionProfile.setUsersProfile(null))
+        }
     }, [])
 
 
@@ -52,11 +53,7 @@ export const Profile: FC = () => {
         refreshProfile()
     }, [userID])
 
-
-    if (profile === null) {
-        return <div>профиля нет</div>
-    }
-    if (isUpdateProfile) {
+    if (isUpdateProfile || !profile) {
         return <Preloader1/>
     }
     return <div>
@@ -68,7 +65,6 @@ export const Profile: FC = () => {
             <div>игр:{profile.gameSBState.numberOfGamesSB} </div>
             <div>побед: {profile.gameSBState.numberOfWinsSB}</div>
         </div>
-
     </div>
 
 }

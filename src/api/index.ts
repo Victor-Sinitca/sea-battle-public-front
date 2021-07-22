@@ -18,6 +18,30 @@ $api.interceptors.request.use((config) => {
     return config
 })
 
+axios.interceptors.response.use(
+    response => {
+        return response
+    },
+    error => {
+        if (!error.response) {
+            console.log("Please check your internet connection.");
+        }
+        return Promise.reject(error)
+    }
+)
+
+$api.interceptors.response.use(
+    response => {
+        return response
+    },
+    error => {
+        if (!error.response) {
+            console.log("Please check your internet connection.");
+        }
+        return Promise.reject(error)
+    }
+)
+
 $api.interceptors.response.use((config) => {
     return config
 }, async error => {

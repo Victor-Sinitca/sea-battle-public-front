@@ -5,20 +5,19 @@ import {isNearbyWithSector} from "./gameLogic/isNearbyWithSector";
 import {SetIsFirstClickSector} from "./gameLogic/setIsFirstClickSector";
 import s from "./ThreeInLine.module.css"
 import {sectorsNotEqual} from "./gameLogic/sectorsNotEqual";
-import {findBonusBumFunc} from "./gameLogic/findBonusBumFunc";
 import {checkMap} from "./gameLogic/checkMap";
-import {LeftBar3inLine} from "./LeftBar3inLine";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    boomEffectThink, checkMapThink,
-    checkOnLineInSelectSectorsThink, endTurnThink,
+    boomEffectThink,
+    checkMapThink,
+    checkOnLineInSelectSectorsThink,
+    endTurnThink,
     replacementSectorsThink,
     selectNewSectorThink,
     threeInLineAction,
     unselectNewSectorThink
 } from "../../redux/threeInLine-reduser";
 import {
-    getAnimationCount,
     getDeskState,
     getIsBoom,
     getIsDevMode,
@@ -27,7 +26,6 @@ import {
     getScore,
     getSelectSector
 } from "../../redux/threeInLine-selectors";
-import {boomFunc1} from "./gameLogic/boomFunc1";
 import {Header3inLine} from "./Header3inLine/Header3inLine";
 
 

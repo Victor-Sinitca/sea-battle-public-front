@@ -42,7 +42,7 @@ export const AddMessagesFormChat: FC<AddMessagesFormType> = ({statusWS, sendMess
                             "term", undefined, "text", {onKeyDown})}
                     </div>
                     <div style={{padding: 5}}>
-                        <button ref={refButton} type="submit"
+                        <button  ref={refButton} type="submit"
                                 disabled={statusWS !== "ready" || isSubmitting || !values.term}>
                             send
                         </button>

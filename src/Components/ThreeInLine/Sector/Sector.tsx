@@ -133,7 +133,8 @@ const SectorMemo: FC<SectorImageType> = React.memo(({sector}) => {
                     position: "relative",
                     borderRadius: "5px",
                     boxShadow: boxShadow,
-                    animationDuration: spedAnimation>1? `${spedAnimation*100}ms`:`400ms`,
+                    /*animationDuration: spedAnimation>1? `${spedAnimation*100}ms`:`400ms`,*/
+                    animationDuration: `300ms`,
                     animationIterationCount: 1,
                     animationName: sector.sectorState.animateMove?.name || "",
                     animationDirection: "reverse",

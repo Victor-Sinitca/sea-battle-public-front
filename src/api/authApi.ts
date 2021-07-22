@@ -30,13 +30,13 @@ export const authAPI = {
             .then(response => response.data)
             .catch(err => {
                 if (err.response) {
-
+                    /*console.log(err)*/
                     // client received an error response (5xx, 4xx)
                 } else if (err.request) {
-
+                    /*console.log(err)*/
                     // client never received a response, or request never left
                 } else {
-
+                    /*console.log(err)*/
                     // anything else
                 }
             })
