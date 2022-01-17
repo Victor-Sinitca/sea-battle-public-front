@@ -30,8 +30,7 @@
   },
   "scripts": {
     "startHost": "HOST=0.0.0.0 react-scripts start",
-    "start": "node build/index.html",
-    "dev": "react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
