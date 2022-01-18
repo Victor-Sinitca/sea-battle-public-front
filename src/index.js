@@ -9,16 +9,16 @@ import store from "./redux/redux-store";
 
 ReactDOM.render(
   <React.StrictMode>
-     {/* <BrowserRouter>
+      <BrowserRouter>
           <Provider store={store}>
               <App/>
           </Provider>
-      </BrowserRouter>*/}
-      <HashRouter>
+      </BrowserRouter>
+      {/*<HashRouter>
           <Provider store={store}>
               <App/>
           </Provider>
-      </HashRouter>
+      </HashRouter>*/}
   </React.StrictMode>,
   document.getElementById('root')
 );
