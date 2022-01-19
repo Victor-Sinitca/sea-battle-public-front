@@ -5,7 +5,7 @@ import {authAPI} from "./authApi";
 export const API_WS = "ws://localhost:7000"*/
 
 export const API_URL = "https://my-game-server.herokuapp.com/api"
-export const API_WS = "ws://my-game-server.herokuapp.com"
+export const API_WS = "wss://my-game-server.herokuapp.com"
 /*export const API_URL = '//localhost:7000/api'*/
 
 const $api = axios.create({
