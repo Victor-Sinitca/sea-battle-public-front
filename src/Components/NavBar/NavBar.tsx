@@ -8,54 +8,59 @@ import {getIsAuthorization} from "../../redux/authHttp-selectors";
 const NavBar = () => {
     const authorization = useSelector(getIsAuthorization)
     return (
-        <div className={s.displayNavBar}>
-            <NavLink to='/placeBattleMan' activeClassName={s.active}>
-                <div className={`${s.item} ${s.active}`}>
-                    морской бой
+        <div className={s.navBar}>
+            <div className={s.navBarSection}>
+                <div className={s.navBarSectionHeader}>Games</div>
+                <div className={s.navBarSectionBlock}>
+                    <NavLink to='/placeBattleMan' activeClassName={s.active}>
+                        <div className={s.item}>
+                            sea ​​battle
+                        </div>
+                    </NavLink>
+                    <NavLink to='/game' activeClassName={s.active}>
+                        <div className={s.item}>
+                            три в ряд
+                        </div>
+                    </NavLink>
                 </div>
-            </NavLink>
+            </div>
 
-            {/*<NavLink to='/dragDrop' activeClassName={s.active}>
-                <div className={`${s.item} ${s.active}`}>
-                    Перетяжка
-                </div>
-            </NavLink>*/}
-            <NavLink to='/game' activeClassName={s.active}>
-                <div className={s.item}>
-                    три в ряд
-                </div>
-            </NavLink>
-            {/*<NavLink to='/1111' activeClassName={s.active}>
-                <div className={s.item}>
-                   черновик
-                </div>
-            </NavLink>*/}
             {authorization && <>
-                <NavLink to='/profile' activeClassName={s.active}>
-                    <div className={s.item}>
-                        профиль
+                <div className={s.navBarSection}>
+                    <div className={s.navBarSectionHeader}>Games</div>
+                    <div className={s.navBarSectionBlock}>
+                        <NavLink to='/battleRoom' activeClassName={s.active}>
+                            <div className={s.item}>
+                                game registration
+                            </div>
+                        </NavLink>
+                        <NavLink to='/battleList' activeClassName={s.active}>
+                            <div className={s.item}>
+                                battle room
+                            </div>
+                        </NavLink>
+                        <NavLink to='/chat' activeClassName={s.active}>
+                            <div className={s.item}>
+                                chat
+                            </div>
+                        </NavLink>
                     </div>
-                </NavLink>
-                <NavLink to='/battleRoom' activeClassName={s.active}>
-                    <div className={s.item}>
-                        регистрация игры
+                </div>
+                <div className={s.navBarSection}>
+                    <div className={s.navBarSectionHeader}>Games</div>
+                    <div className={s.navBarSectionBlock}>
+                        <NavLink to='/profile' activeClassName={s.active}>
+                            <div className={s.item}>
+                                profile
+                            </div>
+                        </NavLink>
+                        <NavLink to='/users' activeClassName={s.active}>
+                            <div className={s.item}>
+                                list of players
+                            </div>
+                        </NavLink>
                     </div>
-                </NavLink>
-                <NavLink to='/chat' activeClassName={s.active}>
-                    <div className={s.item}>
-                        чат
-                    </div>
-                </NavLink>
-                <NavLink to='/battleList' activeClassName={s.active}>
-                    <div className={s.item}>
-                        комната сражений
-                    </div>
-                </NavLink>
-                <NavLink to='/users' activeClassName={s.active}>
-                    <div className={s.item}>
-                        список игроков
-                    </div>
-                </NavLink>
+                </div>
             </>}
         </div>
     )

@@ -14,8 +14,11 @@ const validateTerm = (values: any) => {
 type AddMessagesFormType = {
     statusWS: statusType
     sendMessageForm: (values: string) => void
+    buttonText?:string
+    placeholder?:string
 }
-export const AddMessagesFormChat: FC<AddMessagesFormType> = ({statusWS, sendMessageForm}) => {
+export const AddMessagesFormChat: FC<AddMessagesFormType> =
+    ({statusWS, sendMessageForm, buttonText="send", placeholder="твое сообщение"}) => {
     const refButton = useRef<HTMLButtonElement>(null)
     const submitForm = (values: { term: string },
                         {setSubmitting, resetForm}: FormikHelpers<{ term: string }>,) => {
@@ -38,13 +41,13 @@ export const AddMessagesFormChat: FC<AddMessagesFormType> = ({statusWS, sendMess
             {({errors, touched, isSubmitting, values}) => (
                 <Form style={{display: "inline-flex",}}>
                     <div style={{width: "auto"}}>
-                        {createFieldFormikTextarea<{ term: string }>("твое сообщение",
+                        {createFieldFormikTextarea<{ term: string }>(placeholder,
                             "term", undefined, "text", {onKeyDown})}
                     </div>
                     <div style={{padding: 5}}>
                         <button  ref={refButton} type="submit"
                                 disabled={statusWS !== "ready" || isSubmitting || !values.term}>
-                            send
+                            {buttonText}
                         </button>
                     </div>
                 </Form>
