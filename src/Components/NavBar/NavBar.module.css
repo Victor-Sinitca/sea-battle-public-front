@@ -1,20 +1,22 @@
-.displayNavBar{
+.navBar{
     display: grid;
     grid-template-rows: min-content;
-    grid-gap: 20px;
+    grid-gap: 15px;
     padding-top: 15px;
     padding-left: 5px;
     padding-right: 5px;
 }
-
-.displayNavBar a {
+.navBar a {
     text-decoration:none;
     cursor: pointer;
 }
+
+
 .item {
     border: 2px solid #619eec;
     border-radius: 5px;
     padding: 5px;
+    margin-top: 5px;
     font:bold  0.8em Arial ;
     text-align:center;
     color: #e7ebfc;
@@ -22,7 +24,17 @@
 }
 
 .active div {
-    color: gold;
+    color: #997200;
 
 }
+.navBarSection{
 
+}
+.navBarSectionHeader{
+    text-align:center;
+    font-size: 12px;
+    color: #61dafb;
+}
+.navBarSectionBlock{
+
+}

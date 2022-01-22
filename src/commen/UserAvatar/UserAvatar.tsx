@@ -19,7 +19,7 @@ const UserAvatar: FC<PropsType> = ({name, avatar, link, height = 60}) => {
         <NavLink to={link} onClick={() => {
             window.scrollTo(0, 0);
         }}>
-            <img alt="avatar" style={{height: height, borderRadius: height / 2}} src={avatar.small || ava}/>
+            <img alt="avatar" className={s.ava}  style={{height: height, borderRadius: height / 2}} src={avatar.small || ava}  />
         </NavLink>
         <div> {name} </div>
     </div>
