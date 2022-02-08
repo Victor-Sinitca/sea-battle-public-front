@@ -1,0 +1,52 @@
+.emptyGames{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+}
+
+
+.displayBattleList {
+  display: grid;
+  grid-template-columns: 2fr 10fr;
+
+
+  .displayList {
+    height: 600px;
+    display: grid;
+    align-content: start;
+    grid-gap: 10px;
+    overflow-y: scroll;
+
+    .startedGames{
+      padding: 10px;
+      background-color: #0ce8b5;
+
+      .gameLink {
+        border: solid 2px #042a0c;
+        background-color: #443887;
+      }
+
+      .gameLinkActive {
+        border: solid 2px #338443;
+        background-color: #7266bf;
+        div {
+          border: solid 2px #cc43ef;
+        }
+      }
+
+
+      .buttonStartGame{
+
+      }
+    }
+
+
+  }
+
+  .displayBattle {
+
+  }
+}
+
+

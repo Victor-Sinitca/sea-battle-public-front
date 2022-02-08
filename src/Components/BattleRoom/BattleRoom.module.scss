@@ -1,0 +1,125 @@
+.display {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+
+  .gamesSection {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    .gameRegistration {
+      height: 100%;
+      display: grid;
+      grid-template-rows: 1fr 100px;
+      grid-gap: 10px;
+      border: solid 4px red;
+      background-color: #2807e7;
+
+      .listGames {
+        height: 100%;
+        display:grid ;
+        grid-auto-rows: 30px 1fr;
+        border: solid 4px #7c8743;
+        background-color: #756ab6;
+
+        .listGamesHeader{
+          justify-self:center;
+        }
+        .listGamesSection{
+          height: 400px;
+          display: flex;
+          flex-direction: column;
+          overflow: auto;
+          scroll-snap-type: y proximity;
+
+          .displayGame {
+            display: grid;
+            grid-gap: 5px;
+            grid-template-columns: 1fr 80px ;
+            scroll-snap-align: start;
+
+            .displayGameSection{
+
+                border: solid 4px #b47e7e;
+                background-color: #534b7f;
+                word-break: break-all;
+
+            }
+
+
+            .displayGameButton{
+
+            }
+
+          }
+        }
+
+
+      }
+
+      .createGame {
+        display: grid;
+        grid-gap: 5px;
+        border: solid 4px #7c8743;
+        background-color: #756ab6;
+        padding: 5px;
+
+        .displayCreateGameHeader {
+          justify-self: center;
+          font-size: 12px;
+        }
+      }
+    }
+
+    .ongoingGames {
+      display: grid;
+      height: 100%;
+      grid-template-rows: min-content 1fr;
+      border: solid 4px #25bf1a;
+      background-color: #345080;
+
+      .ongoingGamesHeader{
+        display: flex;
+        justify-content: center;
+
+      }
+      .ongoingGamesGamesSection{
+        height: 400px;
+        overflow-y: auto;
+        scroll-snap-type: y mandatory;
+        .oneGame {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+
+          div {
+            border: solid 2px #b47e7e;
+            background-color: #534b7f;
+            align-items: stretch;
+          }
+        }
+      }
+    }
+  }
+
+  .chatSection {
+    height: 100%;
+    border: solid 4px #7c8743;
+    background-color: #756ab6;
+    overflow: auto;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+

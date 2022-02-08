@@ -1,4 +1,4 @@
-.displayHeader{
+.header{
     display: grid;
     width: 100%;
     grid-template-rows: auto auto;

@@ -13,5 +13,9 @@ export const getIsLoading =(state:AppStateType)=>{
 export const getAuthProfile =(state:AppStateType)=>{
     return state.authHttp.authProfile
 }
+export const getErrorData =(state:AppStateType)=>{
+    return state.authHttp.errorData
+}
+
 
 

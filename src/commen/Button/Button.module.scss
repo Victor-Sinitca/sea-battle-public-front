@@ -1,0 +1,16 @@
+
+
+.buttonStyle{
+  background-color: #0133d0;
+  color: #01a121;
+  border-radius: 10%;
+  padding: 2%;
+  transition: all 1s;
+  border: 1px solid #011032;
+  cursor: pointer;
+
+  &:hover{
+    border: 1px solid #0e3e93;
+    background-color: #bb97af;
+  }
+}

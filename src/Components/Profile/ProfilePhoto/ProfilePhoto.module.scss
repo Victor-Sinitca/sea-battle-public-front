@@ -1,0 +1,34 @@
+.profilePhoto{
+    height: 180px;
+    width: min-content;
+    position: relative;
+
+    .downloadImg {
+        position: absolute;
+        top: 5%;
+        right: 5%;
+        height: 10%;
+        opacity:0;
+        transition:  all 2s;
+        cursor: pointer;
+    }
+
+    &:hover{
+        .downloadImg {
+            opacity:1;
+        }
+    }
+
+    .imgPhoto {
+        height: 100%;
+        border-radius: 5px;
+    }
+
+    .inputPhoto {
+        visibility: hidden;
+        height: 0;
+        width: 0;
+    }
+
+}
+

@@ -1,0 +1,50 @@
+
+.profile{
+  display: grid;
+  grid-template-rows: 50px 1fr;
+
+  .profileHeader{
+    display: grid;
+    grid-template-columns: 1fr 80px;
+
+    div{
+      justify-self: center;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    .buttonLogout{
+      justify-self: right;
+      width: 60px;
+      height: 30px;
+    }
+  }
+  .profileBlock{
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    grid-gap: 10px;
+
+    .profileDescriptions{
+      .statusBlock{
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: min-content 1fr;
+        align-items: baseline;
+
+
+
+
+      }
+      .gamesBlock{
+
+      }
+
+    }
+
+
+
+  }
+
+
+
+}
+

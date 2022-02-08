@@ -22,3 +22,7 @@
     justify-self: center;
     font: 17px Helvetica, Arial, sans-serif;
 }
+.error{
+    font: 12px/1.5 Helvetica, Arial, sans-serif;
+    color: #761313;
+}

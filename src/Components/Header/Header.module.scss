@@ -1,0 +1,46 @@
+.header {
+    grid-area: h;
+    display: grid;
+    grid-template-columns: 1fr 150px;
+    align-content: center;
+    padding: 5px 15px;
+
+    background-color: #2d79ea;
+    border-bottom: 2px #053986 solid;
+
+    .infoBlock{
+
+    }
+    .userBlock{
+        display: flex;
+        align-items: center;
+        justify-content: right;
+
+        .headerAvatar {
+            display: flex;
+            align-items: center;
+
+            figcaption{
+                cursor: pointer ;
+                margin-right: 10px;
+            }
+            img {
+                height: 40px;
+                border-radius: 5px;
+                cursor: pointer ;
+            }
+        }
+
+        .headerButton{
+            width: 50px;
+            height: 30px;
+
+        }
+    }
+}
+
+
+
+
+
+

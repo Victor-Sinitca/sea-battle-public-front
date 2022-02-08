@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from "react";
-import s from "./BattleList.module.css"
+import s from "./BattleList.module.scss"
 import {useDispatch, useSelector} from "react-redux";
 import {getActiveStartGameId, getListGamesRoom, getStartGame, getStatus} from "../../redux/chat-selectors";
 import {
@@ -12,7 +12,7 @@ import {
 } from "../../redux/chat-reducer";
 import Battle from "../Battle/Battle";
 import {getAuthUser} from "../../redux/authHttp-selectors";
-import {ListStartedGames} from "./ListStartedGames/ListStartedGames";
+import {StartedGames} from "./ListStartedGames/StartedGames";
 import {ChatInBattle} from "../pages/Chat/ChatPage";
 
 
@@ -33,7 +33,7 @@ export const BattleList: FC = React.memo(() => {
         dispatch(actionChat.setActiveStartGameId(""))
         dispatch(leaveGameRoomOfId(gamesRoomId, userId || ""))
     }
-    const startGame = startGames.filter((g=>g.gameId === activeStartGameId))[0]
+    const startGame = startGames.filter((g => g.gameId === activeStartGameId))[0]
     const sendMessageForm = (term: string) => {
         dispatch(sendMessageMB(term, startGame.gameId))
     }
@@ -47,25 +47,26 @@ export const BattleList: FC = React.memo(() => {
 
 
     if (gameRoom.length < 1) {
-        return <div> игр не зарегистрировано </div>
+        return <div className={s.emptyGames}> no registered games </div>
     }
     if (!authUser) {
-        return <div> вы не авторизованы </div>
+        return <div className={s.emptyGames}> you are not authorized </div>
     }
     return <div className={s.displayBattleList}>
         <div className={s.displayList}>
             {gameRoom.map(r =>
-                <ListStartedGames key={r.gamesRoomId} gameRoom={r} activeStartGameId={activeStartGameId}
-                                  authUserId={authUser.id} handlerStartGame={handlerStartGame}
-                                  handlerLeaveGameRoomOfId={handlerLeaveGameRoomOfId}/>
+                <StartedGames key={r.gamesRoomId} gameRoom={r} activeStartGameId={activeStartGameId}
+                              authUserId={authUser.id} handlerStartGame={handlerStartGame}
+                              handlerLeaveGameRoomOfId={handlerLeaveGameRoomOfId}/>
             )}
         </div>
         <div className={s.displayBattle}>
-            {activeStartGameId && startGame ? <div>
-                <Battle  startGame={startGame} />
-                <ChatInBattle statusWS={statusWS} messages={startGame.chatData} sendMessageForm={sendMessageForm}/>
-            </div>
-                : <div> выберите игру</div>}
+            {activeStartGameId && startGame ?
+                <div>
+                    <Battle startGame={startGame}/>
+                    <ChatInBattle statusWS={statusWS} messages={startGame.chatData} sendMessageForm={sendMessageForm}/>
+                </div>
+                : <div className={s.emptyGames}> выберите игру</div>}
         </div>
     </div>
 })

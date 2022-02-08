@@ -42,8 +42,8 @@ export const authAPI = {
             })
     },
     registration(email: string, password: string, name:string) {
-        return $api.post<AuthResponseType>(`/registration`, { email, password, name})
-            .then(response => response.data);
+        return $api.post<AuthResponseType >(`/registration`, { email, password, name})
+            .then(response => response.data)
     },
     logout() {
         return $api.post<any>(`/logout`)

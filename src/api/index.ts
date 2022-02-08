@@ -1,11 +1,11 @@
 import axios, {AxiosRequestConfig} from "axios";
 import {authAPI} from "./authApi";
 
-/*export const API_URL = "http://localhost:7000/api"
-export const API_WS = "ws://localhost:7000"*/
+export const API_URL = "http://localhost:7000/api"
+export const API_WS = "ws://localhost:7000"
 
-export const API_URL = "https://my-game-server.herokuapp.com/api"
-export const API_WS = "wss://my-game-server.herokuapp.com"
+/*export const API_URL = "https://my-game-server.herokuapp.com/api"
+export const API_WS = "wss://my-game-server.herokuapp.com"*/
 /*export const API_URL = '//localhost:7000/api'*/
 
 const $api = axios.create({
@@ -18,12 +18,13 @@ $api.interceptors.request.use((config) => {
     return config
 })
 
-axios.interceptors.response.use(
+/*axios.interceptors.response.use(
     response => {
         return response
     },
     error => {
         if (!error.response) {
+            debugger
             console.log("Please check your internet connection.");
         }
         return Promise.reject(error)
@@ -40,7 +41,7 @@ $api.interceptors.response.use(
         }
         return Promise.reject(error)
     }
-)
+)*/
 
 $api.interceptors.response.use((config) => {
     return config
@@ -55,7 +56,10 @@ $api.interceptors.response.use((config) => {
             console.log("не авторизован в интерсепторе")
         }
 
+    }else {
+        return Promise.reject(error)
     }
+
 })
 
 

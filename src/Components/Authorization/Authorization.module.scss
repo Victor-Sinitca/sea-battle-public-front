@@ -8,18 +8,22 @@
     border-radius: 10px;
     box-shadow: #41636c 0px 0px 10px 5px, #2e0dd4 0px 0px 1px 5px inset ;
 
-}
-.displayForm{
-    display: grid;
-    grid-gap: 8px;
+    .displayForm{
+        display: grid;
+        grid-gap: 8px;
 
-}
-.displayButton{
-    display: inline-flex;
-    justify-content:space-between;
+        .displayButton{
+            display: inline-flex;
+            justify-content:space-between;
+        }
+    }
+
+    a {
+        justify-self: center;
+        font: 17px Helvetica, Arial, sans-serif;
+    }
 }
 
-.display a {
-    justify-self: center;
-    font: 17px Helvetica, Arial, sans-serif;
-}
+
+
+

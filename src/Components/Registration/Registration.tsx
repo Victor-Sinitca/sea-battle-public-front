@@ -1,12 +1,12 @@
-import React, {FC,} from "react";
+import React, {FC, useEffect,} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Form, Formik, FormikHelpers} from "formik";
 import {createFieldFormik} from "../../commen/FormikControls/FormikControls";
 import s from "./Registration.module.css"
 import {Redirect, useHistory} from "react-router-dom";
 
-import {getIsAuthorization} from "../../redux/authHttp-selectors";
-import {registration} from "../../redux/authHttp-reducer";
+import {getErrorData, getIsAuthorization} from "../../redux/authHttp-selectors";
+import {actionAuth, registration} from "../../redux/authHttp-reducer";
 
 
 type InitialValuesType = {
@@ -42,7 +42,7 @@ export const Registration: FC = () => {
     let history = useHistory();
     const dispatch = useDispatch()
     const isAuthorization = useSelector(getIsAuthorization)
-
+    const errorData = useSelector(getErrorData)
 
     const initialProfile = {
         name:"",
@@ -59,10 +59,13 @@ export const Registration: FC = () => {
             history.push("/placeBattleMan")
         }*/
     }
+    useEffect(()=>{
+        return(()=>{dispatch(actionAuth.setErrorAuth(false, ""))})
+    },[])
+
     if(isAuthorization){
        return <Redirect to={'/placeBattleMan'}/>
     }
-
     return <div className={s.display} >
         <div style={{justifySelf:"center"} } >Регистрация</div>
         <Formik
@@ -85,6 +88,7 @@ export const Registration: FC = () => {
                             регистрация
                         </button>
                     </div>
+                    {errorData.isError && <div className={s.error}>{errorData.errorMessage}</div>}
                 </Form>
             )}
         </Formik>

@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from "react";
-import s from "./BattleRoom.module.css"
+import s from "./BattleRoom.module.scss"
 import {useDispatch, useSelector} from "react-redux";
 import {getListGames, getListGamesRoom, getMessages, getStatus} from "../../redux/chat-selectors";
 import {
@@ -44,35 +44,38 @@ const BattleRoom: FC = () => {
             dispatch(stopMessagesListening())
         }
     }, [dispatch])
-    return <div className={s.displayWindow}>
-        <div className={s.gameWindow}>
-            <div className={s.window1}>
+    return <div className={s.display}>
+        <div className={s.gamesSection}>
+            <div className={s.gameRegistration}>
                 <ListGame myId={myId || "empty Id"} listGame={listGame}
                           deleteGame={deleteGameInList} acceptGame={acceptGameInList}/>
-                <div className={s.displayCreateGame}>
+                <div className={s.createGame}>
                     <div className={s.displayCreateGameHeader}>Создать новую игру</div>
                     <AddMessagesFormChat statusWS={statusWS} sendMessageForm={handleSendGame}
                                          buttonText="создать игру" placeholder="введите название игры"/>
                 </div>
             </div>
-            <div className={s.window3}>
-                <div >Проводимые игры</div>
-                {GamesRoom.map(r =>
-                    <div className={s.window4} key={r.gamesRoomId}>
-                        <div>
-                            <span>Первый игрок:</span>
-                            <span>{r.firstUser.name}</span>
+            <div className={s.ongoingGames}>
+                <div className={s.ongoingGamesHeader}>Проводимые игры</div>
+                <div className={s.ongoingGamesGamesSection}>
+                    {GamesRoom.map(r =>
+                        <div className={s.oneGame} key={r.gamesRoomId}>
+                            <div>
+                                <span>Первый игрок:</span>
+                                <span>{r.firstUser.name}</span>
+                            </div>
+                            <div>
+                                <span>Второй игрок:</span>
+                                <span>{r.secondUser.name}</span>
+                            </div>
                         </div>
-                        <div>
-                            <span>Второй игрок:</span>
-                            <span>{r.secondUser.name}</span>
-                        </div>
-                    </div>
-                )
-                }
+                    )
+                    }
+                </div>
+
             </div>
         </div>
-        <div className={s.window3}>
+        <div className={s.chatSection}>
             <div style={{padding: 10}}>Чат</div>
             <div style={{padding: 10}}>
                 <Chat statusWS={statusWS} messages={messages} sendMessageForm={sendMessageForm}/>

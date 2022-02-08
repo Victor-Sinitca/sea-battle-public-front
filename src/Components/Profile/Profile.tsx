@@ -1,13 +1,15 @@
 import React, {ChangeEvent, FC, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getIsUpdateProfile, getProfile} from "../../redux/profile-selectors";
-import ava from "../../assets/img/ava.jpeg"
+import s from "./Profile.module.scss"
 import {useHistory, useParams} from "react-router-dom";
-import {actionProfile, getProfileThunk, uploadPhotoThink} from "../../redux/profile-reducer";
+import {actionProfile, getProfileThunk, updateUserStatusThunk, uploadPhotoThink} from "../../redux/profile-reducer";
 import {getAuthUser} from "../../redux/authHttp-selectors";
-import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
+import EditableInputElement from "../../commen/EditableInputElement/EditableInputElement";
 import Preloader1 from "../../commen/Preloader1/Preloader1";
 import {ProfilePhoto} from "./ProfilePhoto/ProfilePhoto";
+import {toLogout} from "../../redux/authHttp-reducer";
+import {Button} from "../../commen/Button/Button";
 
 export const Profile: FC = () => {
     const profile = useSelector(getProfile)
@@ -40,7 +42,13 @@ export const Profile: FC = () => {
         }
 
     }
-
+    const handlerLogout = () => {
+        dispatch(toLogout())
+        history.push('/authorization')
+    }
+    const handlerSetStatus=(value:string)=>{
+        dispatch(updateUserStatusThunk(value))
+    }
 
     useEffect(() => {
         return()=>{
@@ -56,14 +64,25 @@ export const Profile: FC = () => {
     if (isUpdateProfile || !profile) {
         return <Preloader1/>
     }
-    return <div>
-        <div>{profile.name}</div>
-        <ProfilePhoto height={150} ava={ava} photo={profile.photo} download={onMainPhotoSelect} isOwner={isOwner}/>
-        <ProfileStatusWithHooks isOwner={isOwner} status={profile.status}/>
-        <div>
-            <div>Морской бой, статистика</div>
-            <div>игр:{profile.gameSBState.numberOfGamesSB} </div>
-            <div>побед: {profile.gameSBState.numberOfWinsSB}</div>
+    return <div className={s.profile}>
+        <div className={s.profileHeader}>
+            <div>{profile.name}</div>
+            {isOwner && <Button value={"logout"} callback={handlerLogout} className={s.buttonLogout}/>}
+        </div>
+        <div className={s.profileBlock}>
+            <ProfilePhoto photo={profile.photo} download={onMainPhotoSelect} isOwner={isOwner}/>
+            <div className={s.profileDescriptions}>
+                <div className={s.statusBlock}>
+                    <div>status:</div>
+                    <EditableInputElement isEditable={isOwner} value={profile.status} setValue={handlerSetStatus}/>
+                </div>
+
+                <div className={s.gamesBlock}>
+                    <div>Морской бой, статистика</div>
+                    <div>игр:{profile.gameSBState.numberOfGamesSB} </div>
+                    <div>побед: {profile.gameSBState.numberOfWinsSB}</div>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -2,7 +2,7 @@ import React, {FC,} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Form, Formik, FormikHelpers} from "formik";
 import {createFieldFormik} from "../../commen/FormikControls/FormikControls";
-import s from "./Authorization.module.css"
+import s from "./Authorization.module.scss"
 import {NavLink, Redirect, useHistory} from "react-router-dom";
 import {login} from "../../redux/authHttp-reducer";
 import {getIsAuthorization} from "../../redux/authHttp-selectors";
@@ -43,9 +43,6 @@ export const Authorization: FC = () => {
                         {setSubmitting,}: FormikHelpers<InitialValuesType>,) => {
         dispatch(login(values.email, values.password,))
         setSubmitting(false)
-        /* if(isAuthorization){
-             history.push("/placeBattleMan")
-         }*/
     }
 
     if (isAuthorization) {

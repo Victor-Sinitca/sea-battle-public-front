@@ -50,7 +50,7 @@ export function createFieldFormikTextarea<FieldTypes>(
 
                 return <div className={s.displayFormik}>
                     <div>
-                        <textarea style={{width: 400}} className={meta.error ? s.formSummaryError : undefined}
+                        <textarea style={{maxWidth: 400}} className={meta.error ? s.formSummaryError : undefined}
                                   placeholder={placeholder} {...field} {...props}/>
                     </div>
                     {meta.touched && meta.error && (

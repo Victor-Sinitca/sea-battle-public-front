@@ -1,11 +1,12 @@
 import React, {FC} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import s from "./Header.module.css"
+import s from "./Header.module.scss"
 import ava from "../../assets/img/ava.jpeg"
 
 import {useHistory} from "react-router-dom";
 import {getAuthProfile, getAuthUser, getIsAuthorization} from "../../redux/authHttp-selectors";
 import {toLogout} from "../../redux/authHttp-reducer";
+import {Button} from "../../commen/Button/Button";
 
 
 export const Header: FC = () => {
@@ -14,6 +15,7 @@ export const Header: FC = () => {
     const authUser = useSelector(getAuthUser)
     const authProfile = useSelector(getAuthProfile)
     const authorization = useSelector(getIsAuthorization)
+    const greetings = authorization? "Welcome!!!" : "You are not authorize"
 
     const handlerLogout = () => {
         dispatch(toLogout())
@@ -22,31 +24,26 @@ export const Header: FC = () => {
     const handlerLogin = () => {
         history.push('/authorization')
     }
+    const handlerOpenProfile = () => {
+        history.push('/profile')
+    }
 
-    return <>
-        {authorization ?
-            <div className={s.headerAuthUser}>
-                <div >
-                    <img style={{height:40, borderRadius:5}} src={authProfile?.photo || ava }/>
-                </div>
-                <div>
+    return <header className={s.header}>
+        <div className={s.infoBlock}>
+            {greetings}
+        </div>
+        <div className={s.userBlock}>
+            {authorization?
+                <figure className={s.headerAvatar}  onClick={handlerOpenProfile}>
+                    <figcaption  onClick={handlerOpenProfile}>{authProfile?.name}</figcaption>
+                    <img  onClick={handlerOpenProfile} className={s.headerAvatarImg}  src={authProfile?.photo || ava} alt="user avatar"/>
 
-                </div>
-                <div>
+                </figure>
+                : <Button value={"login"} callback={handlerLogin} className={s.headerButton}/>
 
-                </div>
-                <div>
-                    <button onClick={handlerLogout}>выйти</button>
-                </div>
-            </div>
-            :
-            <div className={s.header}>
-                <div>Вы не авторизованы</div>
-                <div></div>
-                <div>
-                    <button style={{borderRadius: 5, padding: 5}} onClick={handlerLogin}>Войти</button>
-                </div>
-            </div>
-        }
-    </>
+
+               // <button className={s.headerButton} onClick={handlerLogin}>login</button>
+            }
+        </div>
+    </header>
 }

@@ -1,32 +1,25 @@
-.displayApp{
-  width: 100vw;
-  height: 100vh;
+.wrapper{
+  min-height: 100vh;
   display: grid;
   grid-template-areas:
   "h h"
   "n p";
   grid-template-rows: 60px 1fr;
   grid-template-columns: 130px 1fr;
-  margin: auto ;
+  margin: 0 auto;
+
+  .main{
+    grid-area: p;
+    display: grid;
+    padding: 10px;
+    background-color: #84caf6;
+    box-shadow:  #0e3e93 0px 0px 5px 1px inset  ;
+  }
+
+
 }
 
-.displayHeader{
-  grid-area: h;
-  background-color: #2d79ea;
-  font-weight: bold;
-  padding: 10px;
-  border-bottom: 2px #053986 solid;
-}
-.displayNavBar{
-  border-right: 2px #053986 solid;
-  background-color: #0e3e93;
-}
-.displayPlace{
-  padding-left: 15px;
-  padding-top: 10px;
-  background-color: #84caf6;
-  box-shadow:  #0e3e93 0px 0px 5px 1px inset  ;
-}
+
 
 
 

@@ -1,0 +1,48 @@
+.navBar{
+    grid-area: n;
+    border-right: 2px #053986 solid;
+    background-color: #0e3e93;
+
+    display: grid;
+    align-content: start;
+    grid-gap: 15px;
+
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+
+    .navBarSection{
+        .navBarSectionHeader{
+            text-align:center;
+            font-size: 12px;
+            color: #61dafb;
+        }
+        .navBarSectionBlock{
+            a {
+                text-decoration:none;
+                cursor: pointer;
+            }
+            .item {
+                border: 2px solid #619eec;
+                border-radius: 5px;
+                padding: 5px;
+                margin-top: 5px;
+                font:bold  0.8em "Roboto Condensed" ;
+                text-align:center;
+                color: #e7ebfc;
+                box-shadow: #289cbd 0px 0px 5px 1px;
+            }
+            .active div {
+                color: #997200;
+
+            }
+        }
+    }
+}
+
+
+
+
+
+
